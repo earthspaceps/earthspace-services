@@ -21,9 +21,6 @@ const NAV = [
     { to: '/admin/complaints', icon: MessageSquare, label: 'Complaints' },
     { to: '/admin/analytics', icon: BarChart2, label: 'Analytics' },
 ];
-
-];
-
 function Sidebar({ isOpen, onClose }) {
     const { user, logout } = useAuth();
     const location = useLocation();
