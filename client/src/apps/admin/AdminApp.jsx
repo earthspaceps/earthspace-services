@@ -3,7 +3,7 @@ import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Briefcase, DollarSign, Settings, BarChart2,
     MessageSquare, Wrench, LogOut, Bell, TrendingUp, Package, CheckCircle,
-    Clock, XCircle, UserCheck, UserX, Loader, Plus, Edit2, Trash2,
+    Clock, XCircle, UserCheck, UserX, Loader, Plus, Edit2, Trash2, Menu, X
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { useAuth } from '../../shared/AuthContext';
@@ -22,11 +22,24 @@ const NAV = [
     { to: '/admin/analytics', icon: BarChart2, label: 'Analytics' },
 ];
 
-function Sidebar() {
+];
+
+function Sidebar({ isOpen, onClose }) {
     const { user, logout } = useAuth();
     const location = useLocation();
+
+    // Close sidebar when clicking a link on mobile
+    const handleLinkClick = () => {
+        if (window.innerWidth <= 768) {
+            onClose();
+        }
+    };
+
     return (
-        <aside className="sidebar">
+        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <button className="sidebar-close" onClick={onClose}>
+                <X size={20} />
+            </button>
             <div className="sidebar-logo">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--color-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -42,7 +55,12 @@ function Sidebar() {
                 {NAV.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
-                        <Link key={to} to={to} className={`sidebar-link ${active ? 'active' : ''}`}>
+                        <Link
+                            key={to}
+                            to={to}
+                            className={`sidebar-link ${active ? 'active' : ''}`}
+                            onClick={handleLinkClick}
+                        >
                             <Icon size={18} className="nav-icon" />{label}
                         </Link>
                     );
@@ -513,10 +531,15 @@ function AnalyticsPage() {
 }
 
 // ─── TOP NAVBAR ──────────────────────────────────────────────
-function TopNavbar({ title }) {
+function TopNavbar({ title, onMenuClick }) {
     return (
         <div className="top-navbar">
-            <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{title}</h3>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <button className="mobile-toggle" onClick={onMenuClick}>
+                    <Menu size={24} />
+                </button>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{title}</h3>
+            </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <div className="badge badge-primary"><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-success)', display: 'inline-block', marginRight: 4 }} />Live</div>
             </div>
@@ -533,12 +556,14 @@ export default function AdminApp() {
         '/admin/payments': 'Payments & Commission', '/admin/complaints': 'Complaints Management', '/admin/analytics': 'Analytics',
     };
     const title = PAGE_TITLES[location.pathname] || 'Admin';
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     return (
         <div className="app-layout">
-            <Sidebar />
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <div className="main-content">
-                <TopNavbar title={title} />
+                {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+                <TopNavbar title={title} onMenuClick={() => setSidebarOpen(true)} />
                 <div className="page-content">
                     <Routes>
                         <Route path="/" element={<Dashboard />} />

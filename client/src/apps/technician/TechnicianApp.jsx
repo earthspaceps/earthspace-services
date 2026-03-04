@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Wrench, LayoutDashboard, Briefcase, DollarSign, History, User, LogOut, CheckCircle, XCircle, Truck, Play, Camera, Loader, Plus } from 'lucide-react';
+import { Wrench, LayoutDashboard, Briefcase, DollarSign, History, User, LogOut, CheckCircle, XCircle, Truck, Play, Camera, Loader, Plus, Menu, X } from 'lucide-react';
 import { useAuth } from '../../shared/AuthContext';
 import api from '../../shared/api';
 
@@ -321,45 +321,84 @@ const NAV = [
     { to: '/technician/earnings', icon: DollarSign, label: 'Earnings' },
 ];
 
+function Sidebar({ isOpen, onClose }) {
+    const { user, logout } = useAuth();
+    const location = useLocation();
+
+    const handleLinkClick = () => {
+        if (window.innerWidth <= 768) onClose();
+    };
+
+    return (
+        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+            <button className="sidebar-close" onClick={onClose}>
+                <X size={20} />
+            </button>
+            <div className="sidebar-logo">
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <Wrench size={22} color="#60a5fa" />
+                    <div>
+                        <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>Earthspace</div>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician Portal</div>
+                    </div>
+                </div>
+            </div>
+            <nav className="sidebar-nav">
+                {NAV.map(({ to, icon: Icon, label, exact }) => {
+                    const active = exact ? location.pathname === to : location.pathname.startsWith(to);
+                    return (
+                        <Link key={to} to={to} className={`sidebar-link ${active ? 'active' : ''}`} onClick={handleLinkClick}>
+                            <Icon size={18} className="nav-icon" />{label}
+                        </Link>
+                    );
+                })}
+            </nav>
+            <div style={{ padding: '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                    <div className="avatar avatar-sm">{user?.name?.[0]}</div>
+                    <div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff' }}>{user?.name}</div><div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician</div></div>
+                </div>
+                <button className="sidebar-link w-full" onClick={() => { logout(); window.location.href = '/login'; }} style={{ color: '#f87171' }}>
+                    <LogOut size={18} className="nav-icon" />Log Out
+                </button>
+            </div>
+        </aside>
+    );
+}
+
+function TopNavbar({ title, onMenuClick }) {
+    return (
+        <div className="top-navbar">
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <button className="mobile-toggle" onClick={onMenuClick}>
+                    <Menu size={24} />
+                </button>
+                <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{title}</h3>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div className="badge badge-primary"><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-success)', display: 'inline-block', marginRight: 4 }} />Live</div>
+            </div>
+        </div>
+    );
+}
 
 export default function TechnicianApp() {
     const { user, logout } = useAuth();
     const location = useLocation();
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const PAGE_TITLES = {
+        '/technician': 'Dashboard', '/technician/jobs': 'My Jobs',
+        '/technician/pool': 'Job Pool', '/technician/earnings': 'Earnings',
+    };
+    const title = PAGE_TITLES[location.pathname] || 'Technician';
 
     return (
         <div className="app-layout">
             {/* Sidebar */}
-            <aside className="sidebar">
-                <div className="sidebar-logo">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                        <Wrench size={22} color="#60a5fa" />
-                        <div>
-                            <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>Earthspace</div>
-                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician Portal</div>
-                        </div>
-                    </div>
-                </div>
-                <nav className="sidebar-nav">
-                    {NAV.map(({ to, icon: Icon, label, exact }) => {
-                        const active = exact ? location.pathname === to : location.pathname.startsWith(to);
-                        return (
-                            <Link key={to} to={to} className={`sidebar-link ${active ? 'active' : ''}`}>
-                                <Icon size={18} className="nav-icon" />{label}
-                            </Link>
-                        );
-                    })}
-                </nav>
-                <div style={{ padding: '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                        <div className="avatar avatar-sm">{user?.name?.[0]}</div>
-                        <div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff' }}>{user?.name}</div><div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician</div></div>
-                    </div>
-                    <button className="sidebar-link w-full" onClick={() => { logout(); window.location.href = '/login'; }} style={{ color: '#f87171' }}>
-                        <LogOut size={18} className="nav-icon" />Log Out
-                    </button>
-                </div>
-            </aside>
+            <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
             <div className="main-content">
+                {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+                <TopNavbar title={title} onMenuClick={() => setSidebarOpen(true)} />
                 <div className="page-content">
                     <Routes>
                         <Route path="/" element={<TechDashboard />} />
