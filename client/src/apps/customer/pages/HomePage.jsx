@@ -97,20 +97,20 @@ export default function HomePage() {
         <div>
             <section className="hero texture-overlay" style={{ background: 'var(--bg-dark)', padding: '80px 0', borderBottom: '1px solid var(--border-color)' }}>
                 <div className="hero-content reveal active" style={{ textAlign: 'center', color: '#fff' }}>
-                    <h1 style={{ marginBottom: 16, color: '#fff' }}>PRECISION <span style={{ color: 'var(--color-primary-300)' }}>HOME CARE</span></h1>
-                    <p style={{ color: 'rgba(255,255,255,.7)', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 32 }}>ENGINEERING-LED FACILITY MANAGEMENT</p>
-                    <form className="hero-search" onSubmit={handleSearch} style={{ maxWidth: 640, margin: '0 auto', display: 'flex', background: '#fff', borderRadius: '999px', padding: '6px', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
-                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ flex: 1, padding: '12px 24px', borderRadius: '999px', border: 'none', background: 'transparent', outline: 'none' }} />
+                    <h1 style={{ marginBottom: 16, color: 'var(--text-primary)' }}>PRECISION <span style={{ color: 'var(--color-primary-600)' }}>HOME CARE</span></h1>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 32 }}>ENGINEERING-LED FACILITY MANAGEMENT</p>
+                    <form className="hero-search" onSubmit={handleSearch} style={{ maxWidth: 640, margin: '0 auto', display: 'flex', background: 'var(--bg-card)', borderRadius: '999px', padding: '6px', boxShadow: 'var(--shadow-lg)' }}>
+                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ flex: 1, padding: '12px 24px', borderRadius: '999px', border: 'none', background: 'transparent', outline: 'none', color: 'var(--text-primary)' }} />
                         <button type="submit" className="btn btn-primary" style={{ padding: '0 32px', height: '48px' }}>SEARCH</button>
                     </form>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 24, color: 'rgba(255,255,255,.5)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 24, color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                         <MapPin size={14} /> {location}
                     </div>
                 </div>
             </section>
 
             {/* Stats Banner */}
-            <div className="texture-overlay" style={{ background: '#000', padding: '48px 0', borderBottom: '1px solid #333' }}>
+            <div className="texture-overlay" style={{ background: '#050505', padding: '48px 0', borderBottom: '1px solid var(--border-color)' }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 32 }}>
                     {[['50K+', 'CUSTOMERS'], ['1.2K+', 'ENGINEERS'], ['25+', 'SOLUTIONS'], ['4.8/5', 'RATING']].map(([v, l]) => (
                         <div key={l} className="reveal" style={{ textAlign: 'center', color: '#fff' }}>

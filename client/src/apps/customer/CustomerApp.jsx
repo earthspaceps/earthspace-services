@@ -184,7 +184,7 @@ export default function CustomerApp() {
         <div style={{ minHeight: '100vh' }}>
             {/* Top Navbar */}
             <nav className={`customer-navbar ${isScrolled ? 'shrunk' : ''}`} style={{
-                background: 'var(--bg-dark)',
+                background: 'var(--bg-card)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
@@ -193,11 +193,11 @@ export default function CustomerApp() {
                 top: 0,
                 zIndex: 1000,
                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                borderBottom: isScrolled ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent'
+                borderBottom: isScrolled ? '1px solid var(--border-color)' : '1px solid transparent'
             }}>
                 <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
-                    <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: '#fff', fontSize: '1rem' }}>Services</span>
+                    <img src="/logo.png" alt="EarthSpace" style={{ height: 32 }} />
+                    <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: 'var(--text-primary)', fontSize: '1rem' }}>Services</span>
                 </div>
 
                 {/* Desktop Nav - Hidden on mobile via index.css .nav-links rule or inline */}
@@ -205,7 +205,7 @@ export default function CustomerApp() {
                     {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                         const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                         return (
-                            <Link key={to} to={to} className={`nav-link ${active ? 'active' : ''}`} style={{ color: active ? '#fff' : 'rgba(255,255,255,0.6)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 6 }}>
+                            <Link key={to} to={to} className={`nav-link ${active ? 'active' : ''}`} style={{ color: active ? 'var(--text-primary)' : 'var(--text-secondary)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 6 }}>
                                 <Icon size={14} />{label}
                             </Link>
                         );
