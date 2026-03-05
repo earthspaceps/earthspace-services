@@ -35,17 +35,17 @@ function Sidebar({ isOpen, onClose }) {
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
-            <button className="sidebar-close" onClick={onClose}>
+        <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`} style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+            <button className="sidebar-close" onClick={onClose} style={{ color: '#fff' }}>
                 <X size={20} />
             </button>
-            <div className="sidebar-logo">
+            <div className="sidebar-logo" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '32px 24px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                    <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
-                    {!isCollapsed && <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '-0.02em', lineHeight: 1 }}>SERVICES</div>}
+                    <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#fff', boxShadow: '0 0 10px #fff' }} />
+                    {!isCollapsed && <div style={{ fontWeight: 1000, fontSize: '1.2rem', color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase' }}>EPS <span style={{ fontWeight: 300, opacity: 0.5 }}>ADMIN</span></div>}
                 </div>
             </div>
-            <nav className="sidebar-nav">
+            <nav className="sidebar-nav" style={{ padding: '24px 12px' }}>
                 {NAV.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
@@ -55,37 +55,64 @@ function Sidebar({ isOpen, onClose }) {
                             className={`sidebar-link ${active ? 'active' : ''}`}
                             onClick={handleLinkClick}
                             title={label}
-                            style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}
+                            style={{
+                                justifyContent: isCollapsed ? 'center' : 'flex-start',
+                                background: active ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                color: active ? '#fff' : 'rgba(255,255,255,0.4)',
+                                border: active ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
+                                borderRadius: '14px',
+                                padding: '16px',
+                                marginBottom: 4,
+                                textTransform: 'uppercase',
+                                fontSize: '0.7rem',
+                                fontWeight: active ? 900 : 700,
+                                letterSpacing: '0.1em'
+                            }}
                         >
-                            <Icon size={18} className="nav-icon" />{!isCollapsed && <span>{label}</span>}
+                            <Icon size={18} style={{ opacity: active ? 1 : 0.6 }} />{!isCollapsed && <span>{label}</span>}
                         </Link>
                     );
                 })}
             </nav>
-            <div style={{ padding: isCollapsed ? '16px 8px' : '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
+            <div style={{ padding: isCollapsed ? '16px 8px' : '24px', borderTop: '1px solid rgba(255,255,255,.08)', background: 'rgba(255,255,255,0.02)' }}>
                 {!isCollapsed && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                        <div className="avatar avatar-sm">{user?.name?.[0]}</div>
-                        <div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 120 }}>{user?.name}</div>
-                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Super Admin</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+                        <div className="avatar avatar-sm" style={{ background: '#fff', color: '#000', fontWeight: 900, border: 'none' }}>{user?.name?.[0] || 'A'}</div>
+                        <div style={{ overflow: 'hidden' }}>
+                            <div style={{ fontSize: '0.8rem', fontWeight: 900, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name || 'Admin'}</div>
+                            <div style={{ fontSize: '0.65rem', color: 'var(--color-primary-400)', fontWeight: 800, letterSpacing: '0.1em' }}>MASTER OVERSEER</div>
                         </div>
                     </div>
                 )}
                 {isCollapsed && (
-                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-                        <div className="avatar avatar-sm" title={user?.name}>{user?.name?.[0]}</div>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+                        <div className="avatar avatar-sm" title={user?.name} style={{ background: '#fff', color: '#000', fontWeight: 900 }}>{user?.name?.[0] || 'A'}</div>
                     </div>
                 )}
-                <button className={`sidebar-link w-full ${isCollapsed ? 'justify-center' : ''}`} style={{ color: '#f87171' }} onClick={() => { logout(); window.location.href = '/login'; }} title="Log Out">
-                    <LogOut size={18} className="nav-icon" />{!isCollapsed && <span>Log Out</span>}
+                <button
+                    className={`sidebar-link w-full ${isCollapsed ? 'justify-center' : ''}`}
+                    onClick={() => { logout(); window.location.href = '/login'; }}
+                    style={{
+                        color: '#f87171',
+                        background: 'rgba(248,113,113,0.05)',
+                        border: '1px solid rgba(248,113,113,0.1)',
+                        borderRadius: '12px',
+                        padding: '12px',
+                        fontSize: '0.7rem',
+                        fontWeight: 900,
+                        letterSpacing: '0.1em'
+                    }}
+                    title="Log Out"
+                >
+                    <LogOut size={16} />{!isCollapsed && <span>SIGN OUT</span>}
                 </button>
             </div>
             <button
                 className="sidebar-toggle-btn"
                 onClick={() => setIsCollapsed(!isCollapsed)}
+                style={{ color: 'rgba(255,255,255,0.3)' }}
             >
-                {isCollapsed ? <ChevronsRight size={16} /> : <><ChevronsLeft size={16} /> Hide</>}
+                {isCollapsed ? <ChevronsRight size={16} /> : <><ChevronsLeft size={16} /> COLLAPSE</>}
             </button>
         </aside>
     );
@@ -106,12 +133,12 @@ function Dashboard() {
     const monthly = data?.monthlyStats || [];
 
     const STAT_CARDS = [
-        { label: 'Total Customers', value: stats.totalUsers, icon: Users, bg: '#f4f4f4', color: '#050505' },
-        { label: 'Verified Technicians', value: stats.totalTechnicians, icon: UserCheck, bg: '#f4f4f4', color: '#050505' },
-        { label: 'Total Bookings', value: stats.totalBookings, icon: Package, bg: '#f4f4f4', color: '#050505' },
-        { label: 'Total Revenue', value: `₹${(stats.totalRevenue || 0).toLocaleString()}`, icon: TrendingUp, bg: '#f4f4f4', color: '#050505' },
-        { label: 'Active Bookings', value: stats.pendingBookings, icon: Clock, bg: '#f4f4f4', color: '#050505' },
-        { label: 'Completed', value: stats.completedBookings, icon: CheckCircle, bg: '#f4f4f4', color: '#050505' },
+        { label: 'TOTAL CUSTOMERS', value: stats.totalUsers, icon: Users, color: '#3b82f6' },
+        { label: 'VERIFIED TECHS', value: stats.totalTechnicians, icon: UserCheck, color: '#22c55e' },
+        { label: 'TOTAL BOOKINGS', value: stats.totalBookings, icon: Package, color: '#a855f7' },
+        { label: 'TOTAL REVENUE', value: `₹${(stats.totalRevenue || 0).toLocaleString()}`, icon: TrendingUp, color: '#fff' },
+        { label: 'ACTIVE BOOKINGS', value: stats.pendingBookings, icon: Clock, color: '#f59e0b' },
+        { label: 'COMPLETED', value: stats.completedBookings, icon: CheckCircle, color: '#10b981' },
     ];
 
     return (
@@ -122,11 +149,14 @@ function Dashboard() {
             </div>
 
             {/* KPI Cards */}
-            <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', marginBottom: 28 }}>
+            <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', marginBottom: 40, gap: 24 }}>
                 {STAT_CARDS.map(s => (
                     <div key={s.label} className="stat-card">
-                        <div className="stat-icon" style={{ background: s.bg, color: s.color }}><s.icon size={22} /></div>
-                        <div><div className="stat-value">{s.value ?? '—'}</div><div className="stat-label">{s.label}</div></div>
+                        <div className="stat-icon" style={{ background: 'rgba(255,255,255,0.05)', color: s.color, border: '1px solid rgba(255,255,255,0.08)' }}><s.icon size={22} /></div>
+                        <div>
+                            <div className="stat-value" style={{ fontSize: '1.5rem', fontWeight: 900 }}>{s.value ?? '—'}</div>
+                            <div className="stat-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>{s.label}</div>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -542,15 +572,37 @@ function AnalyticsPage() {
 // ─── TOP NAVBAR ──────────────────────────────────────────────
 function TopNavbar({ title, onMenuClick }) {
     return (
-        <div className="top-navbar">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <button className="mobile-toggle" onClick={onMenuClick}>
+        <div className="top-navbar" style={{
+            background: 'rgba(255,255,255,0.01)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(255,255,255,0.05)',
+            height: 70,
+            padding: '0 32px'
+        }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <button className="mobile-toggle" onClick={onMenuClick} style={{ color: '#fff' }}>
                     <Menu size={24} />
                 </button>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{title}</h3>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 1000, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.15em' }}>{title}</h3>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div className="badge badge-primary"><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-success)', display: 'inline-block', marginRight: 4 }} />Live</div>
+                <div className="badge" style={{
+                    background: 'rgba(239,68,68,0.1)',
+                    color: '#ef4444',
+                    border: '1px solid rgba(239,68,68,0.2)',
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.65rem',
+                    fontWeight: 900,
+                    letterSpacing: '0.1em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6
+                }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#ef4444', boxShadow: '0 0 10px #ef4444' }} />
+                    LIVE OPS
+                </div>
             </div>
         </div>
     );

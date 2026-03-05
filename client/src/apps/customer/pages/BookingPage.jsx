@@ -84,51 +84,65 @@ export default function BookingPage() {
         <div style={{ minHeight: '100vh', background: 'var(--bg-page)', padding: '32px var(--content-padding)' }}>
             <div className="container" style={{ maxWidth: 640 }}>
                 {/* Progress Steps */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 40 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 48 }}>
                     {STEPS.map((s, i) => (
                         <React.Fragment key={i}>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1, position: 'relative' }}>
                                 <div style={{
-                                    width: 32, height: 32, border: '1px solid currentColor', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem',
-                                    background: step >= i + 1 ? '#000' : 'transparent',
-                                    color: step >= i + 1 ? '#fff' : 'var(--text-secondary)',
+                                    width: 36, height: 36, border: '2px solid',
+                                    borderColor: step >= i + 1 ? '#fff' : 'rgba(255,255,255,0.1)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, fontSize: '0.9rem',
+                                    background: step >= i + 1 ? '#fff' : 'rgba(255,255,255,0.05)',
+                                    color: step >= i + 1 ? '#000' : 'rgba(255,255,255,0.3)',
+                                    borderRadius: '12px',
+                                    boxShadow: step === i + 1 ? '0 0 20px rgba(255,255,255,0.3)' : 'none',
+                                    transition: 'all 0.3s ease'
                                 }}>
                                     {step > i + 1 ? '✓' : i + 1}
                                 </div>
-                                <span style={{ fontSize: '0.65rem', marginTop: 8, fontWeight: 700, color: step === i + 1 ? '#000' : 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s}</span>
+                                <span style={{
+                                    fontSize: '0.65rem', marginTop: 12, fontWeight: 800,
+                                    color: step >= i + 1 ? '#fff' : 'rgba(255,255,255,0.4)',
+                                    textTransform: 'uppercase', letterSpacing: '0.1em'
+                                }}>{s}</span>
                             </div>
-                            {i < STEPS.length - 1 && <div style={{ flex: 1, height: 1, background: step > i + 1 ? '#000' : 'var(--color-grey-200)', marginBottom: 20 }} />}
+                            {i < STEPS.length - 1 && (
+                                <div style={{
+                                    flex: 1, height: 2,
+                                    background: `linear-gradient(to right, ${step > i + 1 ? '#fff' : 'rgba(255,255,255,0.1)'}, ${step > i + 2 ? '#fff' : 'rgba(255,255,255,0.1)'})`,
+                                    marginTop: -24
+                                }} />
+                            )}
                         </React.Fragment>
                     ))}
                 </div>
 
                 {/* Service Summary */}
-                <div className="card mb-6" style={{ padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="card mb-6" style={{ padding: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
-                        <div style={{ fontWeight: 800, fontSize: '1.1rem', textTransform: 'uppercase' }}>{serviceName}</div>
-                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>TECHNICAL SOLUTION</div>
+                        <div style={{ fontWeight: 900, fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.02em', color: '#fff' }}>{serviceName}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: 4, fontWeight: 700 }}>TECHNICAL SOLUTION</div>
                     </div>
-                    <div style={{ fontWeight: 900, fontSize: '1.4rem' }}>₹{servicePrice}+</div>
+                    <div style={{ fontWeight: 900, fontSize: '1.6rem', color: '#fff' }}>₹{servicePrice}+</div>
                 </div>
 
                 {error && <div className="alert alert-danger mb-4">{error}</div>}
 
                 {/* Step 1: Date & Time */}
                 {step === 1 && (
-                    <div className="card card-body">
-                        <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SELECT DATE & TIME</h3>
-
+                    <div className="card card-body" style={{ padding: '32px' }}>
+                        <h3 className="mb-8" style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 900, fontSize: '1.1rem', color: '#fff' }}>SELECT DATE & TIME</h3>
                         {/* Calendar */}
-                        <div style={{ marginBottom: 32 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                                <button className="btn btn-ghost btn-sm" onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1); } else setCalMonth(m => m - 1); }}><ChevronLeft size={18} /></button>
-                                <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{monthName}</span>
-                                <button className="btn btn-ghost btn-sm" onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1); }}><ChevronRight size={18} /></button>
+                        <div style={{ marginBottom: 40 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+                                <button className="btn btn-ghost btn-sm" style={{ color: '#fff' }} onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1); } else setCalMonth(m => m - 1); }}><ChevronLeft size={20} /></button>
+                                <span style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#fff', fontSize: '1rem' }}>{monthName} {calYear}</span>
+                                <button className="btn btn-ghost btn-sm" style={{ color: '#fff' }} onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1); }}><ChevronRight size={20} /></button>
                             </div>
-                            <div className="calendar-grid" style={{ marginBottom: 8 }}>
-                                {['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'].map(d => <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-secondary)', padding: '8px 0' }}>{d}</div>)}
+                            <div className="calendar-grid" style={{ marginBottom: 12 }}>
+                                {['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'].map(d => <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 900, color: 'rgba(255,255,255,0.4)', padding: '12px 0' }}>{d}</div>)}
                             </div>
-                            <div className="calendar-grid">
+                            <div className="calendar-grid" style={{ gap: '8px' }}>
                                 {Array.from({ length: firstDay }).map((_, i) => <div key={`e${i}`} />)}
                                 {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(d => {
                                     const date = formatDate(calYear, calMonth, d);
@@ -137,9 +151,17 @@ export default function BookingPage() {
                                     return (
                                         <button key={d} disabled={past} onClick={() => setSelectedDate(date)}
                                             style={{
-                                                aspectRatio: '1', border: '1px solid #eee', background: isSelected ? '#000' : 'transparent',
-                                                color: isSelected ? '#fff' : past ? '#ccc' : '#000', fontWeight: isSelected ? 800 : 400,
-                                                cursor: past ? 'default' : 'pointer', fontSize: '0.85rem'
+                                                aspectRatio: '1',
+                                                border: '1px solid',
+                                                borderColor: isSelected ? '#fff' : 'rgba(255,255,255,0.05)',
+                                                background: isSelected ? '#fff' : 'rgba(255,255,255,0.03)',
+                                                color: isSelected ? '#000' : past ? 'rgba(255,255,255,0.1)' : '#fff',
+                                                fontWeight: isSelected ? 900 : 500,
+                                                borderRadius: '12px',
+                                                cursor: past ? 'default' : 'pointer',
+                                                fontSize: '0.9rem',
+                                                transition: 'all 0.2s ease',
+                                                boxShadow: isSelected ? '0 0 15px rgba(255,255,255,0.2)' : 'none'
                                             }}>{d}</button>
                                     );
                                 })}
@@ -147,20 +169,25 @@ export default function BookingPage() {
                         </div>
 
                         {/* Time Slots */}
-                        <h4 style={{ marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.9rem' }}>SELECT TIME WINDOW</h4>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 10 }}>
+                        <h4 style={{ marginBottom: 20, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem', fontWeight: 800, color: 'rgba(255,255,255,0.6)' }}>SELECT TIME WINDOW</h4>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 12 }}>
                             {TIME_SLOTS.map(t => (
                                 <button key={t} onClick={() => setSelectedTime(t)} style={{
-                                    padding: '12px 0', border: '1px solid var(--border-color)', borderRadius: '12px',
-                                    background: selectedTime === t ? '#000' : 'transparent',
-                                    color: selectedTime === t ? '#fff' : '#000',
-                                    fontWeight: selectedTime === t ? 700 : 400, fontSize: '0.85rem',
-                                    transition: 'all 0.2s ease'
+                                    padding: '16px 0',
+                                    border: '1.5px solid',
+                                    borderColor: selectedTime === t ? '#fff' : 'rgba(255,255,255,0.1)',
+                                    borderRadius: '14px',
+                                    background: selectedTime === t ? '#fff' : 'rgba(255,255,255,0.03)',
+                                    color: selectedTime === t ? '#000' : '#fff',
+                                    fontWeight: selectedTime === t ? 900 : 500,
+                                    fontSize: '0.85rem',
+                                    transition: 'all 0.2s ease',
+                                    boxShadow: selectedTime === t ? '0 0 15px rgba(255,255,255,0.2)' : 'none'
                                 }}>{t}</button>
                             ))}
                         </div>
 
-                        <button className="btn btn-primary btn-block btn-lg mt-8" onClick={() => setStep(2)} disabled={!selectedDate || !selectedTime}>
+                        <button className="btn btn-primary btn-block btn-lg mt-10" style={{ height: '60px', fontSize: '1rem' }} onClick={() => setStep(2)} disabled={!selectedDate || !selectedTime}>
                             CONTINUE TO ADDRESS
                         </button>
                     </div>
@@ -168,82 +195,96 @@ export default function BookingPage() {
 
                 {/* Step 2: Address */}
                 {step === 2 && (
-                    <div className="card card-body" style={{ borderRadius: '24px', border: '1px solid var(--border-color)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-                        <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICE ADDRESS</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                    <div className="card card-body" style={{ padding: '32px' }}>
+                        <h3 className="mb-8" style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 900, fontSize: '1.1rem', color: '#fff' }}>SERVICE ADDRESS</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                             <div className="form-group">
-                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
-                                <label>ADDRESS LINE 1</label>
+                                <input className="form-control" style={{ width: '100%' }} placeholder=" " value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
+                                <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em' }}>ADDRESS LINE 1</label>
                             </div>
                             <div className="form-group">
-                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
-                                <label>ADDRESS LINE 2</label>
+                                <input className="form-control" style={{ width: '100%' }} placeholder=" " value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
+                                <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em' }}>ADDRESS LINE 2</label>
                             </div>
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                                 <div className="form-group">
-                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
-                                    <label>CITY</label>
+                                    <input className="form-control" style={{ width: '100%' }} placeholder=" " value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
+                                    <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em' }}>CITY</label>
                                 </div>
                                 <div className="form-group">
-                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
-                                    <label>PINCODE</label>
+                                    <input className="form-control" style={{ width: '100%' }} placeholder=" " value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
+                                    <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em' }}>PINCODE</label>
                                 </div>
                             </div>
                             <div className="form-group">
-                                <textarea className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} rows={3} placeholder=" " value={instructions} onChange={e => setInstructions(e.target.value)} />
-                                <label>SPECIAL INSTRUCTIONS</label>
+                                <textarea className="form-control" style={{ width: '100%' }} rows={3} placeholder=" " value={instructions} onChange={e => setInstructions(e.target.value)} />
+                                <label style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em' }}>SPECIAL INSTRUCTIONS</label>
                             </div>
                         </div>
-                        <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-                            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setStep(1)}>BACK</button>
-                            <button className="btn btn-primary" style={{ flex: 2 }} onClick={() => setStep(3)} disabled={!address.line1 || !address.city}>CONTINUE</button>
+                        <div style={{ display: 'flex', gap: 16, marginTop: 40 }}>
+                            <button className="btn btn-outline" style={{ flex: 1, height: 56 }} onClick={() => setStep(1)}>BACK</button>
+                            <button className="btn btn-primary" style={{ flex: 2, height: 56 }} onClick={() => setStep(3)} disabled={!address.line1 || !address.city}>CONTINUE</button>
                         </div>
                     </div>
                 )}
 
                 {/* Step 3: Payment */}
                 {step === 3 && (
-                    <div className="card card-body" style={{ borderRadius: '24px', border: '1px solid var(--border-color)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
-                        <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>PAYMENT METHOD</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
+                    <div className="card card-body" style={{ padding: '32px' }}>
+                        <h3 className="mb-8" style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 900, fontSize: '1.1rem', color: '#fff' }}>PAYMENT METHOD</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 40 }}>
                             {PAYMENT_METHODS.map(pm => (
                                 <div key={pm.key} onClick={() => setPaymentMethod(pm.key)} style={{
-                                    border: `2px solid ${paymentMethod === pm.key ? '#000' : '#eee'}`,
-                                    borderRadius: '16px', padding: '20px', cursor: 'pointer',
-                                    display: 'flex', alignItems: 'center', gap: 16,
-                                    background: paymentMethod === pm.key ? '#f8f8f8' : '#fff',
-                                    transition: 'all .2s',
+                                    border: '2px solid',
+                                    borderColor: paymentMethod === pm.key ? '#fff' : 'rgba(255,255,255,0.05)',
+                                    borderRadius: '20px', padding: '24px', cursor: 'pointer',
+                                    display: 'flex', alignItems: 'center', gap: 20,
+                                    background: paymentMethod === pm.key ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                    transition: 'all .3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    boxShadow: paymentMethod === pm.key ? '0 0 20px rgba(255,255,255,0.1)' : 'none',
                                 }}>
-                                    <span style={{ fontSize: '1.5rem' }}>{pm.icon}</span>
+                                    <span style={{ fontSize: '2rem' }}>{pm.icon}</span>
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.85rem' }}>{pm.label}</div>
-                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{pm.desc}</div>
+                                        <div style={{ fontWeight: 900, textTransform: 'uppercase', fontSize: '0.9rem', color: '#fff', letterSpacing: '0.02em' }}>{pm.label}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', marginTop: 4, fontWeight: 600 }}>{pm.desc}</div>
                                     </div>
-                                    {paymentMethod === pm.key && <CheckCircle size={20} color="#000" />}
+                                    {paymentMethod === pm.key && <CheckCircle size={24} color="#fff" />}
                                 </div>
                             ))}
                         </div>
 
-                        {/* Summary */}
-                        <div style={{ background: '#000', color: '#fff', padding: '24px', marginBottom: 32, borderRadius: '20px' }}>
-                            <h4 style={{ color: '#fff', marginBottom: 16, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em' }}>BOOKING SUMMARY</h4>
-                            <div style={{ display: 'grid', gap: 10 }}>
-                                {[['SOLUTION', serviceName], ['DATE', selectedDate], ['TIME', selectedTime], ['METHOD', PAYMENT_METHODS.find(p => p.key === paymentMethod)?.label]].map(([k, v]) => (
-                                    <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem' }}>
-                                        <span style={{ opacity: 0.6 }}>{k}</span>
-                                        <span style={{ fontWeight: 700 }}>{v?.toUpperCase()}</span>
+                        {/* Summary Block */}
+                        <div style={{
+                            background: '#fff',
+                            color: '#000',
+                            padding: '32px',
+                            marginBottom: 40,
+                            borderRadius: '24px',
+                            boxShadow: '0 20px 40px rgba(0,0,0,0.4)'
+                        }}>
+                            <h4 style={{ color: '#000', marginBottom: 24, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.2em', fontWeight: 900, opacity: 0.6 }}>BOOKING SUMMARY</h4>
+                            <div style={{ display: 'grid', gap: 16 }}>
+                                {[
+                                    ['SOLUTION', serviceName],
+                                    ['DATE', selectedDate],
+                                    ['TIME', selectedTime],
+                                    ['METHOD', PAYMENT_METHODS.find(p => p.key === paymentMethod)?.label]
+                                ].map(([k, v]) => (
+                                    <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', fontWeight: 800 }}>
+                                        <span style={{ opacity: 0.5 }}>{k}</span>
+                                        <span style={{ letterSpacing: '0.02em' }}>{v?.toUpperCase()}</span>
                                     </div>
                                 ))}
                             </div>
-                            <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', marginTop: 16, paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>TOTAL ESTIMATE</span>
-                                <span style={{ fontSize: '1.4rem', fontWeight: 900 }}>₹{servicePrice}+</span>
+                            <div style={{ borderTop: '2px solid rgba(0,0,0,0.05)', marginTop: 24, paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.9rem', fontWeight: 900, letterSpacing: '0.05em' }}>TOTAL ESTIMATE</span>
+                                <span style={{ fontSize: '1.8rem', fontWeight: 1000 }}>₹{servicePrice}+</span>
                             </div>
                         </div>
 
-                        <div style={{ display: 'flex', gap: 12 }}>
-                            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setStep(2)}>BACK</button>
-                            <button className="btn btn-primary" style={{ flex: 2 }} onClick={handleBook} disabled={loading}>
+                        <div style={{ display: 'flex', gap: 16 }}>
+                            <button className="btn btn-outline" style={{ flex: 1, height: 60 }} onClick={() => setStep(2)}>BACK</button>
+                            <button className="btn btn-primary" style={{ flex: 2, height: 60, fontSize: '1rem' }} onClick={handleBook} disabled={loading}>
                                 {loading ? 'PROCESSING...' : 'CONFIRM BOOKING'}
                             </button>
                         </div>

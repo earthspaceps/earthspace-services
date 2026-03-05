@@ -47,31 +47,35 @@ function TechDashboard() {
         <div>
             {/* Welcome Banner */}
             <div style={{
-                background: 'var(--bg-dark)',
-                border: '1px solid var(--border-color)',
-                padding: '28px 32px',
-                marginBottom: 24,
+                background: 'var(--glass-bg)',
+                backdropFilter: 'var(--glass-blur)',
+                WebkitBackdropFilter: 'var(--glass-blur)',
+                border: '1px solid var(--glass-border)',
+                padding: '32px',
+                borderRadius: '24px',
+                marginBottom: 32,
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
-                gap: 16,
+                gap: 20,
+                boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
             }}>
                 <div>
-                    <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800 }}>Welcome back, {user?.name?.split(' ')[0]}! 👋</h2>
-                    <p style={{ color: 'var(--color-primary-100)', marginTop: 4, opacity: 0.9 }}>Here's your dashboard for today.</p>
+                    <h2 style={{ color: '#fff', fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.02em' }}>WELCOME BACK, {user?.name?.split(' ')[0].toUpperCase()}! 👋</h2>
+                    <p style={{ color: 'rgba(255,255,255,0.5)', marginTop: 6, fontWeight: 700, fontSize: '0.85rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Operational Dashboard v2.0</p>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,.8)' }}>Availability</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, background: 'rgba(255,255,255,0.05)', padding: '12px 20px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <span style={{ fontSize: '0.75rem', color: '#fff', fontWeight: 900, letterSpacing: '0.1em' }}>STATUS</span>
                     <button
                         onClick={toggleAvailability}
                         disabled={toggling}
                         style={{
                             width: 52, height: 28, borderRadius: 14, border: 'none', cursor: toggling ? 'wait' : 'pointer', position: 'relative',
-                            background: dash?.technician?.isAvailable ? '#22c55e' : 'rgba(255,255,255,.3)',
+                            background: dash?.technician?.isAvailable ? '#22c55e' : 'rgba(255,255,255,.2)',
                             transition: 'all .3s',
-                            opacity: toggling ? 0.7 : 1
+                            boxShadow: dash?.technician?.isAvailable ? '0 0 15px rgba(34,197,94,0.4)' : 'none'
                         }}>
                         <div style={{
                             width: 20, height: 20, background: '#fff', borderRadius: '50%', position: 'absolute',
@@ -79,52 +83,51 @@ function TechDashboard() {
                             left: dash?.technician?.isAvailable ? 28 : 4,
                         }} />
                     </button>
-                    <span style={{ color: '#fff', fontWeight: 600, fontSize: '0.85rem', width: 45 }}>{dash?.technician?.isAvailable ? 'Online' : 'Offline'}</span>
+                    <span style={{ color: dash?.technician?.isAvailable ? '#22c55e' : '#fff', fontWeight: 900, fontSize: '0.85rem', width: 60, textAlign: 'center' }}>{dash?.technician?.isAvailable ? 'ONLINE' : 'OFFLINE'}</span>
                 </div>
             </div>
 
             {/* Stats */}
-            <div className="grid-4" style={{ marginBottom: 24, gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))' }}>
+            <div className="grid-4" style={{ marginBottom: 32, gap: 24 }}>
                 {[
-                    { label: 'Pending Jobs', value: dash?.pendingJobs || 0, icon: Briefcase, bg: '#f4f4f4', color: '#000' },
-                    { label: 'Completed', value: dash?.totalCompleted || 0, icon: CheckCircle, bg: '#f4f4f4', color: '#000' },
-                    { label: 'Rating', value: `${dash?.technician?.rating || '0.0'}★`, icon: null, bg: '#f4f4f4', color: '#000' },
-                    { label: 'Total Earnings', value: `₹${dash?.totalEarnings || 0}`, icon: DollarSign, bg: '#f4f4f4', color: '#000' },
+                    { label: 'PENDING JOBS', value: dash?.pendingJobs || 0, icon: Briefcase, color: '#3b82f6' },
+                    { label: 'COMPLETED', value: dash?.totalCompleted || 0, icon: CheckCircle, color: '#22c55e' },
+                    { label: 'RATING', value: `${dash?.technician?.rating || '0.0'}`, icon: null, color: '#f59e0b' },
+                    { label: 'TOTAL EARNINGS', value: `₹${dash?.totalEarnings || 0}`, icon: DollarSign, color: '#fff' },
                 ].map(s => (
                     <div key={s.label} className="stat-card">
-                        <div className="stat-icon" style={{ background: s.bg, color: s.color }}>
-                            {s.icon ? <s.icon size={22} /> : <span style={{ fontSize: '1.2rem', fontWeight: 700 }}>★</span>}
+                        <div className="stat-icon" style={{ background: 'rgba(255,255,255,0.05)', color: s.color, border: '1px solid rgba(255,255,255,0.08)' }}>
+                            {s.icon ? <s.icon size={22} /> : <span style={{ fontSize: '1.2rem', fontWeight: 900 }}>★</span>}
                         </div>
-                        <div><div className="stat-value">{s.value}</div><div className="stat-label">{s.label}</div></div>
+                        <div>
+                            <div className="stat-value" style={{ fontSize: '1.5rem', fontWeight: 900 }}>{s.value}</div>
+                            <div className="stat-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>{s.label}</div>
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {/* Recent Jobs */}
-            <div className="card">
-                <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h4>Recent Jobs</h4>
-                    <Link to="/technician/jobs"><span style={{ fontSize: '0.85rem', color: 'var(--color-primary-600)', fontWeight: 600 }}>View All →</span></Link>
+            {jobs.length === 0 ? (
+                <div className="card-body text-center" style={{ padding: 60 }}>
+                    <Briefcase size={48} style={{ color: 'rgba(255,255,255,0.1)', margin: '0 auto 20px' }} />
+                    <p style={{ color: 'rgba(255,255,255,0.5)', fontWeight: 700, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>No active missions found.</p>
                 </div>
-                {jobs.length === 0 ? (
-                    <div className="card-body text-center" style={{ padding: 40 }}><p>No jobs yet. Set yourself as online to receive bookings!</p></div>
-                ) : (
-                    <div>
-                        {jobs.slice(0, 5).map(j => (
-                            <div key={j.id} style={{ padding: '14px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <div>
-                                    <div style={{ fontWeight: 600, marginBottom: 2 }}>{j.serviceSnapshot?.name || 'Service'}</div>
-                                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{j.scheduledDate} · #{j.bookingNumber}</div>
-                                </div>
-                                <div style={{ textAlign: 'right' }}>
-                                    <div style={{ fontWeight: 700, color: 'var(--color-primary-600)', fontSize: '0.9rem' }}>₹{j.serviceSnapshot?.basePrice}</div>
-                                    <span className={`badge ${j.status === 'completed' ? 'badge-success' : j.status === 'cancelled' ? 'badge-danger' : 'badge-primary'}`} style={{ fontSize: '0.65rem' }}>{j.status}</span>
-                                </div>
+            ) : (
+                <div>
+                    {jobs.slice(0, 5).map(j => (
+                        <div key={j.id} style={{ padding: '14px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div>
+                                <div style={{ fontWeight: 600, marginBottom: 2 }}>{j.serviceSnapshot?.name || 'Service'}</div>
+                                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{j.scheduledDate} · #{j.bookingNumber}</div>
                             </div>
-                        ))}
-                    </div>
-                )}
-            </div>
+                            <div style={{ textAlign: 'right' }}>
+                                <div style={{ fontWeight: 700, color: 'var(--color-primary-600)', fontSize: '0.9rem' }}>₹{j.serviceSnapshot?.basePrice}</div>
+                                <span className={`badge ${j.status === 'completed' ? 'badge-success' : j.status === 'cancelled' ? 'badge-danger' : 'badge-primary'}`} style={{ fontSize: '0.65rem' }}>{j.status}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 }
@@ -342,17 +345,17 @@ function Sidebar({ isOpen, onClose }) {
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
-            <button className="sidebar-close" onClick={onClose}>
+        <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`} style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)', borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+            <button className="sidebar-close" onClick={onClose} style={{ color: '#fff' }}>
                 <X size={20} />
             </button>
-            <div className="sidebar-logo">
+            <div className="sidebar-logo" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', padding: '32px 24px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
-                    <img src="/logo.png" alt="EarthSpace" style={{ height: 28, filter: 'brightness(0) invert(1)' }} />
-                    {!isCollapsed && <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#fff', letterSpacing: '-0.02em', textTransform: 'uppercase' }}>SERVICES</div>}
+                    <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#fff', boxShadow: '0 0 10px #fff' }} />
+                    {!isCollapsed && <div style={{ fontWeight: 1000, fontSize: '1.2rem', color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase' }}>EPS <span style={{ fontWeight: 300, opacity: 0.5 }}>SERVICES</span></div>}
                 </div>
             </div>
-            <nav className="sidebar-nav">
+            <nav className="sidebar-nav" style={{ padding: '24px 12px' }}>
                 {NAV.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
@@ -362,37 +365,64 @@ function Sidebar({ isOpen, onClose }) {
                             className={`sidebar-link ${active ? 'active' : ''}`}
                             onClick={handleLinkClick}
                             title={label}
-                            style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}
+                            style={{
+                                justifyContent: isCollapsed ? 'center' : 'flex-start',
+                                background: active ? 'rgba(255,255,255,0.05)' : 'transparent',
+                                color: active ? '#fff' : 'rgba(255,255,255,0.4)',
+                                border: active ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent',
+                                borderRadius: '14px',
+                                padding: '16px',
+                                marginBottom: 4,
+                                textTransform: 'uppercase',
+                                fontSize: '0.7rem',
+                                fontWeight: active ? 900 : 700,
+                                letterSpacing: '0.1em'
+                            }}
                         >
-                            <Icon size={18} className="nav-icon" />{!isCollapsed && <span>{label}</span>}
+                            <Icon size={18} style={{ opacity: active ? 1 : 0.6 }} />{!isCollapsed && <span>{label}</span>}
                         </Link>
                     );
                 })}
             </nav>
-            <div style={{ padding: isCollapsed ? '16px 8px' : '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
+            <div style={{ padding: isCollapsed ? '16px 8px' : '24px', borderTop: '1px solid rgba(255,255,255,.08)', background: 'rgba(255,255,255,0.02)' }}>
                 {!isCollapsed && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                        <div className="avatar avatar-sm">{user?.name?.[0]}</div>
-                        <div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 120 }}>{user?.name}</div>
-                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+                        <div className="avatar avatar-sm" style={{ background: '#fff', color: '#000', fontWeight: 900, border: 'none' }}>{user?.name?.[0]}</div>
+                        <div style={{ overflow: 'hidden' }}>
+                            <div style={{ fontSize: '0.8rem', fontWeight: 900, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.02em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{user?.name}</div>
+                            <div style={{ fontSize: '0.65rem', color: 'var(--color-primary-400)', fontWeight: 800, letterSpacing: '0.1em' }}>ENGINEER</div>
                         </div>
                     </div>
                 )}
                 {isCollapsed && (
-                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-                        <div className="avatar avatar-sm" title={user?.name}>{user?.name?.[0]}</div>
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+                        <div className="avatar avatar-sm" title={user?.name} style={{ background: '#fff', color: '#000', fontWeight: 900 }}>{user?.name?.[0]}</div>
                     </div>
                 )}
-                <button className={`sidebar-link w-full ${isCollapsed ? 'justify-center' : ''}`} onClick={() => { logout(); window.location.href = '/login'; }} style={{ color: '#f87171' }} title="Log Out">
-                    <LogOut size={18} className="nav-icon" />{!isCollapsed && <span>Log Out</span>}
+                <button
+                    className={`sidebar-link w-full ${isCollapsed ? 'justify-center' : ''}`}
+                    onClick={() => { logout(); window.location.href = '/login'; }}
+                    style={{
+                        color: '#f87171',
+                        background: 'rgba(248,113,113,0.05)',
+                        border: '1px solid rgba(248,113,113,0.1)',
+                        borderRadius: '12px',
+                        padding: '12px',
+                        fontSize: '0.7rem',
+                        fontWeight: 900,
+                        letterSpacing: '0.1em'
+                    }}
+                    title="Log Out"
+                >
+                    <LogOut size={16} />{!isCollapsed && <span>SIGN OUT</span>}
                 </button>
             </div>
             <button
                 className="sidebar-toggle-btn"
                 onClick={() => setIsCollapsed(!isCollapsed)}
+                style={{ color: 'rgba(255,255,255,0.3)' }}
             >
-                {isCollapsed ? <ChevronsRight size={16} /> : <><ChevronsLeft size={16} /> Hide</>}
+                {isCollapsed ? <ChevronsRight size={16} /> : <><ChevronsLeft size={16} /> COLLAPSE</>}
             </button>
         </aside>
     );
@@ -400,15 +430,37 @@ function Sidebar({ isOpen, onClose }) {
 
 function TopNavbar({ title, onMenuClick }) {
     return (
-        <div className="top-navbar">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <button className="mobile-toggle" onClick={onMenuClick}>
+        <div className="top-navbar" style={{
+            background: 'rgba(255,255,255,0.01)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(255,255,255,0.05)',
+            height: 70,
+            padding: '0 32px'
+        }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <button className="mobile-toggle" onClick={onMenuClick} style={{ color: '#fff' }}>
                     <Menu size={24} />
                 </button>
-                <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{title}</h3>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 1000, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.15em' }}>{title}</h3>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div className="badge badge-primary"><span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--color-success)', display: 'inline-block', marginRight: 4 }} />Live</div>
+                <div className="badge" style={{
+                    background: 'rgba(34,197,94,0.1)',
+                    color: '#22c55e',
+                    border: '1px solid rgba(34,197,94,0.2)',
+                    padding: '6px 14px',
+                    borderRadius: '8px',
+                    fontSize: '0.65rem',
+                    fontWeight: 900,
+                    letterSpacing: '0.1em',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 6
+                }}>
+                    <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 10px #22c55e' }} />
+                    OPERATIONAL
+                </div>
             </div>
         </div>
     );

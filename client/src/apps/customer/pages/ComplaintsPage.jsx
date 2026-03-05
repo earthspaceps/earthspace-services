@@ -3,17 +3,17 @@ import { MessageSquare, AlertTriangle, CheckCircle, Clock, Loader, Plus } from '
 import api from '../../../shared/api';
 
 const PRIORITY_COLORS = {
-    low: '#999',
-    medium: '#666',
-    high: '#333',
-    urgent: '#000'
+    low: '#94a3b8',
+    medium: '#f59e0b',
+    high: '#ef4444',
+    urgent: '#7f1d1d'
 };
 
 const STATUS_ICONS = {
-    open: { icon: Clock, color: '#000', bg: '#f0f0f0' },
-    in_review: { icon: Clock, color: '#666', bg: '#f5f5f5' },
-    resolved: { icon: CheckCircle, color: '#fff', bg: '#000' },
-    closed: { icon: CheckCircle, color: '#999', bg: '#eee' }
+    open: { icon: Clock, color: '#fff', bg: 'rgba(255,255,255,0.1)' },
+    in_review: { icon: Clock, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
+    resolved: { icon: CheckCircle, color: '#22c55e', bg: 'rgba(34,197,94,0.1)' },
+    closed: { icon: CheckCircle, color: '#94a3b8', bg: 'rgba(148,163,184,0.1)' }
 };
 
 export default function ComplaintsPage() {
@@ -87,26 +87,44 @@ export default function ComplaintsPage() {
                             >
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
                                     <div>
-                                        <h4 style={{ marginBottom: 6, textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.02em', fontSize: '1.2rem' }}>{c.subject}</h4>
-                                        <div style={{ fontSize: '0.7rem', color: '#999', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em' }}>
+                                        <h4 style={{ marginBottom: 6, textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.02em', fontSize: '1.2rem', color: '#fff' }}>{c.subject}</h4>
+                                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em' }}>
                                             INITIATED · {new Date(c.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
-                                    <span style={{ fontSize: '0.6rem', background: status.bg, color: status.color, padding: '4px 12px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+                                    <span style={{
+                                        fontSize: '0.65rem',
+                                        background: status.bg,
+                                        color: status.color,
+                                        padding: '6px 14px',
+                                        fontWeight: 900,
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.1em',
+                                        borderRadius: '8px',
+                                        border: `1px solid ${status.color}33`
+                                    }}>
                                         {c.status.replace('_', ' ')}
                                     </span>
                                 </div>
-                                <p style={{ fontSize: '0.9rem', lineHeight: 1.8, marginBottom: 24, color: 'rgba(255,255,255,0.7)' }}>{c.description}</p>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.7rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 20 }}>
+                                <p style={{ fontSize: '0.95rem', lineHeight: 1.8, marginBottom: 24, color: 'rgba(255,255,255,0.8)' }}>{c.description}</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 20 }}>
                                     <div style={{ display: 'flex', gap: 24 }}>
                                         <span style={{ color: PRIORITY_COLORS[c.priority], fontWeight: 900, letterSpacing: '0.05em' }}>PRIORITY: {c.priority.toUpperCase()}</span>
-                                        {c.bookingId && <span style={{ color: '#999', fontWeight: 700 }}>REF_KEY: {c.bookingId.slice(-8).toUpperCase()}</span>}
+                                        {c.bookingId && <span style={{ color: 'rgba(255,255,255,0.4)', fontWeight: 700 }}>REF_KEY: {c.bookingId.slice(-8).toUpperCase()}</span>}
                                     </div>
                                 </div>
                                 {c.adminResponse && (
-                                    <div style={{ marginTop: 24, padding: '24px', background: '#0A0D14', color: '#fff', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '16px' }}>
-                                        <div style={{ fontWeight: 900, fontSize: '0.7rem', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.6 }}>ENGINEERING RESOLUTION</div>
-                                        <p style={{ fontSize: '0.85rem', lineHeight: 1.6 }}>{c.adminResponse}</p>
+                                    <div style={{
+                                        marginTop: 24,
+                                        padding: '24px',
+                                        background: 'rgba(255,255,255,0.03)',
+                                        color: '#fff',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '16px',
+                                        boxShadow: 'inset 0 0 20px rgba(0,0,0,0.2)'
+                                    }}>
+                                        <div style={{ fontWeight: 900, fontSize: '0.7rem', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-primary-400)' }}>ENGINEERING RESOLUTION</div>
+                                        <p style={{ fontSize: '0.9rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.9)' }}>{c.adminResponse}</p>
                                     </div>
                                 )}
                             </div>
