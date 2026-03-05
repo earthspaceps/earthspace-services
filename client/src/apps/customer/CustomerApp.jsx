@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Briefcase, Home, Grid, Calendar, User, LogOut, Menu, X, MessageSquare } from 'lucide-react';
+import { Briefcase, Home, Grid, Calendar, User, LogOut, Menu, X, MessageSquare, Edit2, Check, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../../shared/AuthContext';
+import api from '../../shared/api';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
 import BookingPage from './pages/BookingPage';
@@ -18,6 +19,7 @@ const NAV_LINKS = [
 
 function ProfilePage() {
     const { user, logout, setUser } = useAuth();
+    const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
     const [formData, setFormData] = useState({
@@ -29,6 +31,19 @@ function ProfilePage() {
         pincode: user?.pincode || '',
     });
 
+    React.useEffect(() => {
+        if (!isEditing && user) {
+            setFormData({
+                name: user.name || '',
+                email: user.email || '',
+                city: user.city || '',
+                addressLine1: user.addressLine1 || '',
+                addressLine2: user.addressLine2 || '',
+                pincode: user.pincode || '',
+            });
+        }
+    }, [user, isEditing]);
+
     const handleSave = async () => {
         setLoading(true);
         setMessage({ type: '', text: '' });
@@ -36,6 +51,7 @@ function ProfilePage() {
             const { data } = await api.put('/users/profile', formData);
             setUser(data.data.user);
             setMessage({ type: 'success', text: 'Profile updated successfully.' });
+            setIsEditing(false);
         } catch (err) {
             console.error(err);
             setMessage({ type: 'danger', text: err.response?.data?.message || 'Failed to update profile.' });
@@ -50,71 +66,102 @@ function ProfilePage() {
         }
     };
 
+    const InfoRow = ({ label, value, placeholder = 'Not set' }) => (
+        <div style={{ marginBottom: 24 }}>
+            <label style={{ fontSize: '0.65rem', fontWeight: 800, color: '#666', letterSpacing: '0.1em', display: 'block', marginBottom: 4 }}>{label}</label>
+            <div style={{ fontSize: '0.95rem', fontWeight: 900, textTransform: 'uppercase', color: value ? '#000' : '#bbb' }}>{value || placeholder}</div>
+        </div>
+    );
+
     return (
         <div style={{ padding: '40px var(--content-padding)', maxWidth: 640, margin: '0 auto' }}>
             <div className="card card-body" style={{ borderRadius: 0, border: '1px solid #000', padding: '40px', background: '#fff' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 40, paddingBottom: 32, borderBottom: '1px solid #f0f0f0' }}>
-                    <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 64, height: 64, fontSize: '1.5rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
-                    <div>
-                        <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' }}>{user?.name}</h2>
-                        <div style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>CUSTOMER ACCOUNT</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40, paddingBottom: 32, borderBottom: '1px solid #f0f0f0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+                        <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 64, height: 64, fontSize: '1.5rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
+                        <div>
+                            <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' }}>{user?.name}</h2>
+                            <div style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>CUSTOMER ACCOUNT</div>
+                        </div>
                     </div>
+                    {!isEditing && (
+                        <button className="btn btn-outline btn-sm" onClick={() => setIsEditing(true)} style={{ borderColor: '#000', color: '#000' }}>
+                            <Edit2 size={14} style={{ marginRight: 6 }} /> EDIT
+                        </button>
+                    )}
                 </div>
 
-                {message.text && <div className={`alert alert-${message.type} mb-6`}>{message.text}</div>}
+                {message.text && <div className={`alert alert-${message.type} mb-6`} style={{ borderRadius: 0, fontSize: '0.8rem', fontWeight: 700 }}>{message.text}</div>}
 
-                <div className="grid-2" style={{ gap: 24, marginBottom: 32 }}>
-                    <div className="form-group">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>FULL NAME</label>
-                        <input className="form-control architectural-input" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>EMAIL ADDRESS</label>
-                        <input className="form-control architectural-input" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PHONE NUMBER</label>
-                        <input className="form-control architectural-input" value={user?.phone} disabled style={{ background: '#f8f8f8', cursor: 'not-allowed' }} title="Phone cannot be changed" />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>CITY</label>
-                        <input className="form-control architectural-input" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} />
-                    </div>
-                </div>
+                {isEditing ? (
+                    <>
+                        <div className="grid-2" style={{ gap: 24, marginBottom: 32 }}>
+                            <div className="form-group">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>FULL NAME</label>
+                                <input className="form-control architectural-input" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>EMAIL ADDRESS</label>
+                                <input className="form-control architectural-input" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PHONE NUMBER</label>
+                                <input className="form-control architectural-input" value={user?.phone} disabled style={{ background: '#f8f8f8', cursor: 'not-allowed' }} title="Phone cannot be changed" />
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>CITY</label>
+                                <input className="form-control architectural-input" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} />
+                            </div>
+                        </div>
 
-                <div style={{ marginBottom: 40 }}>
-                    <h4 style={{ fontSize: '0.8rem', fontWeight: 800, marginBottom: 20, letterSpacing: '0.1em', color: '#000', borderBottom: '2px solid #000', display: 'inline-block' }}>SERVICE ADDRESS</h4>
-                    <div className="form-group mb-4">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 1</label>
-                        <input className="form-control architectural-input" placeholder="House/Flat No, Building Name" value={formData.addressLine1} onChange={e => setFormData({ ...formData, addressLine1: e.target.value })} />
-                    </div>
-                    <div className="form-group mb-4">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 2</label>
-                        <input className="form-control architectural-input" placeholder="Landmark, Area" value={formData.addressLine2} onChange={e => setFormData({ ...formData, addressLine2: e.target.value })} />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PINCODE</label>
-                        <input className="form-control architectural-input" placeholder="6-digit PIN" value={formData.pincode} onChange={e => setFormData({ ...formData, pincode: e.target.value })} />
-                    </div>
-                </div>
+                        <div style={{ marginBottom: 40 }}>
+                            <h4 style={{ fontSize: '0.8rem', fontWeight: 800, marginBottom: 20, letterSpacing: '0.1em', color: '#000', borderBottom: '2px solid #000', display: 'inline-block' }}>SERVICE ADDRESS</h4>
+                            <div className="form-group mb-4">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 1</label>
+                                <input className="form-control architectural-input" placeholder="House/Flat No, Building Name" value={formData.addressLine1} onChange={e => setFormData({ ...formData, addressLine1: e.target.value })} />
+                            </div>
+                            <div className="form-group mb-4">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 2</label>
+                                <input className="form-control architectural-input" placeholder="Landmark, Area" value={formData.addressLine2} onChange={e => setFormData({ ...formData, addressLine2: e.target.value })} />
+                            </div>
+                            <div className="form-group">
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PINCODE</label>
+                                <input className="form-control architectural-input" placeholder="6-digit PIN" value={formData.pincode} onChange={e => setFormData({ ...formData, pincode: e.target.value })} />
+                            </div>
+                        </div>
 
-                <div style={{ display: 'flex', gap: 16 }}>
-                    <button
-                        className="btn btn-primary"
-                        style={{ flex: 2, padding: '16px' }}
-                        onClick={handleSave}
-                        disabled={loading}
-                    >
-                        {loading ? 'SAVING...' : 'SAVE CHANGES'}
-                    </button>
-                    <button
-                        className="btn btn-outline"
-                        style={{ flex: 1, borderColor: '#ff4444', color: '#ff4444' }}
-                        onClick={handleLogout}
-                    >
-                        SIGN OUT
-                    </button>
-                </div>
+                        <div style={{ display: 'flex', gap: 16 }}>
+                            <button className="btn btn-primary" style={{ flex: 2, padding: '16px' }} onClick={handleSave} disabled={loading}>
+                                {loading ? 'SAVING...' : 'SAVE CHANGES'}
+                            </button>
+                            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setIsEditing(false)}>
+                                CANCEL
+                            </button>
+                        </div>
+                    </>
+                ) : (
+                    <>
+                        <div className="grid-2" style={{ gap: 24, marginBottom: 32 }}>
+                            <InfoRow label="FULL NAME" value={user?.name} />
+                            <InfoRow label="EMAIL ADDRESS" value={user?.email} />
+                            <InfoRow label="PHONE NUMBER" value={user?.phone} />
+                            <InfoRow label="CITY" value={user?.city} />
+                        </div>
+
+                        <div style={{ marginBottom: 40 }}>
+                            <h4 style={{ fontSize: '0.8rem', fontWeight: 800, marginBottom: 20, letterSpacing: '0.1em', color: '#000', borderBottom: '2px solid #000', display: 'inline-block' }}>SERVICE ADDRESS</h4>
+                            <InfoRow label="ADDRESS LINE 1" value={user?.addressLine1} />
+                            <InfoRow label="ADDRESS LINE 2" value={user?.addressLine2} />
+                            <InfoRow label="PINCODE" value={user?.pincode} />
+                        </div>
+
+                        <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 32, display: 'flex', justifyContent: 'flex-end' }}>
+                            <button className="btn btn-outline" style={{ borderColor: '#ff4444', color: '#ff4444', padding: '12px 24px' }} onClick={handleLogout}>
+                                <LogOut size={16} style={{ marginRight: 8 }} /> SIGN OUT
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
