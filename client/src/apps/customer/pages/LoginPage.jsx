@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wrench, Phone, Mail, Lock, Eye, EyeOff, ArrowRight, Loader } from 'lucide-react';
+import { Briefcase, Phone, Mail, Lock, Eye, EyeOff, ArrowRight, Loader } from 'lucide-react';
 import { useAuth } from '../../../shared/AuthContext';
 import api from '../../../shared/api';
 

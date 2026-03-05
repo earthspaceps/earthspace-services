@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Wrench, Home, Grid, Calendar, User, LogOut, Menu, X, MessageSquare } from 'lucide-react';
+import { Briefcase, Home, Grid, Calendar, User, LogOut, Menu, X, MessageSquare } from 'lucide-react';
 import { useAuth } from '../../shared/AuthContext';
 import HomePage from './pages/HomePage';
 import ServicesPage from './pages/ServicesPage';
