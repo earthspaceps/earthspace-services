@@ -30,8 +30,8 @@ const RatingModal = ({ bookingId, technicianId, onClose, onSubmit }) => {
 
     return (
         <div className="modal-overlay" onClick={onClose} style={{ background: 'rgba(0,0,0,0.8)' }}>
-            <div className="modal" onClick={e => e.stopPropagation()} style={{ borderRadius: 0, border: '2px solid #000' }}>
-                <div className="modal-header" style={{ borderBottom: '1px solid #eee' }}><h3 style={{ textTransform: 'uppercase' }}>RATE YOUR EXPERIENCE</h3><button className="btn btn-ghost btn-sm" onClick={onClose}>✕</button></div>
+            <div className="card" onClick={e => e.stopPropagation()} style={{ maxWidth: 500, margin: '15vh auto', padding: 0 }}>
+                <div className="modal-header" style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', padding: '24px' }}><h3 style={{ textTransform: 'uppercase' }}>RATE YOUR EXPERIENCE</h3><button className="btn btn-ghost btn-sm" onClick={onClose}>✕</button></div>
                 <div className="modal-body" style={{ padding: '32px' }}>
                     <div className="text-center mb-6">
                         <div className="stars" style={{ justifyContent: 'center', gap: 12, marginBottom: 12 }}>
@@ -43,12 +43,12 @@ const RatingModal = ({ bookingId, technicianId, onClose, onSubmit }) => {
                     </div>
                     <div className="form-group">
                         <label className="form-label" style={{ fontSize: '0.7rem' }}>REVIEW</label>
-                        <textarea className="form-control" style={{ borderRadius: 0 }} rows={3} placeholder="Share your experience..." value={review} onChange={e => setReview(e.target.value)} />
+                        <textarea className="form-control" rows={3} placeholder="Share your experience..." value={review} onChange={e => setReview(e.target.value)} />
                     </div>
                 </div>
                 <div className="modal-footer" style={{ borderTop: 'none', padding: '0 32px 32px' }}>
-                    <button className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={onClose}>SKIP</button>
-                    <button className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} onClick={handleSubmit} disabled={loading}>
+                    <button className="btn btn-outline" style={{ flex: 1 }} onClick={onClose}>SKIP</button>
+                    <button className="btn btn-primary" style={{ flex: 2 }} onClick={handleSubmit} disabled={loading}>
                         {loading ? 'SUBMITTING...' : 'SUBMIT RATING'}
                     </button>
                 </div>
@@ -74,13 +74,13 @@ export default function BookingHistoryPage() {
             <div className="container" style={{ maxWidth: 720 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
                     <div><h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>MY BOOKINGS</h2><p className="text-sm" style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.7rem' }}>HISTORY & TRACKING</p></div>
-                    <Link to="/customer/services"><button className="btn btn-primary btn-sm" style={{ borderRadius: 0 }}>+ NEW BOOKING</button></Link>
+                    <Link to="/customer/services"><button className="btn btn-primary btn-sm">+ NEW BOOKING</button></Link>
                 </div>
 
                 {/* Filter Tabs */}
                 <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 32 }}>
                     {[['', 'ALL'], ['pending', 'PENDING'], ['assigned', 'ASSIGNED'], ['completed', 'COMPLETED'], ['cancelled', 'CANCELLED']].map(([k, label]) => (
-                        <button key={k} onClick={() => setFilter(k)} className={`btn btn-sm ${filter === k ? 'btn-primary' : 'btn-outline'}`} style={{ borderRadius: 0, flex: 1, minWidth: 100 }}>{label}</button>
+                        <button key={k} onClick={() => setFilter(k)} className={`btn btn-sm ${filter === k ? 'btn-primary' : 'btn-outline'}`} style={{ flex: 1, minWidth: 100 }}>{label}</button>
                     ))}
                 </div>
 
@@ -101,25 +101,13 @@ export default function BookingHistoryPage() {
                             return (
                                 <div
                                     key={b.id}
-                                    className="architectural-card"
+                                    className="card"
                                     style={{
-                                        borderRadius: 0,
-                                        border: '1px solid #000',
-                                        background: '#fff',
                                         marginBottom: 16,
-                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                         overflow: 'hidden'
                                     }}
-                                    onMouseEnter={e => {
-                                        e.currentTarget.style.transform = 'translateY(-5px)';
-                                        e.currentTarget.style.boxShadow = '10px 10px 0px #000';
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = 'none';
-                                    }}
                                 >
-                                    <div style={{ padding: '16px 24px', borderBottom: '1px solid #000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#000', color: '#fff' }}>
+                                    <div style={{ padding: '16px 24px', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#0A0D14', color: '#fff' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                                             <span style={{ fontWeight: 900, fontSize: '0.85rem', letterSpacing: '0.05em' }}>ORD #{b.bookingNumber}</span>
                                             <span style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.3)' }} />
@@ -134,8 +122,8 @@ export default function BookingHistoryPage() {
                                             <div style={{ flex: 1 }}>
                                                 <h4 style={{ marginBottom: 12, textTransform: 'uppercase', fontSize: '1.1rem', fontWeight: 800, letterSpacing: '0.02em' }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
                                                 {b.technician?.user && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.75rem', color: '#000', margin: '20px 0', fontWeight: 800, letterSpacing: '0.05em' }}>
-                                                        <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 32, height: 32, fontSize: '0.8rem' }}>{b.technician.user.name?.[0]}</div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.75rem', color: '#fff', margin: '20px 0', fontWeight: 800, letterSpacing: '0.05em' }}>
+                                                        <div className="avatar" style={{ background: '#111', color: '#fff', width: 32, height: 32, fontSize: '0.8rem' }}>{b.technician.user.name?.[0]}</div>
                                                         <div>
                                                             <div style={{ opacity: 0.5, fontSize: '0.6rem', marginBottom: 2 }}>ASSIGNED ENGINEER</div>
                                                             {b.technician.user.name.toUpperCase()} · {b.technician.user.phone}

@@ -75,23 +75,23 @@ function ProfilePage() {
 
     return (
         <div style={{ padding: '40px var(--content-padding)', maxWidth: 640, margin: '0 auto' }}>
-            <div className="card card-body" style={{ borderRadius: 0, border: '1px solid #000', padding: '40px', background: '#fff' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40, paddingBottom: 32, borderBottom: '1px solid #f0f0f0' }}>
+            <div className="card card-body" style={{ padding: '40px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 40, paddingBottom: 32, borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-                        <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 64, height: 64, fontSize: '1.5rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
+                        <div className="avatar" style={{ background: '#111', color: '#fff', width: 64, height: 64, fontSize: '1.5rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
                         <div>
-                            <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' }}>{user?.name}</h2>
-                            <div style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>CUSTOMER ACCOUNT</div>
+                            <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff' }}>{user?.name}</h2>
+                            <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>CUSTOMER ACCOUNT</div>
                         </div>
                     </div>
                     {!isEditing && (
-                        <button className="btn btn-outline btn-sm" onClick={() => setIsEditing(true)} style={{ borderColor: '#000', color: '#000' }}>
+                        <button className="btn btn-outline btn-sm" onClick={() => setIsEditing(true)}>
                             <Edit2 size={14} style={{ marginRight: 6 }} /> EDIT
                         </button>
                     )}
                 </div>
 
-                {message.text && <div className={`alert alert-${message.type} mb-6`} style={{ borderRadius: 0, fontSize: '0.8rem', fontWeight: 700 }}>{message.text}</div>}
+                {message.text && <div className={`alert alert-${message.type} mb-6`} style={{ fontSize: '0.8rem', fontWeight: 700 }}>{message.text}</div>}
 
                 {isEditing ? (
                     <>

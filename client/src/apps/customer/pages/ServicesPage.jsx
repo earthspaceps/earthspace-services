@@ -48,7 +48,7 @@ export default function ServicesPage() {
                     <form onSubmit={handleSearch} style={{ display: 'flex', gap: 0, flex: '1 1 400px', maxWidth: 600 }}>
                         <div style={{ flex: 1, position: 'relative' }}>
                             <Search size={16} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
-                            <input className="form-control" style={{ paddingLeft: 48, borderRadius: 0, border: 'none', height: 56 }} placeholder="SEARCH SOLUTIONS..." value={search} onChange={e => setSearch(e.target.value)} />
+                            <input className="form-control" style={{ paddingLeft: 48, borderRadius: '999px', border: 'none', height: 56, background: '#111', color: '#fff' }} placeholder="SEARCH SOLUTIONS..." value={search} onChange={e => setSearch(e.target.value)} />
                         </div>
                         <button className="btn btn-primary" type="submit" style={{ padding: '0 40px', height: 56 }}>SEARCH</button>
                     </form>
@@ -58,11 +58,10 @@ export default function ServicesPage() {
             <div className="container" style={{ padding: '24px var(--content-padding)' }}>
                 {/* Category Filter Tabs */}
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
-                    <button onClick={() => setCategory('')} className={`btn btn-sm ${!activeCategory ? 'btn-primary' : 'btn-outline'}`} style={{ borderRadius: 0 }}>ALL SOLUTIONS</button>
+                    <button onClick={() => setCategory('')} className={`btn btn-sm ${!activeCategory ? 'btn-primary' : 'btn-outline'}`}>ALL SOLUTIONS</button>
                     {categories.map(cat => (
                         <button key={cat.slug} onClick={() => setCategory(cat.slug)}
-                            className={`btn btn-sm ${activeCategory === cat.slug ? 'btn-primary' : 'btn-outline'}`}
-                            style={{ borderRadius: 0 }}>
+                            className={`btn btn-sm ${activeCategory === cat.slug ? 'btn-primary' : 'btn-outline'}`}>
                             {cat.name.toUpperCase()}
                         </button>
                     ))}
@@ -71,9 +70,9 @@ export default function ServicesPage() {
                 {loading ? (
                     <div className="loading-center"><div className="spinner"></div></div>
                 ) : services.length === 0 ? (
-                    <div className="architectural-card" style={{ padding: '80px 40px', border: '1px solid #000', borderRadius: 0, textAlign: 'left', background: '#fff' }}>
+                    <div className="card" style={{ padding: '80px 40px', textAlign: 'left' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32 }}>
-                            <div style={{ background: '#000', color: '#fff', padding: 20 }}>
+                            <div style={{ background: '#111', color: '#fff', padding: 20, borderRadius: '16px' }}>
                                 <Wrench size={32} strokeWidth={1.5} />
                             </div>
                             <div>
@@ -81,10 +80,10 @@ export default function ServicesPage() {
                                 <p style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', marginTop: 4, textTransform: 'uppercase' }}>ENGINEERING QUERY RETURNED ZERO MATCHES</p>
                             </div>
                         </div>
-                        <p style={{ color: '#000', fontSize: '0.9rem', maxWidth: 400, lineHeight: 1.8 }}>PLEASE ADJUST YOUR FILTER PARAMETERS OR SEARCH QUERY. OUR CORE SCOPE COVERS ELECTRICAL, PLUMBING, HVAC, AND GENERAL STRUCTURAL MAINTENANCE.</p>
+                        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', maxWidth: 400, lineHeight: 1.8 }}>PLEASE ADJUST YOUR FILTER PARAMETERS OR SEARCH QUERY. OUR CORE SCOPE COVERS ELECTRICAL, PLUMBING, HVAC, AND GENERAL STRUCTURAL MAINTENANCE.</p>
                         <button
                             className="btn btn-primary"
-                            style={{ borderRadius: 0, marginTop: 40, padding: '16px 40px' }}
+                            style={{ marginTop: 40, padding: '16px 40px' }}
                             onClick={() => { setSearch(''); setCategory(''); }}
                         >
                             RESET CATALOG
@@ -98,25 +97,14 @@ export default function ServicesPage() {
                             return (
                                 <div
                                     key={service.id}
-                                    className="service-card architectural-card"
+                                    className="service-card card"
                                     style={{
-                                        borderRadius: 0,
-                                        border: '1px solid #000',
-                                        background: '#fff',
-                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                         display: 'flex',
-                                        flexDirection: 'column'
-                                    }}
-                                    onMouseEnter={e => {
-                                        e.currentTarget.style.transform = 'translateY(-10px)';
-                                        e.currentTarget.style.boxShadow = '15px 15px 0px #000';
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.transform = 'translateY(0)';
-                                        e.currentTarget.style.boxShadow = 'none';
+                                        flexDirection: 'column',
+                                        overflow: 'hidden'
                                     }}
                                 >
-                                    <div style={{ background: '#000', padding: '24px' }}>
+                                    <div style={{ background: '#0A0D14', padding: '24px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
                                             <span style={{ fontSize: '0.6rem', background: 'rgba(255,255,255,.1)', color: '#fff', padding: '3px 10px', letterSpacing: '0.15em', fontWeight: 800 }}>{service.category?.name.toUpperCase()}</span>
                                             <Icon size={20} color="#fff" strokeWidth={1} />
@@ -124,13 +112,13 @@ export default function ServicesPage() {
                                         <h3 style={{ color: '#fff', fontSize: '1.1rem', letterSpacing: '0.04em', fontWeight: 800 }}>{service.name.toUpperCase()}</h3>
                                     </div>
                                     <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                        <p style={{ fontSize: '0.85rem', marginBottom: 20, lineHeight: 1.7, color: '#444' }}>{service.description}</p>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, color: '#888', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        <p style={{ fontSize: '0.85rem', marginBottom: 20, lineHeight: 1.7, color: 'rgba(255,255,255,0.7)' }}>{service.description}</p>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                             <Clock size={14} />{service.durationMinutes} MINS
                                             <span style={{ margin: '0 4px', opacity: 0.3 }}>|</span>
-                                            <Star size={14} style={{ color: '#000' }} /> 4.8 RATING
+                                            <Star size={14} style={{ color: 'var(--color-warning)' }} /> 4.8 RATING
                                         </div>
-                                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #eee', paddingTop: 20 }}>
+                                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 20 }}>
                                             <div>
                                                 <div style={{ fontSize: '1.25rem', fontWeight: 900 }}>{formatPrice(service)}</div>
                                                 <div style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>{service.priceType === 'starting_from' ? 'AFTER INSPECTION' : 'FIXED RATE'}</div>
@@ -139,12 +127,9 @@ export default function ServicesPage() {
                                                 <button
                                                     className="btn btn-primary btn-sm"
                                                     style={{
-                                                        borderRadius: 0,
                                                         padding: '10px 20px',
                                                         transition: 'all 0.2s ease'
                                                     }}
-                                                    onMouseEnter={e => e.currentTarget.style.background = '#333'}
-                                                    onMouseLeave={e => e.currentTarget.style.background = '#000'}
                                                 >
                                                     BOOK NOW
                                                 </button>

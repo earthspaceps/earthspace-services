@@ -103,7 +103,7 @@ export default function BookingPage() {
                 </div>
 
                 {/* Service Summary */}
-                <div className="card mb-6" style={{ padding: '20px', border: '2px solid #000', borderRadius: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff' }}>
+                <div className="card mb-6" style={{ padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <div>
                         <div style={{ fontWeight: 800, fontSize: '1.1rem', textTransform: 'uppercase' }}>{serviceName}</div>
                         <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>TECHNICAL SOLUTION</div>
@@ -115,7 +115,7 @@ export default function BookingPage() {
 
                 {/* Step 1: Date & Time */}
                 {step === 1 && (
-                    <div className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)' }}>
+                    <div className="card card-body">
                         <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SELECT DATE & TIME</h3>
 
                         {/* Calendar */}
@@ -252,23 +252,23 @@ export default function BookingPage() {
 
                 {/* Step 4: Confirmed */}
                 {step === 4 && booking && (
-                    <div className="card card-body text-center" style={{ padding: '60px 40px', borderRadius: 0, border: '2px solid #000', background: '#fff' }}>
-                        <div style={{ width: 80, height: 80, background: '#000', borderRadius: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px' }}>
-                            <CheckCircle size={40} color="#fff" strokeWidth={1.5} />
+                    <div className="card card-body text-center" style={{ padding: '60px 40px' }}>
+                        <div style={{ width: 80, height: 80, background: '#111', borderRadius: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px' }}>
+                            <CheckCircle size={40} color="var(--color-success)" strokeWidth={1.5} />
                         </div>
                         <h2 style={{ marginBottom: 12, fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em' }}>BOOKING CONFIRMED</h2>
                         <p style={{ marginBottom: 40, fontSize: '0.9rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>YOUR ENGINEER HAS BEEN ASSIGNED AND IS EN ROUTE.</p>
 
-                        <div style={{ background: '#fcfcfc', border: '1px solid #eee', padding: '32px', marginBottom: 40, textAlign: 'left' }}>
+                        <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', padding: '32px', marginBottom: 40, textAlign: 'left', borderRadius: '16px' }}>
                             {[
                                 ['BOOKING NUMBER', booking.bookingNumber || booking.booking_number || 'N/A'],
                                 ['SERVICE TYPE', serviceName],
                                 ['SCHEDULED DATE', selectedDate],
                                 ['SCHEDULED WINDOW', selectedTime]
                             ].map(([k, v]) => (
-                                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, borderBottom: '1px solid #f0f0f0', paddingBottom: 12 }}>
-                                    <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#999', letterSpacing: '0.1em' }}>{k}</span>
-                                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#000' }}>{String(v || 'N/A').toUpperCase()}</span>
+                                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: 12 }}>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 800, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.1em' }}>{k}</span>
+                                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#fff' }}>{String(v || 'N/A').toUpperCase()}</span>
                                 </div>
                             ))}
                         </div>
@@ -276,14 +276,14 @@ export default function BookingPage() {
                         <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
                             <button
                                 className="btn btn-outline"
-                                style={{ borderRadius: 0, padding: '16px 32px' }}
+                                style={{ padding: '16px 32px' }}
                                 onClick={() => window.location.href = '/customer/bookings'}
                             >
                                 VIEW ALL BOOKINGS
                             </button>
                             <button
                                 className="btn btn-primary"
-                                style={{ borderRadius: 0, padding: '16px 32px' }}
+                                style={{ padding: '16px 32px' }}
                                 onClick={() => window.location.href = '/customer'}
                             >
                                 BACK TO HUB

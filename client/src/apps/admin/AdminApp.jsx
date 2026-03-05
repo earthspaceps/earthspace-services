@@ -146,7 +146,7 @@ function Dashboard() {
                             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                             <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
                             <YAxis tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
-                            <Tooltip contentStyle={{ borderRadius: 0, border: '1px solid #000' }} />
+                            <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', background: '#0F0F0F', color: '#fff' }} itemStyle={{ color: '#fff' }} />
                             <Area type="monotone" dataKey="bookings" stroke="#000" strokeWidth={2} fill="url(#bookingGrad)" />
                         </AreaChart>
                     </ResponsiveContainer>
@@ -158,7 +158,7 @@ function Dashboard() {
                             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
                             <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
                             <YAxis tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
-                            <Tooltip contentStyle={{ borderRadius: 0, border: '1px solid #000' }} formatter={v => [`₹${v}`, 'Revenue']} />
+                            <Tooltip contentStyle={{ borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', background: '#0F0F0F', color: '#fff' }} itemStyle={{ color: '#fff' }} formatter={v => [`₹${v}`, 'Revenue']} />
                             <Bar dataKey="revenue" fill="#000" radius={0} />
                         </BarChart>
                     </ResponsiveContainer>
