@@ -85,13 +85,19 @@ export default function LoginPage() {
                 color: '#fff'
             }}>
                 {/* Header elements matching the visual */}
-                <div style={{ textAlign: 'center', marginBottom: 36 }}>
+                <div style={{ textAlign: 'center', marginBottom: 36, position: 'relative' }}>
+                    <button
+                        onClick={() => navigate('/')}
+                        style={{ position: 'absolute', left: 0, top: 0, background: 'none', border: 'none', color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', fontSize: '0.8rem', fontWeight: 600 }}
+                    >
+                        <ChevronLeft size={16} /> Back to Hub
+                    </button>
                     <div style={{
                         width: 48, height: 48,
                         borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.03)',
                         border: '1px solid rgba(255,255,255,0.06)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        margin: '0 auto 16px', fontSize: '1.2rem', fontWeight: 600
+                        margin: '0 auto 16px', fontSize: '1.2rem', fontWeight: 600, marginTop: 32
                     }}>
                         E
                     </div>

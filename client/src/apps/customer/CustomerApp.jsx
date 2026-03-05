@@ -241,9 +241,9 @@ export default function CustomerApp() {
                 {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
-                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, color: active ? 'var(--text-primary)' : 'var(--text-secondary)', textDecoration: 'none', padding: '8px 0' }}>
-                            <Icon size={18} strokeWidth={active ? 2.5 : 1.5} />
-                            <span style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
+                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, color: active ? 'var(--text-primary)' : 'var(--text-secondary)', textDecoration: 'none', padding: '6px 0' }}>
+                            <Icon size={20} strokeWidth={active ? 2.5 : 1.5} />
+                            <span style={{ fontSize: '10px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>{label}</span>
                         </Link>
                     );
                 })}

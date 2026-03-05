@@ -39,6 +39,10 @@ const STYLES = `
     .lp-nav-links { display: flex; align-items: center; gap: 2rem; }
     .lp-nav-link { color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: color 0.2s; }
     .lp-nav-link:hover { color: #fff; }
+    @media (max-width: 480px) {
+        .lp-nav { padding: 0 1rem; }
+        .lp-btn-primary { padding: 10px 16px; font-size: 0.8rem; }
+    }
 
     /* Hero */
     .lp-hero {
@@ -160,6 +164,7 @@ const STYLES = `
 
     /* Responsive */
     @media (max-width: 768px) {
+        .whatsapp-fab { bottom: 5rem; right: 1.5rem; }
         .lp-nav-links { display: none; }
         .lp-h1 { font-size: 2.5rem; }
         .lp-why-grid { grid-template-columns: 1fr; }
