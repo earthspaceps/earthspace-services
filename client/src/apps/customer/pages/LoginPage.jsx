@@ -75,38 +75,46 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="auth-container">
-            <div className="auth-card">
+        <div style={{
+            minHeight: '100vh',
+            backgroundColor: 'var(--bg-page)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+            backgroundImage: 'var(--blueprint-grid)',
+            backgroundSize: '40px 40px',
+            fontFamily: "'Inter', sans-serif"
+        }}>
+            <div className="auth-card" style={{
+                width: '100%',
+                maxWidth: 440,
+                backgroundColor: 'var(--bg-card)',
+                border: '1px solid var(--border-color)',
+                padding: '40px 32px',
+                position: 'relative',
+                zIndex: 1
+            }}>
                 {/* Logo */}
-                <div className="auth-logo">
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 12 }}>
-                        <div style={{
-                            width: 48,
-                            height: 48,
-                            borderRadius: 'var(--radius-lg)',
-                            background: 'linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900))',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            boxShadow: '0 4px 15px rgba(16, 42, 67, 0.2)'
-                        }}>
-                            <Briefcase size={24} color="#fff" strokeWidth={2.5} />
-                        </div>
+                <div className="auth-logo" style={{ textAlign: 'center', marginBottom: 32 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 12 }}>
+                        <img src="/logo.png" alt="EarthSpace" style={{ height: 42, filter: 'grayscale(100%) contrast(120%)' }} />
+                        <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em', fontSize: '1.2rem', color: 'var(--text-primary)' }}>SERVICES</span>
                     </div>
-                    <div className="brand" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: 'var(--color-primary-900)' }}>Earthspace Services</div>
-                    <div className="tagline" style={{ color: 'var(--color-primary-500)', fontWeight: 600 }}>Precision Home Engineering</div>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>PRECISION MANAGEMENT</p>
                 </div>
 
                 {/* Tab toggle */}
-                <div style={{ display: 'flex', background: 'var(--color-primary-50)', borderRadius: 'var(--radius-md)', padding: 4, marginBottom: 20 }}>
+                <div style={{ display: 'flex', background: 'var(--bg-alt)', border: '1px solid var(--border-color)', marginBottom: 20 }}>
                     {[['login', 'Email Login'], ['otp', 'OTP Login']].map(([m, label]) => (
                         <button key={m} onClick={() => { setMode(m); setStep(1); setError(''); }}
                             style={{
-                                flex: 1, padding: '10px 0', borderRadius: 'var(--radius-sm)', border: 'none', fontWeight: 600, fontSize: '0.85rem',
-                                background: mode === m ? '#fff' : 'transparent',
-                                color: mode === m ? 'var(--color-primary-700)' : 'var(--color-primary-400)',
+                                flex: 1, padding: '10px 0', border: 'none', fontWeight: 600, fontSize: '0.85rem',
+                                background: mode === m ? 'var(--bg-card)' : 'transparent',
+                                color: mode === m ? 'var(--text-primary)' : 'var(--text-secondary)',
                                 boxShadow: mode === m ? 'var(--shadow-sm)' : 'none',
-                                transition: 'all var(--transition-fast)'
+                                transition: 'all var(--transition-fast)',
+                                borderBottom: mode === m ? '2px solid var(--color-primary)' : '2px solid transparent'
                             }}>{label}</button>
                     ))}
                 </div>
@@ -127,12 +135,12 @@ export default function LoginPage() {
                                 setError(`${label} credentials filled!`);
                             }}
                             style={{
-                                padding: '8px 4px', borderRadius: 8, border: '1px dashed #2563eb',
-                                background: '#eff6ff', color: '#2563eb', fontSize: '0.7rem', fontWeight: 600,
+                                padding: '8px 4px', border: '1px dashed var(--border-color-light)',
+                                background: 'var(--bg-alt)', color: 'var(--text-secondary)', fontSize: '0.7rem', fontWeight: 600,
                                 cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 4
                             }}
                         >
-                            <Lock size={10} /> {label}
+                            <Lock size={12} /> {label}
                         </button>
                     ))}
                 </div>
@@ -141,29 +149,21 @@ export default function LoginPage() {
 
                 {/* Email + Password Login */}
                 {mode === 'login' && (
-                    <form onSubmit={handleLoginEmail} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                    <form onSubmit={handleLoginEmail} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                         <div className="form-group">
                             <label className="form-label">Email Address</label>
                             <div style={{ position: 'relative' }}>
-                                <Mail size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-                                <input className="form-control" style={{ paddingLeft: 36 }} type="email" placeholder="you@email.com" required value={form.email} onChange={e => set('email', e.target.value)} />
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label">Password</label>
-                            <div style={{ position: 'relative' }}>
-                                <Lock size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
                                 <input className="form-control" style={{ paddingLeft: 36, paddingRight: 40 }} type={showPass ? 'text' : 'password'} placeholder="••••••••" required value={form.password} onChange={e => set('password', e.target.value)} />
                                 <button type="button" onClick={() => setShowPass(v => !v)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94a3b8' }}>
                                     {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                                 </button>
                             </div>
                         </div>
-                        <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={loading}>
-                            {loading ? <Loader size={16} className="animate-spin" /> : <><ArrowRight size={16} /> Sign In</>}
+                        <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={loading} style={{ border: '1px solid var(--color-primary-900)' }}>
+                            {loading ? <Loader size={16} className="animate-spin" /> : <><ArrowRight size={16} /> SIGN IN</>}
                         </button>
-                        <p className="text-center text-sm" style={{ color: '#64748b' }}>
-                            No account? <button type="button" className="text-blue" style={{ background: 'none', border: 'none', fontWeight: 600 }} onClick={() => setMode('register')}>Register here</button>
+                        <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
+                            No account? <button type="button" className="text-blue" style={{ background: 'none', border: 'none', fontWeight: 600, color: 'var(--color-primary-900)' }} onClick={() => setMode('register')}>REGISTER HERE</button>
                         </p>
                     </form>
                 )}

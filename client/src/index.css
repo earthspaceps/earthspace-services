@@ -7,19 +7,18 @@
 
 /* ---- CSS Custom Properties ---- */
 :root {
-  /* Brand Colors - Refined EarthSpace Palette */
-  --color-primary-50: #f0f4f8;
-  --color-primary-100: #d9e2ec;
-  --color-primary-200: #bcccdc;
-  --color-primary-300: #9fb3c8;
-  --color-primary-400: #829ab1;
-  --color-primary-500: #627d98;
-  --color-primary-600: #486581;
-  /* Deep Slate Blue */
-  --color-primary-700: #334e68;
-  /* Navy Steel */
-  --color-primary-800: #243b53;
-  --color-primary-900: #102a43;
+  /* Brand Colors - High Contrast Black & White */
+  --color-primary-50: #f4f4f4;
+  --color-primary-100: #e5e5e5;
+  --color-primary-200: #d4d4d4;
+  --color-primary-300: #a3a3a3;
+  --color-primary-400: #737373;
+  --color-primary-500: #525252;
+  --color-primary-600: #404040;
+  --color-primary-700: #262626;
+  --color-primary-800: #171717;
+  --color-primary-900: #050505;
+  /* Deep architectural Black */
   /* Deep Space Navy */
 
   --color-grey-50: #f8fafc;
@@ -39,15 +38,14 @@
   --color-info: #0ea5e9;
 
   /* Semantic */
-  --bg-page: #f5f7fa;
+  --bg-page: #ffffff;
   --bg-card: #ffffff;
-  --bg-dark: #102a43;
-  /* Match primary 900 */
-  --text-primary: #102a43;
-  /* Match primary 900 for high contrast headers */
-  --text-secondary: #486581;
+  --bg-dark: #050505;
+  --text-primary: #050505;
+  --text-secondary: #525252;
   --text-white: #ffffff;
-  --border-color: #d9e2ec;
+  --border-color: #050505;
+  /* Sharp structural borders */
 
   /* Layout */
   --sidebar-width: 260px;
@@ -62,12 +60,18 @@
   --radius-xl: 20px;
   --radius-full: 9999px;
 
-  /* Shadow - Softened for premium feel */
-  --shadow-sm: 0 1px 2px rgba(16, 42, 67, .05);
-  --shadow-md: 0 10px 15px -3px rgba(16, 42, 67, .1), 0 4px 6px -2px rgba(16, 42, 67, .05);
-  --shadow-lg: 0 20px 25px -5px rgba(16, 42, 67, .1), 0 10px 10px -5px rgba(16, 42, 67, .04);
-  --shadow-xl: 0 25px 50px -12px rgba(16, 42, 67, .25);
-  --shadow-card: 0 4px 12px rgba(16, 42, 67, .04);
+  /* Shadow - Sharp or Minimal */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, .05), 0 4px 6px -2px rgba(0, 0, 0, .05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, .1);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, .25);
+  --shadow-card: none;
+  /* Prefer borders over shadows in B&W theme */
+
+  /* Structural UI */
+  --blueprint-grid:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 
   /* Transition */
   --transition-fast: 0.1s ease;
@@ -112,31 +116,37 @@ button {
 }
 
 /* ---- Typography ---- */
-h1 {
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+/* ---- Typography ---- */
+h1,
+h2,
+h3,
+h4 {
   font-weight: 800;
-  line-height: 1.2;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 0.95;
 }
 
 h2 {
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: clamp(1.6rem, 4vw, 2.5rem);
+  line-height: 1.1;
 }
 
 h3 {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  font-weight: 600;
-  line-height: 1.4;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
 }
 
 h4 {
   font-size: 1.1rem;
-  font-weight: 600;
 }
 
 p {
   color: var(--text-secondary);
+  font-weight: 300;
 }
 
 /* ---- Buttons ---- */
@@ -144,24 +154,27 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
-  font-weight: 600;
-  border: none;
+  padding: 12px 24px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border-radius: 0;
+  /* Sharp corners for architectural feel */
+  border: 1px solid var(--color-primary-900);
   transition: all var(--transition-base);
   white-space: nowrap;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--color-primary-600), var(--color-primary-500));
+  background: var(--color-primary-900);
   color: #fff;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, .35);
 }
 
 .btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(37, 99, 235, .45);
+  background: transparent;
+  color: var(--color-primary-900);
+  transform: translateY(-2px);
 }
 
 .btn-primary:active {

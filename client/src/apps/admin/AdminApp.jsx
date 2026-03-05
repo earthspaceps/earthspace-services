@@ -39,35 +39,8 @@ function Sidebar({ isOpen, onClose }) {
             </button>
             <div className="sidebar-logo">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{
-                        width: 38,
-                        height: 38,
-                        borderRadius: 'var(--radius-md)',
-                        background: 'linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900))',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
-                    }}>
-                        <Briefcase size={20} color="#fff" strokeWidth={2.5} />
-                    </div>
-                    <div>
-                        <div style={{
-                            fontWeight: 800,
-                            color: '#fff',
-                            fontSize: '1rem',
-                            letterSpacing: '-0.02em',
-                            lineHeight: 1
-                        }}>EARTHSPACE</div>
-                        <div style={{
-                            fontSize: '0.65rem',
-                            color: 'var(--color-primary-300)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
-                            fontWeight: 600,
-                            marginTop: 4
-                        }}>Services Portal</div>
-                    </div>
+                    <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
+                    <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '-0.02em', lineHeight: 1 }}>SERVICES</div>
                 </div>
             </div>
             <nav className="sidebar-nav">
@@ -116,12 +89,12 @@ function Dashboard() {
     const monthly = data?.monthlyStats || [];
 
     const STAT_CARDS = [
-        { label: 'Total Customers', value: stats.totalUsers, icon: Users, bg: '#dbeafe', color: '#2563eb' },
-        { label: 'Verified Technicians', value: stats.totalTechnicians, icon: UserCheck, bg: '#dcfce7', color: '#16a34a' },
-        { label: 'Total Bookings', value: stats.totalBookings, icon: Package, bg: '#ede9fe', color: '#7c3aed' },
-        { label: 'Total Revenue', value: `₹${(stats.totalRevenue || 0).toLocaleString()}`, icon: TrendingUp, bg: '#fef9c3', color: '#d97706' },
-        { label: 'Active Bookings', value: stats.pendingBookings, icon: Clock, bg: '#ffedd5', color: '#ea580c' },
-        { label: 'Completed', value: stats.completedBookings, icon: CheckCircle, bg: '#d1fae5', color: '#059669' },
+        { label: 'Total Customers', value: stats.totalUsers, icon: Users, bg: '#f4f4f4', color: '#050505' },
+        { label: 'Verified Technicians', value: stats.totalTechnicians, icon: UserCheck, bg: '#f4f4f4', color: '#050505' },
+        { label: 'Total Bookings', value: stats.totalBookings, icon: Package, bg: '#f4f4f4', color: '#050505' },
+        { label: 'Total Revenue', value: `₹${(stats.totalRevenue || 0).toLocaleString()}`, icon: TrendingUp, bg: '#f4f4f4', color: '#050505' },
+        { label: 'Active Bookings', value: stats.pendingBookings, icon: Clock, bg: '#f4f4f4', color: '#050505' },
+        { label: 'Completed', value: stats.completedBookings, icon: CheckCircle, bg: '#f4f4f4', color: '#050505' },
     ];
 
     return (
@@ -149,15 +122,15 @@ function Dashboard() {
                         <AreaChart data={monthly}>
                             <defs>
                                 <linearGradient id="bookingGrad" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
-                                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#000" stopOpacity={0.1} />
+                                    <stop offset="95%" stopColor="#000" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                            <YAxis tick={{ fontSize: 12 }} />
-                            <Tooltip />
-                            <Area type="monotone" dataKey="bookings" stroke="#3b82f6" strokeWidth={2} fill="url(#bookingGrad)" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                            <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={{ borderRadius: 0, border: '1px solid #000' }} />
+                            <Area type="monotone" dataKey="bookings" stroke="#000" strokeWidth={2} fill="url(#bookingGrad)" />
                         </AreaChart>
                     </ResponsiveContainer>
                 </div>
@@ -165,11 +138,11 @@ function Dashboard() {
                     <h4 style={{ marginBottom: 20 }}>Monthly Revenue (₹)</h4>
                     <ResponsiveContainer width="100%" height={220}>
                         <BarChart data={monthly}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-                            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-                            <YAxis tick={{ fontSize: 12 }} />
-                            <Tooltip formatter={v => [`₹${v}`, 'Revenue']} />
-                            <Bar dataKey="revenue" fill="#22c55e" radius={[4, 4, 0, 0]} />
+                            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                            <XAxis dataKey="month" tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
+                            <YAxis tick={{ fontSize: 10, fill: '#666' }} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={{ borderRadius: 0, border: '1px solid #000' }} formatter={v => [`₹${v}`, 'Revenue']} />
+                            <Bar dataKey="revenue" fill="#000" radius={0} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>

@@ -43,18 +43,8 @@ export default function CustomerApp() {
             {/* Top Navbar */}
             <nav className="customer-navbar" style={{ background: 'var(--bg-dark)' }}>
                 <div className="brand">
-                    <div style={{
-                        width: 32,
-                        height: 32,
-                        borderRadius: 'var(--radius-sm)',
-                        background: 'linear-gradient(135deg, var(--color-primary-700), var(--color-primary-900))',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Briefcase size={18} color="#fff" />
-                    </div>
-                    <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase' }}>Earthspace Services</span>
+                    <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
+                    <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: '#fff', fontSize: '1rem' }}>Services</span>
                 </div>
 
                 {/* Desktop Nav */}
@@ -99,9 +89,9 @@ export default function CustomerApp() {
                 {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
-                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, color: active ? 'var(--color-primary-600)' : 'var(--text-secondary)', textDecoration: 'none', padding: '4px 0' }}>
+                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, color: active ? 'var(--color-primary-900)' : 'var(--text-secondary)', textDecoration: 'none', padding: '4px 0' }}>
                             <Icon size={20} />
-                            <span style={{ fontSize: '0.65rem', fontWeight: active ? 700 : 400 }}>{label}</span>
+                            <span style={{ fontSize: '0.65rem', fontWeight: active ? 700 : 400, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
                         </Link>
                     );
                 })}

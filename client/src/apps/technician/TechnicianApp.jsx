@@ -47,8 +47,8 @@ function TechDashboard() {
         <div>
             {/* Welcome Banner */}
             <div style={{
-                background: 'linear-gradient(135deg, var(--color-primary-900), var(--color-primary-700))',
-                borderRadius: 'var(--radius-lg)',
+                background: 'var(--bg-dark)',
+                border: '1px solid var(--border-color)',
                 padding: '28px 32px',
                 marginBottom: 24,
                 color: '#fff',
@@ -57,7 +57,6 @@ function TechDashboard() {
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: 16,
-                boxShadow: 'var(--shadow-md)'
             }}>
                 <div>
                     <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800 }}>Welcome back, {user?.name?.split(' ')[0]}! 👋</h2>
@@ -87,10 +86,10 @@ function TechDashboard() {
             {/* Stats */}
             <div className="grid-4" style={{ marginBottom: 24, gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))' }}>
                 {[
-                    { label: 'Pending Jobs', value: dash?.pendingJobs || 0, icon: Briefcase, bg: '#dbeafe', color: '#2563eb' },
-                    { label: 'Completed', value: dash?.totalCompleted || 0, icon: CheckCircle, bg: '#dcfce7', color: '#22c55e' },
-                    { label: 'Rating', value: `${dash?.technician?.rating || '0.0'}★`, icon: null, bg: '#fef9c3', color: '#a16207' },
-                    { label: 'Total Earnings', value: `₹${dash?.totalEarnings || 0}`, icon: DollarSign, bg: '#ede9fe', color: '#7c3aed' },
+                    { label: 'Pending Jobs', value: dash?.pendingJobs || 0, icon: Briefcase, bg: '#f4f4f4', color: '#000' },
+                    { label: 'Completed', value: dash?.totalCompleted || 0, icon: CheckCircle, bg: '#f4f4f4', color: '#000' },
+                    { label: 'Rating', value: `${dash?.technician?.rating || '0.0'}★`, icon: null, bg: '#f4f4f4', color: '#000' },
+                    { label: 'Total Earnings', value: `₹${dash?.totalEarnings || 0}`, icon: DollarSign, bg: '#f4f4f4', color: '#000' },
                 ].map(s => (
                     <div key={s.label} className="stat-card">
                         <div className="stat-icon" style={{ background: s.bg, color: s.color }}>
@@ -348,21 +347,8 @@ function Sidebar({ isOpen, onClose }) {
             </button>
             <div className="sidebar-logo">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: 'var(--radius-md)',
-                        background: 'linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900))',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        <Briefcase size={20} color="#fff" />
-                    </div>
-                    <div>
-                        <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#fff', letterSpacing: '-0.01em' }}>EARTHSPACE</div>
-                        <div style={{ fontSize: '0.65rem', color: 'var(--color-primary-300)', fontWeight: 600, textTransform: 'uppercase' }}>Technician</div>
-                    </div>
+                    <img src="/logo.png" alt="EarthSpace" style={{ height: 28, filter: 'brightness(0) invert(1)' }} />
+                    <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#fff', letterSpacing: '-0.02em', textTransform: 'uppercase' }}>SERVICES</div>
                 </div>
             </div>
             <nav className="sidebar-nav">
