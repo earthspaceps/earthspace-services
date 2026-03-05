@@ -1,56 +1,54 @@
 /* ============================================================
    EARTHSPACE SERVICES - Global Design System
-   Theme: Blue / White / Grey  |  Modern Professional
+   Theme: Light / White / Grey  |  Modern Professional
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 /* ---- CSS Custom Properties ---- */
 :root {
-  /* Brand Colors - High Contrast Black & White */
-  --color-primary-50: #f4f4f4;
-  --color-primary-100: #e5e5e5;
-  --color-primary-200: #d4d4d4;
-  --color-primary-300: #a3a3a3;
-  --color-primary-400: #737373;
-  --color-primary-500: #525252;
-  --color-primary-600: #404040;
-  --color-primary-700: #262626;
-  --color-primary-800: #171717;
-  --color-primary-900: #050505;
-  /* Deep architectural Black */
+  /* Brand Colors */
+  --color-primary-50: #050505;
+  --color-primary-100: #171717;
+  --color-primary-200: #262626;
+  --color-primary-300: #404040;
+  --color-primary-400: #525252;
+  --color-primary-500: #737373;
+  --color-primary-600: #a3a3a3;
+  --color-primary-700: #d4d4d4;
+  --color-primary-800: #e5e5e5;
+  --color-primary-900: #f4f4f4;
 
-  --color-grey-50: #f8fafc;
-  --color-grey-100: #f1f5f9;
-  --color-grey-200: #e2e8f0;
-  --color-grey-300: #cbd5e1;
-  --color-grey-400: #94a3b8;
-  --color-grey-500: #64748b;
-  --color-grey-600: #475569;
-  --color-grey-700: #334155;
-  --color-grey-800: #1e293b;
-  --color-grey-900: #0f172a;
+  --color-grey-50: #0f172a;
+  --color-grey-100: #1e293b;
+  --color-grey-200: #334155;
+  --color-grey-300: #475569;
+  --color-grey-400: #64748b;
+  --color-grey-500: #94a3b8;
+  --color-grey-600: #cbd5e1;
+  --color-grey-700: #e2e8f0;
+  --color-grey-800: #f1f5f9;
+  --color-grey-900: #f8fafc;
 
-  --color-success: #10b981;
-  --color-warning: #f59e0b;
-  --color-danger: #ef4444;
-  --color-info: #0ea5e9;
+  --color-success: #059669;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #0284c7;
 
-  /* Gray Depth Palette - Added from Plan2 */
-  --color-gray-50: #f5f5f5;
-  --color-gray-100: #e5e5e5;
-  --color-gray-400: #404040;
-  --color-gray-700: #2d2d2d;
-  --color-gray-900: #1a1a1a;
+  --color-gray-50: #1a1a1a;
+  --color-gray-100: #2d2d2d;
+  --color-gray-400: #c0c0c0;
+  --color-gray-700: #e0e0e0;
+  --color-gray-900: #f5f5f5;
 
   /* Semantic */
-  --bg-page: transparent;
-  --bg-card: rgba(255, 255, 255, 0.03);
-  --bg-dark: #050505;
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.55);
-  --text-white: #ffffff;
-  --border-color: rgba(255, 255, 255, 0.08);
+  --bg-page: #f4f5f7;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-dark: #ffffff;
+  --text-primary: #111111;
+  --text-secondary: rgba(0, 0, 0, 0.5);
+  --text-white: #111111;
+  --border-color: rgba(0, 0, 0, 0.08);
 
   /* Layout */
   --sidebar-width: 260px;
@@ -62,28 +60,29 @@
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-  /* Glassmorphism 2.0 */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-bg-hover: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.1);
+
+  /* Glassmorphism — Light edition */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg-hover: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.08);
   --glass-blur: blur(20px);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
 
   --radius-xl: 20px;
   --radius-2xl: 28px;
   --radius-full: 9999px;
 
   /* Shadow */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .05);
-  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, .05), 0 4px 6px -2px rgba(0, 0, 0, .05);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, .1);
-  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, .25);
-  --shadow-card: none;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .04);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, .06), 0 4px 6px -2px rgba(0, 0, 0, .04);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, .08);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, .12);
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
 
   /* Structural UI */
   --blueprint-grid:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 
   /* Transition */
   --transition-fast: 0.1s ease;
@@ -99,8 +98,9 @@
 
 .customer-navbar.shrunk {
   height: 60px;
-  background: rgba(5, 5, 5, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .nav-link {
@@ -126,7 +126,7 @@
 }
 
 .nav-link:hover {
-  color: #fff !important;
+  color: #111 !important;
 }
 
 /* ---- Texture Overlay ---- */
@@ -247,30 +247,30 @@ p {
 }
 
 .btn-primary {
-  background: #fff;
-  color: #000;
+  background: #111;
+  color: #fff;
   font-weight: 800;
   border: none;
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .btn-primary:hover {
-  background: #f0f0f0;
+  background: #333;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .btn-outline {
   background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
+  border: 1.5px solid rgba(0, 0, 0, 0.2);
+  color: #111;
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: #fff;
+  background: rgba(0, 0, 0, 0.05);
+  border-color: #111;
 }
 
 .btn-sm {
@@ -311,8 +311,8 @@ p {
 
 /* Base Layout Enhancements */
 body {
-  background: radial-gradient(circle at top right, #1a1a1a, #000) fixed;
-  color: var(--text-white);
+  background: #f4f5f7;
+  color: var(--text-primary);
 }
 
 /* ---- Cards ---- */
@@ -328,9 +328,9 @@ body {
 
 .card:hover {
   background: var(--glass-bg-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 0, 0, 0.12);
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.45);
+  box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.1);
 }
 
 .stat-card {
@@ -353,20 +353,20 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
 }
 
 .stat-value {
   font-size: 1.5rem;
   font-weight: 800;
-  color: #fff;
+  color: #111;
   line-height: 1;
 }
 
 .stat-label {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.45);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-top: 4px;
@@ -465,9 +465,9 @@ body {
   top: -10px;
   left: 12px;
   font-size: 0.7rem;
-  background: #0A0D14;
+  background: #ffffff;
   padding: 0 8px;
-  color: #fff;
+  color: #111;
   z-index: 10;
 }
 
@@ -475,19 +475,19 @@ body {
 .form-control {
   width: 100%;
   padding: 11px 14px;
-  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
   border-radius: var(--radius-xl);
   font-size: 16px;
-  /* Prevents iOS zoom */
-  background: rgba(255, 255, 255, 0.03);
-  color: #fff;
+  background: #ffffff;
+  color: #111;
   outline: none;
   transition: all 0.2s ease;
 }
 
 .form-control:focus {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(0, 0, 0, 0.3);
+  background: #f9f9f9;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
 }
 
 /* ---- Layout Utilities ---- */
@@ -640,13 +640,14 @@ body {
 
 .sidebar {
   width: var(--sidebar-width);
-  background: #050505;
-  color: #fff;
+  background: #ffffff;
+  color: #111;
   display: flex;
   flex-direction: column;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar.collapsed {
@@ -655,7 +656,7 @@ body {
 
 .sidebar-logo {
   padding: 32px 24px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, .05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   transition: all 0.3s ease;
 }
 
@@ -679,7 +680,7 @@ body {
   padding: 14px 16px;
   font-size: 0.85rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, .6);
+  color: rgba(0, 0, 0, 0.5);
   border-radius: 12px;
   transition: all var(--transition-fast);
   position: relative;
@@ -687,8 +688,8 @@ body {
 
 .sidebar-link:hover,
 .sidebar-link.active {
-  background: rgba(255, 255, 255, .05);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
 }
 
 .sidebar-link.active::before {
@@ -699,7 +700,7 @@ body {
   transform: translateY(-50%);
   width: 4px;
   height: 60%;
-  background: #fff;
+  background: #111;
   border-radius: 0 4px 4px 0;
 }
 
@@ -718,8 +719,8 @@ body {
   position: absolute;
   top: 16px;
   right: 16px;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.1);
+  color: #111;
+  background: rgba(0, 0, 0, 0.08);
   border-radius: 50%;
   padding: 4px;
   cursor: pointer;
@@ -728,10 +729,10 @@ body {
 
 .sidebar-toggle-btn {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(0, 0, 0, 0.02);
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -744,8 +745,8 @@ body {
 }
 
 .sidebar-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: #fff;
+  background: rgba(0, 0, 0, 0.05);
+  color: #111;
 }
 
 @media (max-width: 768px) {
@@ -764,10 +765,10 @@ body {
 
 .top-navbar {
   height: var(--navbar-height);
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -789,7 +790,7 @@ body {
 .page-title {
   font-size: 1.5rem;
   margin-bottom: 4px;
-  color: #fff;
+  color: #111;
 }
 
 .page-subtitle {
@@ -799,21 +800,22 @@ body {
 
 /* ---- Dashboard KPI Cards ---- */
 .stat-card {
-  background: #0A0D14;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
   border-radius: 20px;
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: #fff;
+  color: #111;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.02);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.12);
 }
 
 .stat-icon {
@@ -830,12 +832,13 @@ body {
   font-weight: 800;
   line-height: 1;
   margin-bottom: 6px;
+  color: #111;
 }
 
 .stat-label {
   font-size: 0.8rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.45);
 }
 
 /* ---- Tables & Badges ---- */
@@ -855,16 +858,16 @@ th {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.35);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(0, 0, 0, 0.40);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   white-space: nowrap;
 }
 
 td {
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   transition: background 0.2s;
   vertical-align: middle;
   max-width: 200px;
@@ -877,7 +880,7 @@ tr:last-child td {
 }
 
 tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .badge {
@@ -916,9 +919,9 @@ tr:hover td {
 }
 
 .badge-grey {
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 @media (max-width: 768px) {
