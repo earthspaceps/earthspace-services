@@ -234,14 +234,14 @@ export default function CustomerApp() {
             {/* Mobile Bottom Nav - Hidden on desktop via index.css if implemented, or here */}
             <div className="mobile-bottom-nav" style={{
                 position: 'fixed', bottom: 0, left: 0, right: 0,
-                background: '#fff', borderTop: '1px solid #000',
+                background: 'var(--bg-card)', borderTop: '1px solid var(--border-color)',
                 display: 'none', padding: '8px 0 4px', zIndex: 2000,
-                boxShadow: '0 -4px 20px rgba(0,0,0,.1)'
+                boxShadow: 'var(--shadow-xl)'
             }}>
                 {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
-                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, color: active ? '#000' : '#bbb', textDecoration: 'none', padding: '8px 0' }}>
+                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, color: active ? 'var(--text-primary)' : 'var(--text-secondary)', textDecoration: 'none', padding: '8px 0' }}>
                             <Icon size={18} strokeWidth={active ? 2.5 : 1.5} />
                             <span style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
                         </Link>

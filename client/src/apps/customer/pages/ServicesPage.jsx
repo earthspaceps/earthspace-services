@@ -47,8 +47,8 @@ export default function ServicesPage() {
                     </div>
                     <form onSubmit={handleSearch} style={{ display: 'flex', gap: 0, flex: '1 1 400px', maxWidth: 600 }}>
                         <div style={{ flex: 1, position: 'relative' }}>
-                            <Search size={16} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
-                            <input className="form-control" style={{ paddingLeft: 48, borderRadius: '999px', border: 'none', height: 56, background: '#111', color: '#fff' }} placeholder="SEARCH SOLUTIONS..." value={search} onChange={e => setSearch(e.target.value)} />
+                            <Search size={16} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                            <input className="form-control" style={{ paddingLeft: 48, borderRadius: '999px', border: 'none', height: 56, background: 'var(--bg-card)', color: 'var(--text-primary)' }} placeholder="SEARCH SOLUTIONS..." value={search} onChange={e => setSearch(e.target.value)} />
                         </div>
                         <button className="btn btn-primary" type="submit" style={{ padding: '0 40px', height: 56 }}>SEARCH</button>
                     </form>
@@ -72,15 +72,15 @@ export default function ServicesPage() {
                 ) : services.length === 0 ? (
                     <div className="card" style={{ padding: '80px 40px', textAlign: 'left' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32 }}>
-                            <div style={{ background: '#111', color: '#fff', padding: 20, borderRadius: '16px' }}>
+                            <div style={{ background: 'var(--bg-dark)', color: 'var(--text-primary)', padding: 20, borderRadius: '16px' }}>
                                 <Wrench size={32} strokeWidth={1.5} />
                             </div>
                             <div>
-                                <h3 style={{ textTransform: 'uppercase', fontWeight: 900, letterSpacing: '-0.02em', fontSize: '1.5rem', margin: 0 }}>NO SOLUTIONS FOUND</h3>
-                                <p style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', marginTop: 4, textTransform: 'uppercase' }}>ENGINEERING QUERY RETURNED ZERO MATCHES</p>
+                                <h3 style={{ textTransform: 'uppercase', fontWeight: 900, letterSpacing: '-0.02em', fontSize: '1.5rem', margin: 0, color: 'var(--text-primary)' }}>NO SOLUTIONS FOUND</h3>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', marginTop: 4, textTransform: 'uppercase' }}>ENGINEERING QUERY RETURNED ZERO MATCHES</p>
                             </div>
                         </div>
-                        <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', maxWidth: 400, lineHeight: 1.8 }}>PLEASE ADJUST YOUR FILTER PARAMETERS OR SEARCH QUERY. OUR CORE SCOPE COVERS ELECTRICAL, PLUMBING, HVAC, AND GENERAL STRUCTURAL MAINTENANCE.</p>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: 400, lineHeight: 1.8 }}>PLEASE ADJUST YOUR FILTER PARAMETERS OR SEARCH QUERY. OUR CORE SCOPE COVERS ELECTRICAL, PLUMBING, HVAC, AND GENERAL STRUCTURAL MAINTENANCE.</p>
                         <button
                             className="btn btn-primary"
                             style={{ marginTop: 40, padding: '16px 40px' }}
