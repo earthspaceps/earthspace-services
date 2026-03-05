@@ -58,9 +58,12 @@ export default function BookingPage() {
             setBooking(data.data.booking);
             setStep(4);
         } catch (err) {
-            setError(err.response?.data?.message || 'Booking failed. Please try again.');
+            console.error('Booking Error:', err.response?.data || err);
+            const errorMsg = err.response?.data?.message || 'Booking failed. Please check your network or try again.';
+            alert(errorMsg);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const STEPS = ['Date & Time', 'Address', 'Payment', 'Confirmed'];

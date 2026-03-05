@@ -16,7 +16,9 @@ const createBooking = async (req, res, next) => {
         const customerId = req.user.id;
 
         const service = await Service.findByPk(serviceId);
-        if (!service) return res.status(404).json({ success: false, message: 'Service not found.' });
+        if (!service) {
+            return res.status(404).json({ success: false, message: 'Requested service not found or inactive.' });
+        }
 
         const booking = await Booking.create({
             bookingNumber: generateBookingNumber(),

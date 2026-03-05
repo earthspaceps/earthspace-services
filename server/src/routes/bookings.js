@@ -4,7 +4,7 @@ const { createBooking, getBookings, getBooking, updateBookingStatus, cancelBooki
 const { authenticate, authorize } = require('../middleware/auth');
 
 router.use(authenticate);
-router.post('/', authorize('customer'), createBooking);
+router.post('/', authorize('customer', 'admin'), createBooking);
 router.get('/', getBookings);
 router.get('/pool', authorize('technician'), getPoolBookings);
 router.get('/:id', getBooking);
