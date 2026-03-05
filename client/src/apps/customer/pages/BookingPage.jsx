@@ -6,9 +6,7 @@ import { useAuth } from '../../../shared/AuthContext';
 
 const TIME_SLOTS = ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
 const PAYMENT_METHODS = [
-    { key: 'online', label: 'Online Payment', icon: '💳', desc: 'UPI, Cards, Net Banking' },
     { key: 'cash', label: 'Cash on Service', icon: '💵', desc: 'Pay after service completion' },
-    { key: 'wallet', label: 'Wallet', icon: '👛', desc: 'Pay from Earthspace wallet' },
 ];
 
 export default function BookingPage() {
@@ -47,7 +45,7 @@ export default function BookingPage() {
     const handleBook = async () => {
         setLoading(true); setError('');
         try {
-            const { data } = await api.post('/bookings', {
+            const response = await api.post('/bookings', {
                 serviceId,
                 scheduledDate: selectedDate,
                 scheduledTime: selectedTime,
@@ -55,8 +53,14 @@ export default function BookingPage() {
                 specialInstructions: instructions,
                 paymentMethod,
             });
-            setBooking(data.data.booking);
+
+            // Handle different potential response structures
+            const bookingData = response.data?.data?.booking || response.data?.booking || response.data;
+            setBooking(bookingData);
             setStep(4);
+
+            // Scroll to top to ensure confirmation is visible
+            window.scrollTo(0, 0);
         } catch (err) {
             console.error('Booking Error:', err.response?.data || err);
             const errorMsg = err.response?.data?.message || 'Booking failed. Please check your network or try again.';
