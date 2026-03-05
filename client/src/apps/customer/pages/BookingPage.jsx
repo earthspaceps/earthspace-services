@@ -81,7 +81,7 @@ export default function BookingPage() {
     const STEPS = ['Date & Time', 'Address', 'Payment', 'Confirmed'];
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg-page)', padding: '32px var(--content-padding)' }}>
+        <div style={{ minHeight: '100vh', padding: '32px var(--content-padding)' }}>
             <div className="container" style={{ maxWidth: 640 }}>
                 {/* Progress Steps */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 48 }}>

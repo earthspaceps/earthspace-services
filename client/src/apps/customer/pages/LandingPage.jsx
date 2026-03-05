@@ -64,8 +64,8 @@ const LandingPage = () => {
 
     return (
         <div className="landing-container" style={{
-            backgroundColor: '#ffffff',
-            color: '#050505',
+            background: 'radial-gradient(circle at top right, #1a1a1a, #000)',
+            color: '#fff',
             fontFamily: "'Inter', sans-serif",
             overflowX: 'hidden',
             lineHeight: 1.6
@@ -312,59 +312,47 @@ const LandingPage = () => {
             </section>
 
             {/* Services Section */}
-            <section id="services" style={{ padding: '8rem 5%', borderBottom: '1px solid #e5e5e5' }}>
+            <section id="services" style={{ padding: '8rem 5%', borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.3)' }}>
                 <div className="grid-2 reveal" style={{ gap: '4rem', marginBottom: '6rem', alignItems: 'end' }}>
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, margin: 0, lineHeight: 0.9 }}>
+                    <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, margin: 0, lineHeight: 0.9, color: '#fff' }}>
                         Our <br />Core Scope
                     </h2>
-                    <p style={{ margin: 0, color: '#666', fontSize: '1.1rem' }}>
+                    <p style={{ margin: 0, color: 'rgba(255,255,255,0.55)', fontSize: '1.1rem' }}>
                         Specialized systems maintenance designed to preserve the structural and functional excellence of your property.
                     </p>
                 </div>
 
-                <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1px', backgroundColor: '#050505', border: '1px solid #050505' }}>
+                <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
                     {services.map((s, i) => (
-                        <div key={i} className="service-card" style={{ display: 'flex', flexDirection: 'column', border: 'none' }}>
-                            <div className="card-header" style={{ backgroundColor: '#ffffff', padding: '3.5rem 2.5rem 2rem', color: '#000' }}>
-                                <div style={{ marginBottom: '1.5rem', color: '#000' }}>{s.icon}</div>
-                                <h3 style={{ fontSize: '1.4rem', textTransform: 'uppercase', marginBottom: 0, fontWeight: 900, letterSpacing: '-0.02em' }}>{s.title}</h3>
-                            </div>
-                            <div className="card-body" style={{
-                                padding: '2.5rem 2.5rem 4rem',
-                                backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                                backdropFilter: 'blur(20px)',
-                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                                borderTop: 'none',
-                                flex: 1,
-                                color: 'rgba(255,255,255,0.8)'
-                            }}>
-                                <p style={{ fontSize: '0.95rem', fontWeight: 300, lineHeight: 1.7, marginBottom: '2.5rem', color: 'rgba(255,255,255,0.6)' }}>{s.desc}</p>
-                                <ul style={{ listStyle: 'none', padding: 0 }}>
-                                    <li style={{ padding: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ color: '#fff' }}>✓</span> Certified Pros
-                                    </li>
-                                    <li style={{ padding: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <span style={{ color: '#fff' }}>✓</span> Material Warranty
-                                    </li>
-                                </ul>
-                            </div>
+                        <div key={i} className="service-card card" style={{ display: 'flex', flexDirection: 'column', padding: '2.5rem', gap: '1.5rem' }}>
+                            <div style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.06)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)' }}>{s.icon}</div>
+                            <h3 style={{ fontSize: '1.2rem', textTransform: 'uppercase', marginBottom: 0, fontWeight: 900, letterSpacing: '-0.02em', color: '#fff' }}>{s.title}</h3>
+                            <p style={{ fontSize: '0.9rem', fontWeight: 300, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: 0 }}>{s.desc}</p>
+                            <ul style={{ listStyle: 'none', padding: 0, marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1.5rem' }}>
+                                <li style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '0.75rem' }}>
+                                    <span style={{ color: '#22c55e' }}>✓</span> Certified Pros
+                                </li>
+                                <li style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.5)' }}>
+                                    <span style={{ color: '#22c55e' }}>✓</span> Material Warranty
+                                </li>
+                            </ul>
                         </div>
                     ))}
                 </div>
             </section>
 
             {/* Process Section */}
-            <section id="process" style={{ padding: '8rem 5%', backgroundColor: '#f4f4f4' }}>
+            <section id="process" style={{ padding: '8rem 5%', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="reveal" style={{ textAlign: 'center', marginBottom: '6rem' }}>
-                    <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '-0.02em' }}>The Blueprint Process</h2>
+                    <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>The Blueprint Process</h2>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
                     {steps.map((s, i) => (
-                        <div key={i} className="reveal reveal-stagger" style={{ flex: 1, minWidth: '240px', borderTop: '1px solid #050505', paddingTop: '2.5rem', '--delay': i }}>
-                            <span style={{ fontSize: '3.5rem', fontWeight: 800, color: '#e5e5e5', display: 'block', lineHeight: 1, marginBottom: '1rem' }}>{s.n}</span>
-                            <h4 style={{ textTransform: 'uppercase', fontWeight: 700, marginBottom: '1rem' }}>{s.title}</h4>
-                            <p style={{ fontSize: '0.95rem', color: '#666', fontWeight: 300 }}>{s.desc}</p>
+                        <div key={i} className="reveal reveal-stagger" style={{ flex: 1, minWidth: '240px', borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: '2.5rem', '--delay': i }}>
+                            <span style={{ fontSize: '3.5rem', fontWeight: 800, color: 'rgba(255,255,255,0.1)', display: 'block', lineHeight: 1, marginBottom: '1rem' }}>{s.n}</span>
+                            <h4 style={{ textTransform: 'uppercase', fontWeight: 700, marginBottom: '1rem', color: '#fff' }}>{s.title}</h4>
+                            <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.5)', fontWeight: 300 }}>{s.desc}</p>
                         </div>
                     ))}
                 </div>

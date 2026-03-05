@@ -70,7 +70,7 @@ export default function BookingHistoryPage() {
     }, [filter]);
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg-page)', padding: '32px var(--content-padding)' }}>
+        <div style={{ minHeight: '100vh', padding: '32px var(--content-padding)' }}>
             <div className="container" style={{ maxWidth: 720 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
                     <div><h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>MY BOOKINGS</h2><p className="text-sm" style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.7rem' }}>HISTORY & TRACKING</p></div>

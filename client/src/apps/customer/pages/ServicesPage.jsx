@@ -37,9 +37,9 @@ export default function ServicesPage() {
     };
 
     return (
-        <div style={{ minHeight: '100vh', background: 'var(--bg-page)' }}>
+        <div style={{ minHeight: '100vh' }}>
             {/* Header */}
-            <div style={{ background: '#000', padding: '80px var(--content-padding)', borderBottom: '1px solid #333' }}>
+            <div style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(30px)', padding: '80px var(--content-padding)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, flexWrap: 'wrap' }}>
                     <div style={{ flex: '1 1 300px' }}>
                         <h2 style={{ color: '#fff', marginBottom: 12, fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1 }}>SOLUTIONS</h2>
@@ -55,7 +55,7 @@ export default function ServicesPage() {
                 </div>
             </div>
 
-            <div className="container" style={{ padding: '24px var(--content-padding)' }}>
+            <div className="container" style={{ padding: '32px var(--content-padding)' }}>
                 {/* Category Filter Tabs */}
                 <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
                     <button onClick={() => setCategory('')} className={`btn btn-sm ${!activeCategory ? 'btn-primary' : 'btn-outline'}`}>ALL SOLUTIONS</button>
@@ -101,48 +101,37 @@ export default function ServicesPage() {
                                     style={{
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        overflow: 'hidden'
+                                        overflow: 'hidden',
+                                        padding: '28px',
+                                        gap: 16
                                     }}
                                 >
-                                    <div style={{ background: '#ffffff', color: '#000', padding: '32px 32px 24px', borderBottom: 'none' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                                            <span style={{ fontSize: '0.6rem', background: 'rgba(0,0,0,0.8)', color: '#fff', padding: '6px 14px', letterSpacing: '0.15em', fontWeight: 800, borderRadius: '4px' }}>{service.category?.name.toUpperCase()}</span>
-                                            <Icon size={20} color="#000" strokeWidth={1.5} />
+                                    {/* Category + Icon Row */}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <span style={{ fontSize: '0.6rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', padding: '5px 12px', letterSpacing: '0.15em', fontWeight: 800, borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>{service.category?.name.toUpperCase()}</span>
+                                        <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '8px', padding: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
+                                            <Icon size={18} color="rgba(255,255,255,0.7)" strokeWidth={1.5} />
                                         </div>
-                                        <h3 style={{ color: '#000', fontSize: '1.25rem', letterSpacing: '-0.02em', fontWeight: 900, marginBottom: 0 }}>{service.name.toUpperCase()}</h3>
                                     </div>
-                                    <div style={{
-                                        padding: '24px 32px 32px',
-                                        flex: 1,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        background: 'rgba(255,255,255,0.03)',
-                                        backdropFilter: 'blur(20px)',
-                                        borderTop: '1px solid rgba(255,255,255,0.05)'
-                                    }}>
-                                        <p style={{ fontSize: '0.9rem', marginBottom: 20, lineHeight: 1.7, color: 'rgba(255,255,255,0.6)' }}>{service.description}</p>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                                            <Clock size={14} />{service.durationMinutes} MINS
-                                            <span style={{ margin: '0 4px', opacity: 0.3 }}>|</span>
-                                            <Star size={14} style={{ color: 'var(--color-warning)' }} /> 4.8 RATING
+                                    {/* Title */}
+                                    <h3 style={{ color: '#fff', fontSize: '1.15rem', letterSpacing: '-0.01em', fontWeight: 900, lineHeight: 1.2 }}>{service.name.toUpperCase()}</h3>
+                                    {/* Description */}
+                                    <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.5)', flex: 1 }}>{service.description}</p>
+                                    {/* Meta */}
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        <Clock size={13} />{service.durationMinutes} MINS
+                                        <span style={{ opacity: 0.3 }}>|</span>
+                                        <Star size={13} style={{ color: '#f59e0b' }} /> 4.8
+                                    </div>
+                                    {/* Price + Book */}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16, marginTop: 4 }}>
+                                        <div>
+                                            <div style={{ fontSize: '1.3rem', fontWeight: 900, color: '#fff' }}>{formatPrice(service)}</div>
+                                            <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700, marginTop: 2 }}>{service.priceType === 'starting_from' ? 'AFTER INSPECTION' : 'FIXED RATE'}</div>
                                         </div>
-                                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: 20 }}>
-                                            <div>
-                                                <div style={{ fontSize: '1.25rem', fontWeight: 900 }}>{formatPrice(service)}</div>
-                                                <div style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>{service.priceType === 'starting_from' ? 'AFTER INSPECTION' : 'FIXED RATE'}</div>
-                                            </div>
-                                            <Link to={`/customer/book?service=${service.id}&name=${encodeURIComponent(service.name)}&price=${service.basePrice}`}>
-                                                <button
-                                                    className="btn btn-primary btn-sm"
-                                                    style={{
-                                                        padding: '10px 20px',
-                                                        transition: 'all 0.2s ease'
-                                                    }}
-                                                >
-                                                    BOOK NOW
-                                                </button>
-                                            </Link>
-                                        </div>
+                                        <Link to={`/customer/book?service=${service.id}&name=${encodeURIComponent(service.name)}&price=${service.basePrice}`}>
+                                            <button className="btn btn-primary btn-sm" style={{ padding: '10px 20px' }}>BOOK NOW</button>
+                                        </Link>
                                     </div>
                                 </div>
                             );
