@@ -30,8 +30,13 @@ export default function BookingPage() {
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedTime, setSelectedTime] = useState('');
 
-    // Address state
-    const [address, setAddress] = useState({ line1: '', line2: '', city: '', pincode: '' });
+    // Address state (pre-fill from user profile)
+    const [address, setAddress] = useState({
+        line1: user?.addressLine1 || '',
+        line2: user?.addressLine2 || '',
+        city: user?.city || '',
+        pincode: user?.pincode || ''
+    });
     const [instructions, setInstructions] = useState('');
     const [paymentMethod, setPaymentMethod] = useState('cash');
 

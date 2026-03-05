@@ -189,7 +189,7 @@ const LandingPage = () => {
                     )}
                 </div>
 
-                <button onClick={() => setMobileOpen(!mobileOpen)} style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer' }} className="mobile-toggle">
+                <button onClick={() => setMobileOpen(!mobileOpen)} className="mobile-toggle">
                     {mobileOpen ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </nav>
@@ -227,7 +227,7 @@ const LandingPage = () => {
 
             {/* Services Section */}
             <section id="services" style={{ padding: '8rem 5%', borderBottom: '1px solid #e5e5e5' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', marginBottom: '6rem', alignItems: 'end' }}>
+                <div className="grid-2" style={{ gap: '4rem', marginBottom: '6rem', alignItems: 'end' }}>
                     <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, margin: 0, lineHeight: 0.9 }}>
                         Our <br />Core Scope
                     </h2>

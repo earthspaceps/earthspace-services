@@ -17,9 +17,9 @@ router.get('/profile', authenticate, async (req, res, next) => {
 // PUT /api/users/profile
 router.put('/profile', authenticate, async (req, res, next) => {
     try {
-        const { name, email, city } = req.body;
+        const { name, email, city, addressLine1, addressLine2, pincode } = req.body;
         const user = await User.findByPk(req.user.id);
-        await user.update({ name, email, city });
+        await user.update({ name, email, city, addressLine1, addressLine2, pincode });
         res.json({ success: true, message: 'Profile updated.', data: { user } });
     } catch (err) { next(err); }
 });

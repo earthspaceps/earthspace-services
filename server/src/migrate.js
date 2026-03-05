@@ -26,7 +26,22 @@ async function migrate() {
                 END IF;
             END $$;
         `);
-        console.log('Column payment_status checked/added.');
+        // Add address columns to users
+        await sequelize.query(`
+            DO $$ 
+            BEGIN 
+                IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='address_line1') THEN
+                    ALTER TABLE users ADD COLUMN address_line1 TEXT;
+                END IF;
+                IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='address_line2') THEN
+                    ALTER TABLE users ADD COLUMN address_line2 TEXT;
+                END IF;
+                IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='pincode') THEN
+                    ALTER TABLE users ADD COLUMN pincode VARCHAR(10);
+                END IF;
+            END $$;
+        `);
+        console.log('User address columns checked/added.');
 
         console.log('Migration completed successfully.');
         process.exit(0);

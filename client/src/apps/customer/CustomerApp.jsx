@@ -17,47 +17,103 @@ const NAV_LINKS = [
 ];
 
 function ProfilePage() {
-    const { user, logout } = useAuth();
+    const { user, logout, setUser } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState({ type: '', text: '' });
+    const [formData, setFormData] = useState({
+        name: user?.name || '',
+        email: user?.email || '',
+        city: user?.city || '',
+        addressLine1: user?.addressLine1 || '',
+        addressLine2: user?.addressLine2 || '',
+        pincode: user?.pincode || '',
+    });
+
+    const handleSave = async () => {
+        setLoading(true);
+        setMessage({ type: '', text: '' });
+        try {
+            const { data } = await api.put('/users/profile', formData);
+            setUser(data.data.user);
+            setMessage({ type: 'success', text: 'Profile updated successfully.' });
+        } catch (err) {
+            console.error(err);
+            setMessage({ type: 'danger', text: err.response?.data?.message || 'Failed to update profile.' });
+        }
+        setLoading(false);
+    };
+
+    const handleLogout = () => {
+        if (window.confirm('Are you sure you want to sign out?')) {
+            logout();
+            window.location.href = '/login';
+        }
+    };
+
     return (
-        <div style={{ padding: '80px var(--content-padding)', maxWidth: 640, margin: '0 auto' }}>
-            <div className="card card-body" style={{ marginBottom: 40, borderRadius: 0, border: '1px solid #000', padding: '60px 40px', background: '#fff', textAlign: 'left' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 32, marginBottom: 40 }}>
-                    <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 80, height: 80, fontSize: '2rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
+        <div style={{ padding: '40px var(--content-padding)', maxWidth: 640, margin: '0 auto' }}>
+            <div className="card card-body" style={{ borderRadius: 0, border: '1px solid #000', padding: '40px', background: '#fff' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 24, marginBottom: 40, paddingBottom: 32, borderBottom: '1px solid #f0f0f0' }}>
+                    <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 64, height: 64, fontSize: '1.5rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
                     <div>
-                        <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.02em' }}>{user?.name}</h2>
-                        <div style={{ color: '#666', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em' }}>{user?.email?.toUpperCase() || user?.phone}</div>
+                        <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.5rem', fontWeight: 900, letterSpacing: '-0.02em' }}>{user?.name}</h2>
+                        <div style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>CUSTOMER ACCOUNT</div>
                     </div>
                 </div>
 
-                <div style={{ borderTop: '1px solid #000', paddingTop: 32 }}>
-                    <div style={{ marginBottom: 24 }}>
-                        <label style={{ fontSize: '0.65rem', fontWeight: 800, color: '#000', letterSpacing: '0.1em', display: 'block', marginBottom: 8 }}>ACCOUNT ROLE</label>
-                        <div style={{ fontSize: '0.9rem', fontWeight: 900, textTransform: 'uppercase' }}>{user?.role}</div>
+                {message.text && <div className={`alert alert-${message.type} mb-6`}>{message.text}</div>}
+
+                <div className="grid-2" style={{ gap: 24, marginBottom: 32 }}>
+                    <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>FULL NAME</label>
+                        <input className="form-control architectural-input" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} />
                     </div>
-                    <div>
-                        <button
-                            className="btn btn-primary"
-                            style={{
-                                borderRadius: 0,
-                                padding: '16px 40px',
-                                background: '#000',
-                                color: '#fff',
-                                border: '1px solid #000',
-                                transition: 'all 0.3s ease'
-                            }}
-                            onMouseEnter={e => {
-                                e.currentTarget.style.background = '#fff';
-                                e.currentTarget.style.color = '#000';
-                            }}
-                            onMouseLeave={e => {
-                                e.currentTarget.style.background = '#000';
-                                e.currentTarget.style.color = '#fff';
-                            }}
-                            onClick={() => { if (window.confirm('Log out from EarthSpace?')) { logout(); window.location.href = '/login'; } }}
-                        >
-                            TERMINATE SESSION
-                        </button>
+                    <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>EMAIL ADDRESS</label>
+                        <input className="form-control architectural-input" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} />
                     </div>
+                    <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PHONE NUMBER</label>
+                        <input className="form-control architectural-input" value={user?.phone} disabled style={{ background: '#f8f8f8', cursor: 'not-allowed' }} title="Phone cannot be changed" />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>CITY</label>
+                        <input className="form-control architectural-input" value={formData.city} onChange={e => setFormData({ ...formData, city: e.target.value })} />
+                    </div>
+                </div>
+
+                <div style={{ marginBottom: 40 }}>
+                    <h4 style={{ fontSize: '0.8rem', fontWeight: 800, marginBottom: 20, letterSpacing: '0.1em', color: '#000', borderBottom: '2px solid #000', display: 'inline-block' }}>SERVICE ADDRESS</h4>
+                    <div className="form-group mb-4">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 1</label>
+                        <input className="form-control architectural-input" placeholder="House/Flat No, Building Name" value={formData.addressLine1} onChange={e => setFormData({ ...formData, addressLine1: e.target.value })} />
+                    </div>
+                    <div className="form-group mb-4">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 2</label>
+                        <input className="form-control architectural-input" placeholder="Landmark, Area" value={formData.addressLine2} onChange={e => setFormData({ ...formData, addressLine2: e.target.value })} />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PINCODE</label>
+                        <input className="form-control architectural-input" placeholder="6-digit PIN" value={formData.pincode} onChange={e => setFormData({ ...formData, pincode: e.target.value })} />
+                    </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: 16 }}>
+                    <button
+                        className="btn btn-primary"
+                        style={{ flex: 2, padding: '16px' }}
+                        onClick={handleSave}
+                        disabled={loading}
+                    >
+                        {loading ? 'SAVING...' : 'SAVE CHANGES'}
+                    </button>
+                    <button
+                        className="btn btn-outline"
+                        style={{ flex: 1, borderColor: '#ff4444', color: '#ff4444' }}
+                        onClick={handleLogout}
+                    >
+                        SIGN OUT
+                    </button>
                 </div>
             </div>
         </div>
@@ -72,50 +128,49 @@ export default function CustomerApp() {
     return (
         <div style={{ minHeight: '100vh' }}>
             {/* Top Navbar */}
-            <nav className="customer-navbar" style={{ background: 'var(--bg-dark)' }}>
-                <div className="brand">
+            <nav className="customer-navbar" style={{ background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--content-padding)', height: '64px', position: 'sticky', top: 0, zIndex: 1000 }}>
+                <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
                     <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: '#fff', fontSize: '1rem' }}>Services</span>
                 </div>
 
-                {/* Desktop Nav */}
-                <div className="nav-links">
+                {/* Desktop Nav - Hidden on mobile via index.css .nav-links rule or inline */}
+                <div className="nav-links" style={{ display: 'flex', gap: 24 }}>
                     {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                         const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                         return (
-                            <Link key={to} to={to} className={`nav-link ${active ? 'active' : ''}`}>
-                                <Icon size={15} style={{ display: 'inline', marginRight: 4 }} />{label}
+                            <Link key={to} to={to} className={`nav-link ${active ? 'active' : ''}`} style={{ color: active ? '#fff' : 'rgba(255,255,255,0.6)', fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                <Icon size={14} />{label}
                             </Link>
                         );
                     })}
                 </div>
 
                 {/* Navbar Actions */}
-                <div className="navbar-actions">
-                    <div className="avatar avatar-sm" style={{ cursor: 'default' }}>{user?.name?.[0]?.toUpperCase()}</div>
-                    <button className="btn btn-ghost btn-sm" style={{ display: 'none', color: '#fff' }} id="mobile-menu-toggle" onClick={() => setMenuOpen(v => !v)}>
-                        {menuOpen ? <X size={20} /> : <Menu size={20} />}
-                    </button>
+                <div className="navbar-actions" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                    <div className="avatar avatar-sm" style={{ cursor: 'default', background: '#fff', color: '#000' }}>{user?.name?.[0]?.toUpperCase()}</div>
                 </div>
             </nav>
 
             {/* Routes */}
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/book" element={<BookingPage />} />
-                <Route path="/bookings" element={<BookingHistoryPage />} />
-                <Route path="/complaints" element={<ComplaintsPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="*" element={<Navigate to="/customer" replace />} />
-            </Routes>
+            <div className="main-content" style={{ paddingBottom: 80 }}>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/services" element={<ServicesPage />} />
+                    <Route path="/book" element={<BookingPage />} />
+                    <Route path="/bookings" element={<BookingHistoryPage />} />
+                    <Route path="/complaints" element={<ComplaintsPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="*" element={<Navigate to="/customer" replace />} />
+                </Routes>
+            </div>
 
-            {/* Mobile Bottom Nav */}
-            <div style={{
+            {/* Mobile Bottom Nav - Hidden on desktop via index.css if implemented, or here */}
+            <div className="mobile-bottom-nav" style={{
                 position: 'fixed', bottom: 0, left: 0, right: 0,
-                background: '#fff', borderTop: '1px solid var(--border-color)',
-                display: 'flex', padding: '8px 0 4px', zIndex: 200,
-                boxShadow: '0 -4px 20px rgba(0,0,0,.08)'
+                background: '#fff', borderTop: '1px solid #000',
+                display: 'none', padding: '8px 0 4px', zIndex: 2000,
+                boxShadow: '0 -4px 20px rgba(0,0,0,.1)'
             }}>
                 {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
@@ -127,8 +182,12 @@ export default function CustomerApp() {
                     );
                 })}
             </div>
-            {/* Bottom nav spacer */}
-            <div style={{ height: 64 }} />
+            <style>{`
+                @media (max-width: 768px) {
+                    .customer-navbar .nav-links { display: none !important; }
+                    .mobile-bottom-nav { display: flex !important; }
+                }
+            `}</style>
         </div>
     );
 }

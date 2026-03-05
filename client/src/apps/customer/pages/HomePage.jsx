@@ -54,8 +54,8 @@ export default function HomePage() {
                 <div className="hero-content" style={{ textAlign: 'center', color: '#fff' }}>
                     <h1 style={{ marginBottom: 16, color: '#fff' }}>PRECISION <span style={{ color: 'var(--color-primary-300)' }}>HOME CARE</span></h1>
                     <p style={{ color: 'rgba(255,255,255,.7)', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 32 }}>ENGINEERING-LED FACILITY MANAGEMENT</p>
-                    <form className="hero-search" onSubmit={handleSearch} style={{ maxWidth: 600, margin: '0 auto', display: 'flex', gap: 0 }}>
-                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ flex: 1, padding: '16px 20px', borderRadius: 0, border: 'none' }} />
+                    <form className="hero-search" onSubmit={handleSearch} style={{ maxWidth: 600, margin: '0 auto', display: 'flex' }}>
+                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ flex: 1, padding: '16px 20px', borderRadius: 0, border: 'none', borderBottom: '1px solid #eee' }} />
                         <button type="submit" className="btn btn-primary" style={{ padding: '0 32px' }}>SEARCH</button>
                     </form>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 24, color: 'rgba(255,255,255,.5)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
@@ -88,7 +88,7 @@ export default function HomePage() {
                         </p>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 0, border: '1px solid #000' }}>
+                    <div className="grid-4" style={{ gap: 0, border: '1px solid #000' }}>
                         {[
                             {
                                 slug: 'electrical',

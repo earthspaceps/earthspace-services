@@ -16,6 +16,9 @@ const User = sequelize.define('User', {
     city: { type: DataTypes.STRING(100) },
     state: { type: DataTypes.STRING(100) },
     country: { type: DataTypes.STRING(100), defaultValue: 'India' },
+    addressLine1: { type: DataTypes.TEXT, field: 'address_line1' },
+    addressLine2: { type: DataTypes.TEXT, field: 'address_line2' },
+    pincode: { type: DataTypes.STRING(10), field: 'pincode' },
 }, {
     tableName: 'users',
     underscored: true,
