@@ -24,7 +24,7 @@ export default function LoginPage() {
         try {
             const { data } = await api.post('/auth/login', { email: form.email, password: form.password });
             login(data.data.user, data.data.accessToken, data.data.refreshToken);
-            navigate('/');
+            navigate('/dashboard');
         } catch (err) { setError(err.response?.data?.message || 'Login failed.'); }
         setLoading(false);
     };
@@ -46,7 +46,7 @@ export default function LoginPage() {
                 setMode('register'); setStep(1);
             } else {
                 login(data.data.user, data.data.accessToken, data.data.refreshToken);
-                navigate('/');
+                navigate('/dashboard');
             }
         } catch (err) { setError(err.response?.data?.message || 'Invalid OTP.'); }
         setLoading(false);

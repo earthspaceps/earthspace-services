@@ -29,6 +29,13 @@ const RoleRouter = () => {
     return <Navigate to="/customer" replace />;
 };
 
+const LoginRedirect = () => {
+    const { user, loading } = useAuth();
+    if (loading) return null;
+    if (user) return <Navigate to="/dashboard" replace />;
+    return <LoginPage />;
+};
+
 import ErrorBoundary from './shared/ErrorBoundary';
 
 export default function App() {
@@ -37,7 +44,7 @@ export default function App() {
             <AuthProvider>
                 <BrowserRouter>
                     <Routes>
-                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/login" element={<LoginRedirect />} />
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/dashboard" element={<RoleRouter />} />
 

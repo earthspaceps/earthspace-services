@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../../shared/AuthContext';
 import {
     Briefcase,
     Wrench,
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react';
 
 const LandingPage = () => {
+    const { user } = useAuth();
     const [scrolled, setScrolled] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -180,7 +182,11 @@ const LandingPage = () => {
                 <div className="desktop-links" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
                     <a href="#services" className="nav-link">Services</a>
                     <a href="#process" className="nav-link">Process</a>
-                    <Link to="/login" className="btn-bw btn-bw-outline" style={{ padding: '0.6rem 1.5rem' }}>Login</Link>
+                    {user ? (
+                        <Link to="/dashboard" className="btn-bw btn-bw-outline" style={{ padding: '0.6rem 1.5rem' }}>Dashboard</Link>
+                    ) : (
+                        <Link to="/login" className="btn-bw btn-bw-outline" style={{ padding: '0.6rem 1.5rem' }}>Login</Link>
+                    )}
                 </div>
 
                 <button onClick={() => setMobileOpen(!mobileOpen)} style={{ display: 'none', background: 'none', border: 'none', cursor: 'pointer' }} className="mobile-toggle">
@@ -209,7 +215,11 @@ const LandingPage = () => {
                         Precision-led facility management and maintenance for modern living spaces. Managed by EarthSpace Project Solutions.
                     </p>
                     <div style={{ display: 'flex', gap: '1.5rem' }}>
-                        <Link to="/login" className="btn-bw btn-bw-filled">Book a Service</Link>
+                        {user ? (
+                            <Link to="/dashboard" className="btn-bw btn-bw-filled">Go to Dashboard</Link>
+                        ) : (
+                            <Link to="/login" className="btn-bw btn-bw-filled">Book a Service</Link>
+                        )}
                         <a href="#services" className="btn-bw btn-bw-outline">Explore Scope</a>
                     </div>
                 </div>
