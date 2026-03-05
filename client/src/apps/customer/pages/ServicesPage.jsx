@@ -104,15 +104,23 @@ export default function ServicesPage() {
                                         overflow: 'hidden'
                                     }}
                                 >
-                                    <div style={{ background: '#0A0D14', padding: '24px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <div style={{ background: '#ffffff', color: '#000', padding: '32px 32px 24px', borderBottom: 'none' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                                            <span style={{ fontSize: '0.6rem', background: 'rgba(255,255,255,.1)', color: '#fff', padding: '3px 10px', letterSpacing: '0.15em', fontWeight: 800 }}>{service.category?.name.toUpperCase()}</span>
-                                            <Icon size={20} color="#fff" strokeWidth={1} />
+                                            <span style={{ fontSize: '0.6rem', background: 'rgba(0,0,0,0.8)', color: '#fff', padding: '6px 14px', letterSpacing: '0.15em', fontWeight: 800, borderRadius: '4px' }}>{service.category?.name.toUpperCase()}</span>
+                                            <Icon size={20} color="#000" strokeWidth={1.5} />
                                         </div>
-                                        <h3 style={{ color: '#fff', fontSize: '1.1rem', letterSpacing: '0.04em', fontWeight: 800 }}>{service.name.toUpperCase()}</h3>
+                                        <h3 style={{ color: '#000', fontSize: '1.25rem', letterSpacing: '-0.02em', fontWeight: 900, marginBottom: 0 }}>{service.name.toUpperCase()}</h3>
                                     </div>
-                                    <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                                        <p style={{ fontSize: '0.85rem', marginBottom: 20, lineHeight: 1.7, color: 'rgba(255,255,255,0.7)' }}>{service.description}</p>
+                                    <div style={{
+                                        padding: '24px 32px 32px',
+                                        flex: 1,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        background: 'rgba(255,255,255,0.03)',
+                                        backdropFilter: 'blur(20px)',
+                                        borderTop: '1px solid rgba(255,255,255,0.05)'
+                                    }}>
+                                        <p style={{ fontSize: '0.9rem', marginBottom: 20, lineHeight: 1.7, color: 'rgba(255,255,255,0.6)' }}>{service.description}</p>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, color: 'rgba(255,255,255,0.4)', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                             <Clock size={14} />{service.durationMinutes} MINS
                                             <span style={{ margin: '0 4px', opacity: 0.3 }}>|</span>

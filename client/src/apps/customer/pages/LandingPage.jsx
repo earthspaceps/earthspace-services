@@ -148,15 +148,11 @@ const LandingPage = () => {
                 }
 
                 .service-card {
-                    padding: 4rem 3rem;
-                    border: 1px solid #050505;
-                    transition: all 0.4s ease;
-                    background: #fff;
+                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+                    height: 100%;
                 }
 
                 .service-card:hover {
-                    background: #050505;
-                    color: #ffffff;
                     transform: translateY(-10px);
                 }
 
@@ -328,14 +324,30 @@ const LandingPage = () => {
 
                 <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1px', backgroundColor: '#050505', border: '1px solid #050505' }}>
                     {services.map((s, i) => (
-                        <div key={i} className="service-card">
-                            <div style={{ marginBottom: '2rem', opacity: 0.4 }}>{s.icon}</div>
-                            <h3 style={{ fontSize: '1.5rem', textTransform: 'uppercase', marginBottom: '1.5rem', fontWeight: 700 }}>{s.title}</h3>
-                            <p style={{ fontSize: '1rem', fontWeight: 300 }}>{s.desc}</p>
-                            <ul style={{ listStyle: 'none', marginTop: '2rem', padding: 0 }}>
-                                <li style={{ padding: '0.8rem 0', borderTop: '1px solid rgba(0,0,0,0.1)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>✓ Certified Pros</li>
-                                <li style={{ padding: '0.8rem 0', borderTop: '1px solid rgba(0,0,0,0.1)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>✓ Material Warranty</li>
-                            </ul>
+                        <div key={i} className="service-card" style={{ display: 'flex', flexDirection: 'column', border: 'none' }}>
+                            <div className="card-header" style={{ backgroundColor: '#ffffff', padding: '3.5rem 2.5rem 2rem', color: '#000' }}>
+                                <div style={{ marginBottom: '1.5rem', color: '#000' }}>{s.icon}</div>
+                                <h3 style={{ fontSize: '1.4rem', textTransform: 'uppercase', marginBottom: 0, fontWeight: 900, letterSpacing: '-0.02em' }}>{s.title}</h3>
+                            </div>
+                            <div className="card-body" style={{
+                                padding: '2.5rem 2.5rem 4rem',
+                                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                                backdropFilter: 'blur(20px)',
+                                border: '1px solid rgba(255, 255, 255, 0.08)',
+                                borderTop: 'none',
+                                flex: 1,
+                                color: 'rgba(255,255,255,0.8)'
+                            }}>
+                                <p style={{ fontSize: '0.95rem', fontWeight: 300, lineHeight: 1.7, marginBottom: '2.5rem', color: 'rgba(255,255,255,0.6)' }}>{s.desc}</p>
+                                <ul style={{ listStyle: 'none', padding: 0 }}>
+                                    <li style={{ padding: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ color: '#fff' }}>✓</span> Certified Pros
+                                    </li>
+                                    <li style={{ padding: '1rem 0', borderTop: '1px solid rgba(255,255,255,0.1)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <span style={{ color: '#fff' }}>✓</span> Material Warranty
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     ))}
                 </div>
