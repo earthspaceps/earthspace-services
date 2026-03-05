@@ -54,17 +54,20 @@ export default function BookingPage() {
                 paymentMethod,
             });
 
-            // Handle different potential response structures
-            const bookingData = response.data?.data?.booking || response.data?.booking || response.data;
+            // Very resilient data extraction
+            const bookingData = response.data?.data?.booking || response.data?.booking || response.data?.data || {};
+
+            // If the response succeeded (2xx), we move to step 4 regardless of data format
             setBooking(bookingData);
             setStep(4);
 
-            // Scroll to top to ensure confirmation is visible
-            window.scrollTo(0, 0);
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } catch (err) {
             console.error('Booking Error:', err.response?.data || err);
             const errorMsg = err.response?.data?.message || 'Booking failed. Please check your network or try again.';
-            alert(errorMsg);
+            setError(errorMsg);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         } finally {
             setLoading(false);
         }
@@ -252,14 +255,14 @@ export default function BookingPage() {
 
                         <div style={{ background: '#fcfcfc', border: '1px solid #eee', padding: '32px', marginBottom: 40, textAlign: 'left' }}>
                             {[
-                                ['BOOKING NUMBER', booking.bookingNumber],
+                                ['BOOKING NUMBER', booking.bookingNumber || booking.booking_number || 'N/A'],
                                 ['SERVICE TYPE', serviceName],
                                 ['SCHEDULED DATE', selectedDate],
                                 ['SCHEDULED WINDOW', selectedTime]
                             ].map(([k, v]) => (
                                 <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, borderBottom: '1px solid #f0f0f0', paddingBottom: 12 }}>
                                     <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#999', letterSpacing: '0.1em' }}>{k}</span>
-                                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#000' }}>{v?.toUpperCase()}</span>
+                                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#000' }}>{String(v || 'N/A').toUpperCase()}</span>
                                 </div>
                             ))}
                         </div>
