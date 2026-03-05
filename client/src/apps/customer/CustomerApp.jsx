@@ -169,13 +169,32 @@ function ProfilePage() {
 
 export default function CustomerApp() {
     const { user } = useAuth();
-    const location = useLocation();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    React.useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <div style={{ minHeight: '100vh' }}>
             {/* Top Navbar */}
-            <nav className="customer-navbar" style={{ background: 'var(--bg-dark)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 var(--content-padding)', height: '64px', position: 'sticky', top: 0, zIndex: 1000 }}>
+            <nav className={`customer-navbar ${isScrolled ? 'shrunk' : ''}`} style={{
+                background: 'var(--bg-dark)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 var(--content-padding)',
+                position: 'sticky',
+                top: 0,
+                zIndex: 1000,
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                borderBottom: isScrolled ? '1px solid rgba(255,255,255,0.1)' : '1px solid transparent'
+            }}>
                 <div className="brand" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
                     <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: '#fff', fontSize: '1rem' }}>Services</span>

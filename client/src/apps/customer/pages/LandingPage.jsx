@@ -13,6 +13,7 @@ import {
     CreditCard,
     Calendar,
     CheckCircle2,
+    ChevronDown,
     ChevronRight,
     ArrowRight,
     Menu,
@@ -29,7 +30,22 @@ const LandingPage = () => {
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+
+        // Plan2: Intersection Observer for Reveal Animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            observer.disconnect();
+        };
     }, []);
 
     const services = [
@@ -107,7 +123,8 @@ const LandingPage = () => {
                 .btn-bw-filled:hover {
                     background: transparent;
                     color: #050505;
-                    transform: translateY(-2px);
+                    transform: translateY(-4px) scale(1.02);
+                    box-shadow: 12px 12px 0px #000;
                 }
 
                 .btn-bw-outline:hover {
@@ -160,7 +177,7 @@ const LandingPage = () => {
             `}</style>
 
             {/* Navbar */}
-            <nav style={{
+            <nav className={`customer-navbar ${scrolled ? 'shrunk' : ''}`} style={{
                 position: 'fixed',
                 top: 0,
                 width: '100%',
@@ -168,7 +185,7 @@ const LandingPage = () => {
                 backgroundColor: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
                 backdropFilter: scrolled ? 'blur(10px)' : 'none',
                 borderBottom: scrolled ? '1px solid #e5e5e5' : 'none',
-                padding: '1.5rem 5%',
+                padding: scrolled ? '0 5%' : '1.5rem 5%',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
@@ -195,15 +212,11 @@ const LandingPage = () => {
             </nav>
 
             {/* Hero Section */}
-            <section className="blueprint-bg" style={{
-                height: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0 5%',
-                position: 'relative',
-                borderBottom: '1px solid #e5e5e5'
+            <section className="blueprint-bg texture-overlay" style={{
+                borderBottom: '1px solid #e5e5e5',
+                padding: '120px 5% 80px'
             }}>
-                <div className="reveal" style={{ maxWidth: '900px' }}>
+                <div className="reveal active" style={{ maxWidth: '900px' }}>
                     <div style={{ textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 600, letterSpacing: '0.2em', marginBottom: '1.5rem', color: '#666' }}>
                         Structural Integrity • Professional Care
                     </div>
@@ -216,18 +229,23 @@ const LandingPage = () => {
                     </p>
                     <div style={{ display: 'flex', gap: '1.5rem' }}>
                         {user ? (
-                            <Link to={user.role === 'admin' ? '/admin' : user.role === 'technician' ? '/technician' : '/customer'} className="btn-bw btn-bw-filled">GO TO HUB</Link>
+                            <Link to={user.role === 'admin' ? '/admin' : user.role === 'technician' ? '/technician' : '/customer'} className="btn-bw btn-bw-filled animate-pulse">GO TO HUB</Link>
                         ) : (
-                            <Link to="/login" className="btn-bw btn-bw-filled">START BOOKING</Link>
+                            <Link to="/login" className="btn-bw btn-bw-filled animate-pulse">START BOOKING</Link>
                         )}
                         <a href="#services" className="btn-bw btn-bw-outline">EXPLORE SCOPE</a>
                     </div>
+                </div>
+
+                {/* Plan2: Bouncing Scroll Indicator */}
+                <div className="scroll-indicator" style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', color: '#ccc' }}>
+                    <ChevronDown size={32} strokeWidth={1} />
                 </div>
             </section>
 
             {/* Services Section */}
             <section id="services" style={{ padding: '8rem 5%', borderBottom: '1px solid #e5e5e5' }}>
-                <div className="grid-2" style={{ gap: '4rem', marginBottom: '6rem', alignItems: 'end' }}>
+                <div className="grid-2 reveal" style={{ gap: '4rem', marginBottom: '6rem', alignItems: 'end' }}>
                     <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, margin: 0, lineHeight: 0.9 }}>
                         Our <br />Core Scope
                     </h2>
@@ -236,7 +254,7 @@ const LandingPage = () => {
                     </p>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1px', backgroundColor: '#050505', border: '1px solid #050505' }}>
+                <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1px', backgroundColor: '#050505', border: '1px solid #050505' }}>
                     {services.map((s, i) => (
                         <div key={i} className="service-card">
                             <div style={{ marginBottom: '2rem', opacity: 0.4 }}>{s.icon}</div>
@@ -253,13 +271,13 @@ const LandingPage = () => {
 
             {/* Process Section */}
             <section id="process" style={{ padding: '8rem 5%', backgroundColor: '#f4f4f4' }}>
-                <div style={{ textAlign: 'center', marginBottom: '6rem' }}>
+                <div className="reveal" style={{ textAlign: 'center', marginBottom: '6rem' }}>
                     <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '-0.02em' }}>The Blueprint Process</h2>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
                     {steps.map((s, i) => (
-                        <div key={i} style={{ flex: 1, minWidth: '240px', borderTop: '1px solid #050505', paddingTop: '2.5rem' }}>
+                        <div key={i} className="reveal reveal-stagger" style={{ flex: 1, minWidth: '240px', borderTop: '1px solid #050505', paddingTop: '2.5rem', '--delay': i }}>
                             <span style={{ fontSize: '3.5rem', fontWeight: 800, color: '#e5e5e5', display: 'block', lineHeight: 1, marginBottom: '1rem' }}>{s.n}</span>
                             <h4 style={{ textTransform: 'uppercase', fontWeight: 700, marginBottom: '1rem' }}>{s.title}</h4>
                             <p style={{ fontSize: '0.95rem', color: '#666', fontWeight: 300 }}>{s.desc}</p>
@@ -298,7 +316,7 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer style={{ padding: '8rem 5% 4rem', backgroundColor: '#050505', color: '#fff', textAlign: 'center' }}>
+            <footer className="texture-overlay" style={{ padding: '8rem 5% 4rem', backgroundColor: '#050505', color: '#fff', textAlign: 'center' }}>
                 <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, color: '#fff', marginBottom: '2rem' }}>Ready to Maintain?</h2>
                 <div style={{ marginBottom: '4rem' }}>
                     <Link to="/login" className="btn-bw" style={{ borderColor: '#fff', color: '#fff' }}>Start Booking</Link>

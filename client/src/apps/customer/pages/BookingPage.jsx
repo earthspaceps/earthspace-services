@@ -171,26 +171,26 @@ export default function BookingPage() {
                         <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICE ADDRESS</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                             <div className="form-group">
-                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 1</label>
-                                <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="HOUSE/FLAT NO., BUILDING NAME" value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
+                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
+                                <label>ADDRESS LINE 1</label>
                             </div>
                             <div className="form-group">
-                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 2</label>
-                                <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="LANDMARK, AREA" value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
+                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
+                                <label>ADDRESS LINE 2</label>
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                 <div className="form-group">
-                                    <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>CITY</label>
-                                    <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="CITY" value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
+                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
+                                    <label>CITY</label>
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PINCODE</label>
-                                    <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="6-DIGIT PIN" value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
+                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
+                                    <label>PINCODE</label>
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>SPECIAL INSTRUCTIONS</label>
-                                <textarea className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} rows={3} placeholder="ANY NOTES FOR OUR ENGINEER..." value={instructions} onChange={e => setInstructions(e.target.value)} />
+                                <textarea className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} rows={3} placeholder=" " value={instructions} onChange={e => setInstructions(e.target.value)} />
+                                <label>SPECIAL INSTRUCTIONS</label>
                             </div>
                         </div>
                         <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>

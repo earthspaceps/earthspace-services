@@ -27,6 +27,43 @@ const WHY_CHOOSE = [
     { icon: <Star size={24} />, title: '4.8★ Rated', desc: 'Trusted by thousands of happy customers.' },
 ];
 
+const AnimatedCounter = ({ value, duration = 2000 }) => {
+    const [count, setCount] = useState(0);
+    const [ref, setRef] = useState(null);
+    const [visible, setVisible] = useState(false);
+
+    useEffect(() => {
+        if (!ref) return;
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) setVisible(true);
+        }, { threshold: 0.5 });
+        observer.observe(ref);
+        return () => observer.disconnect();
+    }, [ref]);
+
+    useEffect(() => {
+        if (!visible) return;
+        let start = 0;
+        const end = parseInt(value.replace(/[^0-9.]/g, ''));
+        if (isNaN(end)) return;
+
+        const increment = end / (duration / 16);
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+                setCount(end);
+                clearInterval(timer);
+            } else {
+                setCount(Math.floor(start));
+            }
+        }, 16);
+        return () => clearInterval(timer);
+    }, [visible, value, duration]);
+
+    const suffix = value.replace(/[0-9.]/g, '');
+    return <span ref={setRef}>{count}{suffix}</span>;
+};
+
 export default function HomePage() {
     const { user } = useAuth();
     const navigate = useNavigate();
@@ -41,6 +78,14 @@ export default function HomePage() {
                 setLocation(`${pos.coords.latitude.toFixed(3)}, ${pos.coords.longitude.toFixed(3)}`);
             }, () => setLocation('Location not available'));
         }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        return () => observer.disconnect();
     }, []);
 
     const handleSearch = (e) => {
@@ -50,8 +95,8 @@ export default function HomePage() {
 
     return (
         <div>
-            <section className="hero" style={{ background: 'var(--bg-dark)', padding: '80px 0', borderBottom: '1px solid var(--border-color)' }}>
-                <div className="hero-content" style={{ textAlign: 'center', color: '#fff' }}>
+            <section className="hero texture-overlay" style={{ background: 'var(--bg-dark)', padding: '80px 0', borderBottom: '1px solid var(--border-color)' }}>
+                <div className="hero-content reveal active" style={{ textAlign: 'center', color: '#fff' }}>
                     <h1 style={{ marginBottom: 16, color: '#fff' }}>PRECISION <span style={{ color: 'var(--color-primary-300)' }}>HOME CARE</span></h1>
                     <p style={{ color: 'rgba(255,255,255,.7)', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 32 }}>ENGINEERING-LED FACILITY MANAGEMENT</p>
                     <form className="hero-search" onSubmit={handleSearch} style={{ maxWidth: 600, margin: '0 auto', display: 'flex' }}>
@@ -65,21 +110,23 @@ export default function HomePage() {
             </section>
 
             {/* Stats Banner */}
-            <div style={{ background: '#000', padding: '32px 0', borderBottom: '1px solid #333' }}>
-                <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24 }}>
+            <div className="texture-overlay" style={{ background: '#000', padding: '48px 0', borderBottom: '1px solid #333' }}>
+                <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 32 }}>
                     {[['50K+', 'CUSTOMERS'], ['1.2K+', 'ENGINEERS'], ['25+', 'SOLUTIONS'], ['4.8/5', 'RATING']].map(([v, l]) => (
-                        <div key={l} style={{ textAlign: 'center', color: '#fff' }}>
-                            <div style={{ fontSize: '2rem', fontWeight: 800, letterSpacing: '-0.02em' }}>{v}</div>
-                            <div style={{ fontSize: '0.7rem', opacity: .6, textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: 4 }}>{l}</div>
+                        <div key={l} className="reveal" style={{ textAlign: 'center', color: '#fff' }}>
+                            <div style={{ fontSize: '2.5rem', fontWeight: 800, letterSpacing: '-0.02em' }}>
+                                <AnimatedCounter value={v} />
+                            </div>
+                            <div style={{ fontSize: '0.75rem', opacity: .6, textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: 8 }}>{l}</div>
                         </div>
                     ))}
                 </div>
             </div>
 
             {/* OUR CORE SCOPE Section */}
-            <section style={{ padding: '80px 0', background: '#fff', borderBottom: '1px solid #f0f0f0' }}>
+            <section style={{ padding: '100px 0', background: '#fff', borderBottom: '1px solid #f0f0f0' }}>
                 <div className="container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
+                    <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
                         <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, flex: '1 1 300px' }}>
                             OUR<br />CORE SCOPE
                         </h2>
@@ -88,32 +135,12 @@ export default function HomePage() {
                         </p>
                     </div>
 
-                    <div className="grid-4" style={{ gap: 0, border: '1px solid #000' }}>
+                    <div className="grid-4 reveal" style={{ gap: 0, border: '1px solid #000' }}>
                         {[
-                            {
-                                slug: 'electrical',
-                                name: 'ELECTRICAL SERVICES',
-                                desc: 'Expert wiring, repairs, and installations.',
-                                icon: Zap
-                            },
-                            {
-                                slug: 'plumbing',
-                                name: 'PLUMBING SOLUTIONS',
-                                desc: 'Fixing leaks and full plumbing setup.',
-                                icon: Droplets
-                            },
-                            {
-                                slug: 'ac-services',
-                                name: 'HVAC & AC SERVICE',
-                                desc: 'Maintain your cooling systems efficiently.',
-                                icon: Wind
-                            },
-                            {
-                                slug: 'general',
-                                name: 'GENERAL MAINTENANCE',
-                                desc: 'Annual and on-demand home care.',
-                                icon: Hammer
-                            }
+                            { slug: 'electrical', name: 'ELECTRICAL SERVICES', desc: 'Expert wiring, repairs, and installations.', icon: Zap },
+                            { slug: 'plumbing', name: 'PLUMBING SOLUTIONS', desc: 'Fixing leaks and full plumbing setup.', icon: Droplets },
+                            { slug: 'ac-services', name: 'HVAC & AC SERVICE', desc: 'Maintain your cooling systems efficiently.', icon: Wind },
+                            { slug: 'general', name: 'GENERAL MAINTENANCE', desc: 'Annual and on-demand home care.', icon: Hammer }
                         ].map((cat, idx) => (
                             <Link
                                 key={cat.slug}
@@ -121,10 +148,7 @@ export default function HomePage() {
                                 className="core-scope-card"
                                 style={{
                                     padding: '40px',
-                                    border: idx === 3 ? 'none' : '1px solid #000',
-                                    borderTop: 'none',
-                                    borderBottom: 'none',
-                                    borderLeft: idx === 0 ? 'none' : '1px solid #000',
+                                    borderRight: idx === 3 ? 'none' : '1px solid #000',
                                     background: '#fff',
                                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                                     display: 'flex',
@@ -168,7 +192,7 @@ export default function HomePage() {
             {/* Why Choose Us */}
             <section style={{ padding: '100px 0', background: '#fcfcfc', borderBottom: '1px solid #000' }}>
                 <div className="container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
+                    <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
                         <h2 style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0 }}>
                             WHY<br />EARTHSPACE?
                         </h2>
@@ -181,13 +205,14 @@ export default function HomePage() {
                         {WHY_CHOOSE.map((item, i) => (
                             <div
                                 key={i}
-                                className="architectural-card"
+                                className="architectural-card reveal reveal-stagger"
                                 style={{
                                     padding: '40px 32px',
                                     background: '#fff',
                                     border: '1px solid #000',
                                     transition: 'all 0.3s ease',
-                                    textAlign: 'left'
+                                    textAlign: 'left',
+                                    '--delay': i
                                 }}
                                 onMouseEnter={e => {
                                     e.currentTarget.style.transform = 'translateY(-10px)';
@@ -212,7 +237,7 @@ export default function HomePage() {
             {/* How It Works */}
             <section style={{ padding: '100px 0', background: '#fff' }}>
                 <div className="container">
-                    <div className="text-center mb-16">
+                    <div className="text-center mb-16 reveal">
                         <h2 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em' }}>THE PROCESS</h2>
                     </div>
                     <div className="grid-4" style={{ gap: 40 }}>
@@ -221,8 +246,8 @@ export default function HomePage() {
                             { step: '02', title: 'SCHEDULE SLOT', desc: 'Pick your preferred date and time.' },
                             { step: '03', title: 'EXPERT ARRIVAL', desc: 'A certified engineer arrives at your doorstep.' },
                             { step: '04', title: 'QUALITY CHECK', desc: 'Complete the job and rate your experience.' },
-                        ].map(s => (
-                            <div key={s.step} style={{ textAlign: 'left', borderLeft: '4px solid #000', paddingLeft: 24, paddingBottom: 20 }}>
+                        ].map((s, i) => (
+                            <div key={s.step} className="reveal reveal-stagger" style={{ textAlign: 'left', borderLeft: '4px solid #000', paddingLeft: 24, paddingBottom: 20, '--delay': i }}>
                                 <div style={{ fontSize: '3rem', fontWeight: 900, color: '#000', lineHeight: 1, marginBottom: 12 }}>{s.step}</div>
                                 <h4 style={{ marginBottom: 12, fontWeight: 800 }}>{s.title}</h4>
                                 <p style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>{s.desc}</p>
@@ -233,20 +258,21 @@ export default function HomePage() {
             </section>
 
             {/* CTA */}
-            <section style={{ padding: '120px 0', background: '#000', textAlign: 'center', color: '#fff', position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'relative', zIndex: 1 }}>
+            <section className="texture-overlay" style={{ padding: '120px 0', background: '#000', textAlign: 'center', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+                <div className="reveal" style={{ position: 'relative', zIndex: 1 }}>
                     <h2 style={{ color: '#fff', marginBottom: 24, fontSize: '4rem', fontWeight: 900, letterSpacing: '-0.04em' }}>READY FOR PRECISION?</h2>
                     <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 48, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', fontWeight: 700 }}>EXPERIENCE THE EARTHSPACE ENGINEERING STANDARD TODAY.</p>
                     <Link to="/customer/services">
                         <button
-                            className="btn btn-lg"
+                            className="btn btn-lg animate-pulse"
                             style={{
                                 background: '#fff',
                                 color: '#000',
                                 border: 'none',
                                 padding: '20px 60px',
                                 fontSize: '1rem',
-                                transition: 'all 0.3s ease'
+                                transition: 'all 0.3s ease',
+                                letterSpacing: '0.15em'
                             }}
                             onMouseEnter={e => {
                                 e.currentTarget.style.transform = 'scale(1.05)';
@@ -264,9 +290,9 @@ export default function HomePage() {
             </section>
 
             {/* Footer */}
-            <footer style={{ background: '#000', color: 'rgba(255,255,255,.5)', padding: '80px 0 40px', borderTop: '1px solid #333' }}>
+            <footer className="texture-overlay" style={{ background: '#000', color: 'rgba(255,255,255,.5)', padding: '80px 0 40px', borderTop: '1px solid #333' }}>
                 <div className="container">
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 60, marginBottom: 80 }}>
+                    <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 60, marginBottom: 80 }}>
                         <div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                                 <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
@@ -288,10 +314,9 @@ export default function HomePage() {
                                 <div style={{ marginBottom: 8 }}>📞 +91-9999-999999</div>
                                 <div style={{ marginBottom: 8 }}>✉️ SUPPORT@EARTHSPACESERVICES.COM</div>
                                 <div style={{ display: 'flex', gap: 16, marginTop: 16 }}>
-                                    {/* Social placeholders */}
-                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}>IN</div>
-                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}>TW</div>
-                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}>IG</div>
+                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'scale(1)'; }}>IN</div>
+                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'scale(1)'; }}>TW</div>
+                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s' }} onMouseEnter={e => { e.currentTarget.style.borderColor = '#fff'; e.currentTarget.style.transform = 'scale(1.1)'; }} onMouseLeave={e => { e.currentTarget.style.borderColor = '#333'; e.currentTarget.style.transform = 'scale(1)'; }}>IG</div>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +335,7 @@ export default function HomePage() {
 
             {/* WhatsApp FAB */}
             <a href="https://wa.me/919999999999?text=Hello%20Earthspace%20Services%2C%20I%20need%20help." target="_blank" rel="noreferrer">
-                <button className="whatsapp-fab" title="WhatsApp Support">
+                <button className="whatsapp-fab animate-pulse" title="WhatsApp Support" style={{ position: 'fixed', bottom: '2rem', right: '2rem', width: '60px', height: '60px', borderRadius: '50%', background: '#25D366', color: '#fff', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, boxShadow: '0 4px 12px rgba(0,0,0,0.15)' }}>
                     <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
                 </button>
             </a>
