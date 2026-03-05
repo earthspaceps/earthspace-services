@@ -7,8 +7,7 @@ import api from '../../../shared/api';
 export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
-    const [mode, setMode] = useState('login'); // login | otp | register
-    const [step, setStep] = useState(1);
+    const [mode, setMode] = useState('login'); // 'login' or 'register'
     const [showPass, setShowPass] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -26,29 +25,6 @@ export default function LoginPage() {
             login(data.data.user, data.data.accessToken, data.data.refreshToken);
             navigate('/dashboard');
         } catch (err) { setError(err.response?.data?.message || 'Login failed.'); }
-        setLoading(false);
-    };
-
-    const handleSendOTP = async (e) => {
-        e.preventDefault(); setLoading(true); setError('');
-        try {
-            await api.post('/auth/send-otp', { phone: form.phone });
-            setStep(2);
-        } catch (err) { setError(err.response?.data?.message || 'Failed to send OTP.'); }
-        setLoading(false);
-    };
-
-    const handleVerifyOTP = async (e) => {
-        e.preventDefault(); setLoading(true); setError('');
-        try {
-            const { data } = await api.post('/auth/verify-otp', { phone: form.phone, otp: form.otp });
-            if (!data.data.user.name || data.data.user.name === 'New User') {
-                setMode('register'); setStep(1);
-            } else {
-                login(data.data.user, data.data.accessToken, data.data.refreshToken);
-                navigate('/dashboard');
-            }
-        } catch (err) { setError(err.response?.data?.message || 'Invalid OTP.'); }
         setLoading(false);
     };
 
@@ -104,21 +80,6 @@ export default function LoginPage() {
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>PRECISION MANAGEMENT</p>
                 </div>
 
-                {/* Tab toggle */}
-                <div style={{ display: 'flex', background: 'var(--bg-alt)', border: '1px solid var(--border-color)', marginBottom: 20 }}>
-                    {[['login', 'Email Login'], ['otp', 'OTP Login']].map(([m, label]) => (
-                        <button key={m} onClick={() => { setMode(m); setStep(1); setError(''); }}
-                            style={{
-                                flex: 1, padding: '10px 0', border: 'none', fontWeight: 600, fontSize: '0.85rem',
-                                background: mode === m ? 'var(--bg-card)' : 'transparent',
-                                color: mode === m ? 'var(--text-primary)' : 'var(--text-secondary)',
-                                boxShadow: mode === m ? 'var(--shadow-sm)' : 'none',
-                                transition: 'all var(--transition-fast)',
-                                borderBottom: mode === m ? '2px solid var(--color-primary)' : '2px solid transparent'
-                            }}>{label}</button>
-                    ))}
-                </div>
-
                 {/* Quick Fill Buttons (Test Mode) */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8, marginBottom: 20 }}>
                     {[
@@ -147,14 +108,22 @@ export default function LoginPage() {
 
                 {error && <div className="alert alert-danger mb-4">{error}</div>}
 
-                {/* Email + Password Login */}
+                {/* Login Form */}
                 {mode === 'login' && (
                     <form onSubmit={handleLoginEmail} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                         <div className="form-group">
                             <label className="form-label">Email Address</label>
                             <div style={{ position: 'relative' }}>
-                                <input className="form-control" style={{ paddingLeft: 36, paddingRight: 40 }} type={showPass ? 'text' : 'password'} placeholder="••••••••" required value={form.password} onChange={e => set('password', e.target.value)} />
-                                <button type="button" onClick={() => setShowPass(v => !v)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94a3b8' }}>
+                                <Mail size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-primary-400)' }} />
+                                <input className="form-control" style={{ paddingLeft: 36, borderRadius: 0 }} type="email" placeholder="name@company.com" required value={form.email} onChange={e => set('email', e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="form-group">
+                            <label className="form-label">Password</label>
+                            <div style={{ position: 'relative' }}>
+                                <Lock size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-primary-400)' }} />
+                                <input className="form-control" style={{ paddingLeft: 36, paddingRight: 40, borderRadius: 0 }} type={showPass ? 'text' : 'password'} placeholder="••••••••" required value={form.password} onChange={e => set('password', e.target.value)} />
+                                <button type="button" onClick={() => setShowPass(v => !v)} style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-primary-400)' }}>
                                     {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                                 </button>
                             </div>
@@ -165,37 +134,6 @@ export default function LoginPage() {
                         <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
                             No account? <button type="button" className="text-blue" style={{ background: 'none', border: 'none', fontWeight: 600, color: 'var(--color-primary-900)' }} onClick={() => setMode('register')}>REGISTER HERE</button>
                         </p>
-                    </form>
-                )}
-
-                {/* OTP Login */}
-                {mode === 'otp' && step === 1 && (
-                    <form onSubmit={handleSendOTP} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                        <div className="form-group">
-                            <label className="form-label">Phone Number</label>
-                            <div style={{ position: 'relative' }}>
-                                <Phone size={16} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-                                <input className="form-control" style={{ paddingLeft: 36 }} type="tel" placeholder="+91 9876543210" required value={form.phone} onChange={e => set('phone', e.target.value)} />
-                            </div>
-                        </div>
-                        <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={loading}>
-                            {loading ? <Loader size={16} /> : <>Send OTP <ArrowRight size={16} /></>}
-                        </button>
-                    </form>
-                )}
-
-                {mode === 'otp' && step === 2 && (
-                    <form onSubmit={handleVerifyOTP} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                        <p className="text-sm text-center" style={{ color: '#64748b' }}>OTP sent to <strong>{form.phone}</strong></p>
-                        <div className="form-group">
-                            <label className="form-label">Enter 6-digit OTP</label>
-                            <input className="form-control" style={{ textAlign: 'center', letterSpacing: '0.5em', fontSize: '1.5rem', fontWeight: 700 }}
-                                type="text" maxLength={6} placeholder="------" value={form.otp} onChange={e => set('otp', e.target.value)} />
-                        </div>
-                        <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={loading}>
-                            {loading ? <Loader size={16} /> : <>Verify OTP <ArrowRight size={16} /></>}
-                        </button>
-                        <button type="button" className="btn btn-ghost btn-block" onClick={() => setStep(1)}>← Change Number</button>
                     </form>
                 )}
 
