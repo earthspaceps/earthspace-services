@@ -1,0 +1,837 @@
+import { useState, useEffect, useRef } from "react";
+
+// ─── ICONS (inline SVG components) ───────────────────────────────────────────
+const Icon = ({ d, size = 24, stroke = "currentColor", fill = "none", strokeWidth = 1.7 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+
+const icons = {
+  ac: "M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18",
+  electrical: "M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+  plumbing: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+  appliance: "M5 3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5zM9 9h6m-6 4h6m-3-8v14",
+  handyman: "M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
+  cctv: "M15 10l4.553-2.069A1 1 0 0 1 21 8.845v6.31a1 1 0 0 1-1.447.894L15 14M3 8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z",
+  check: "M20 6L9 17l-5-5",
+  star: "M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+  menu: "M3 12h18M3 6h18M3 18h18",
+  x: "M18 6L6 18M6 6l12 12",
+  arrow: "M5 12h14M12 5l7 7-7 7",
+  location: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z M12 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  calendar: "M19 4H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zM16 2v4M8 2v4M3 10h18",
+  shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+  clock: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 6v6l4 2",
+  dollar: "M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
+  phone: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z",
+  mail: "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6",
+  users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z",
+  trending: "M23 6l-9.5 9.5-5-5L1 18",
+  fb: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z",
+  twitter: "M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z",
+  instagram: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z",
+  chevron: "M6 9l6 6 6-6",
+  globe: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
+};
+
+// ─── STYLES ───────────────────────────────────────────────────────────────────
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:    #07112B;
+    --navy-2:  #0D1E45;
+    --blue:    #1A50D4;
+    --blue-2:  #2563EB;
+    --accent:  #38BDF8;
+    --gold:    #F59E0B;
+    --white:   #FFFFFF;
+    --off:     #F0F4FF;
+    --text:    #0F172A;
+    --muted:   #64748B;
+    --border:  #E2E8F0;
+    --card-bg: #FFFFFF;
+    --r-sm: 12px; --r-md: 18px; --r-lg: 24px; --r-xl: 32px;
+    --shadow-sm: 0 2px 8px rgba(26,80,212,.08);
+    --shadow-md: 0 8px 32px rgba(26,80,212,.13);
+    --shadow-lg: 0 20px 60px rgba(26,80,212,.18);
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font-body); color: var(--text); background: var(--white); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 70px;
+    transition: all .35s ease;
+  }
+  .nav.scrolled {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 2px 30px rgba(26,80,212,.1);
+    border-bottom: 1px solid rgba(26,80,212,.08);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-badge {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--blue), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-head); font-weight: 800; color: #fff; font-size: 16px;
+    box-shadow: 0 4px 16px rgba(26,80,212,.35);
+  }
+  .logo-text { font-family: var(--font-head); font-weight: 700; font-size: 18px; color: var(--navy); letter-spacing: -.3px; }
+  .logo-text span { color: var(--blue-2); }
+  .nav-links { display: flex; align-items: center; gap: 36px; }
+  .nav-links a {
+    font-size: 14px; font-weight: 500; color: var(--navy);
+    text-decoration: none; letter-spacing: .02em;
+    position: relative; padding-bottom: 2px;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:0; left:0; width:0; height:2px;
+    background: var(--blue-2); border-radius:2px; transition: width .3s ease;
+  }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-actions { display: flex; align-items: center; gap: 12px; }
+  .btn-ghost {
+    padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    color: var(--navy); background: transparent; border: 1.5px solid var(--border);
+    cursor: pointer; transition: all .2s; font-family: var(--font-body);
+  }
+  .btn-ghost:hover { border-color: var(--blue-2); color: var(--blue-2); }
+  .btn-primary {
+    padding: 9px 22px; border-radius: 9px; font-size: 14px; font-weight: 600;
+    color: #fff; background: linear-gradient(135deg, var(--blue), var(--blue-2));
+    border: none; cursor: pointer; transition: all .25s;
+    box-shadow: 0 4px 14px rgba(37,99,235,.35);
+    font-family: var(--font-body);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,.45); }
+  .menu-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--navy); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; position: relative; overflow: hidden;
+    background: linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 50%, #112068 100%);
+    display: flex; align-items: center; padding: 100px 5% 60px;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; overflow: hidden; pointer-events: none;
+  }
+  .orb {
+    position: absolute; border-radius: 50%;
+    background: radial-gradient(circle, rgba(56,189,248,.18) 0%, transparent 70%);
+    animation: pulse 6s ease-in-out infinite;
+  }
+  .orb-1 { width: 600px; height: 600px; top: -200px; right: -100px; animation-delay: 0s; }
+  .orb-2 { width: 400px; height: 400px; bottom: -100px; left: 10%; animation-delay: 2s; }
+  .orb-3 { width: 300px; height: 300px; top: 40%; right: 25%; animation-delay: 4s; opacity: .5; }
+  @keyframes pulse { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.1)} }
+
+  .grid-lines {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(56,189,248,.04) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(56,189,248,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-inner { position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(56,189,248,.12); border: 1px solid rgba(56,189,248,.25);
+    border-radius: 100px; padding: 6px 16px 6px 8px; margin-bottom: 24px;
+  }
+  .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: blink 2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .badge-text { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: .08em; text-transform: uppercase; }
+  .hero-title {
+    font-family: var(--font-head); font-weight: 800; font-size: clamp(38px, 5vw, 62px);
+    color: #fff; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: 22px;
+  }
+  .hero-title em { font-style: normal; color: var(--accent); }
+  .hero-sub { font-size: 17px; color: rgba(255,255,255,.65); line-height: 1.7; margin-bottom: 36px; max-width: 480px; font-weight: 400; }
+  .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 48px; }
+  .btn-hero-primary {
+    padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 700;
+    color: #fff; background: linear-gradient(135deg, var(--blue) 0%, var(--accent) 140%);
+    border: none; cursor: pointer; transition: all .3s;
+    box-shadow: 0 6px 30px rgba(56,189,248,.35);
+    font-family: var(--font-body); display: flex; align-items: center; gap: 8px;
+  }
+  .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(56,189,248,.45); }
+  .btn-hero-outline {
+    padding: 14px 28px; border-radius: 12px; font-size: 15px; font-weight: 600;
+    color: rgba(255,255,255,.85); background: rgba(255,255,255,.08);
+    border: 1.5px solid rgba(255,255,255,.2); cursor: pointer;
+    transition: all .3s; font-family: var(--font-body); backdrop-filter: blur(8px);
+  }
+  .btn-hero-outline:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.4); }
+  .hero-stats { display: flex; gap: 36px; }
+  .stat { }
+  .stat-num { font-family: var(--font-head); font-weight: 800; font-size: 26px; color: #fff; }
+  .stat-label { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 2px; letter-spacing: .04em; }
+
+  /* Hero right — floating card */
+  .hero-visual { position: relative; display: flex; justify-content: center; align-items: center; }
+  .service-float-card {
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(20px); border-radius: var(--r-xl); padding: 28px;
+    width: 100%; max-width: 400px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.3);
+  }
+  .sfc-title { font-family: var(--font-head); font-weight: 700; font-size: 18px; color: #fff; margin-bottom: 20px; }
+  .sfc-field {
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sfc-field svg { flex-shrink: 0; color: var(--accent); }
+  .sfc-field select, .sfc-field input {
+    background: transparent; border: none; outline: none;
+    color: #fff; font-size: 14px; font-family: var(--font-body); width: 100%;
+    font-weight: 400;
+  }
+  .sfc-field select option { background: var(--navy-2); color: #fff; }
+  .sfc-field input::placeholder { color: rgba(255,255,255,.4); }
+  .btn-book-now {
+    width: 100%; padding: 14px; border-radius: 11px;
+    background: linear-gradient(135deg, var(--blue), var(--accent));
+    color: #fff; font-size: 15px; font-weight: 700;
+    border: none; cursor: pointer; margin-top: 8px; transition: all .3s;
+    font-family: var(--font-body); letter-spacing: .02em;
+    box-shadow: 0 6px 24px rgba(56,189,248,.3);
+  }
+  .btn-book-now:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(56,189,248,.45); }
+  .trust-pills { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .trust-pill {
+    display: flex; align-items: center; gap: 5px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 100px; padding: 4px 12px;
+    font-size: 11px; color: rgba(255,255,255,.6); font-weight: 500;
+  }
+  .trust-pill svg { color: var(--gold); }
+
+  /* ── SECTION BASE ── */
+  .section { padding: 90px 5%; }
+  .section-inner { max-width: 1280px; margin: 0 auto; }
+  .section-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37,99,235,.08); border: 1px solid rgba(37,99,235,.15);
+    border-radius: 100px; padding: 5px 14px; margin-bottom: 14px;
+    font-size: 11px; font-weight: 700; color: var(--blue-2); letter-spacing: .1em; text-transform: uppercase;
+  }
+  .section-title {
+    font-family: var(--font-head); font-weight: 800; font-size: clamp(28px, 3.5vw, 42px);
+    color: var(--navy); letter-spacing: -1px; line-height: 1.12; margin-bottom: 16px;
+  }
+  .section-sub { font-size: 16px; color: var(--muted); line-height: 1.7; max-width: 520px; }
+  .section-head { margin-bottom: 52px; }
+
+  /* ── SERVICES GRID ── */
+  .services-bg { background: var(--off); }
+  .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .service-card {
+    background: var(--card-bg); border: 1.5px solid var(--border);
+    border-radius: var(--r-lg); padding: 28px;
+    transition: all .3s ease; cursor: pointer; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(37,99,235,.04) 0%, transparent 60%);
+    opacity: 0; transition: opacity .3s;
+  }
+  .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: rgba(37,99,235,.2); }
+  .service-card:hover::before { opacity: 1; }
+  .sc-icon {
+    width: 54px; height: 54px; border-radius: 14px;
+    background: linear-gradient(135deg, rgba(37,99,235,.1), rgba(56,189,248,.08));
+    display: flex; align-items: center; justify-content: center; margin-bottom: 18px;
+    color: var(--blue-2); border: 1px solid rgba(37,99,235,.12);
+    transition: all .3s;
+  }
+  .service-card:hover .sc-icon { background: linear-gradient(135deg, var(--blue), var(--blue-2)); color: #fff; box-shadow: 0 6px 20px rgba(37,99,235,.3); }
+  .sc-title { font-family: var(--font-head); font-weight: 700; font-size: 17px; color: var(--navy); margin-bottom: 8px; }
+  .sc-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+  .sc-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 700; color: var(--blue-2); cursor: pointer;
+    background: none; border: none; font-family: var(--font-body); padding: 0; transition: gap .2s;
+  }
+  .service-card:hover .sc-btn { gap: 10px; }
+
+  /* ── HOW IT WORKS ── */
+  .hiw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+  .hiw-grid::before {
+    content: ''; position: absolute; top: 38px; left: 12.5%; right: 12.5%; height: 2px;
+    background: linear-gradient(90deg, var(--blue-2), var(--accent));
+    z-index: 0;
+  }
+  .hiw-card { text-align: center; position: relative; z-index: 1; }
+  .hiw-num {
+    width: 76px; height: 76px; border-radius: 50%; margin: 0 auto 20px;
+    background: linear-gradient(135deg, var(--navy), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-head); font-weight: 800; font-size: 22px; color: #fff;
+    box-shadow: 0 8px 28px rgba(26,80,212,.3);
+    border: 4px solid #fff;
+    position: relative;
+  }
+  .hiw-num-bg { position: absolute; inset: -4px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--accent)); z-index: -1; opacity: .25; }
+  .hiw-title { font-family: var(--font-head); font-weight: 700; font-size: 15px; color: var(--navy); margin-bottom: 8px; }
+  .hiw-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* ── WHY CHOOSE ── */
+  .why-section { background: linear-gradient(150deg, var(--navy) 0%, var(--navy-2) 100%); position: relative; overflow: hidden; }
+  .why-bg { position: absolute; inset: 0; background-image: linear-gradient(rgba(56,189,248,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(56,189,248,.03) 1px, transparent 1px); background-size: 50px 50px; }
+  .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .why-left .section-title { color: #fff; }
+  .why-left .section-sub { color: rgba(255,255,255,.55); }
+  .stats-row { display: flex; gap: 40px; margin-top: 40px; }
+  .stat-block { }
+  .stat-block-num { font-family: var(--font-head); font-weight: 800; font-size: 36px; color: var(--accent); }
+  .stat-block-label { font-size: 13px; color: rgba(255,255,255,.5); margin-top: 2px; }
+  .why-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .why-card {
+    background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-md); padding: 22px; transition: all .3s;
+    backdrop-filter: blur(10px);
+  }
+  .why-card:hover { background: rgba(255,255,255,.09); border-color: rgba(56,189,248,.25); transform: translateY(-4px); }
+  .wc-icon { width: 44px; height: 44px; border-radius: 11px; background: rgba(56,189,248,.1); border: 1px solid rgba(56,189,248,.2); display: flex; align-items: center; justify-content: center; color: var(--accent); margin-bottom: 14px; }
+  .wc-title { font-family: var(--font-head); font-weight: 700; font-size: 15px; color: #fff; margin-bottom: 6px; }
+  .wc-desc { font-size: 13px; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+  /* ── TESTIMONIALS ── */
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .testi-card {
+    background: var(--card-bg); border: 1.5px solid var(--border);
+    border-radius: var(--r-lg); padding: 28px; transition: all .3s;
+  }
+  .testi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); border-color: rgba(37,99,235,.15); }
+  .testi-stars { display: flex; gap: 3px; margin-bottom: 14px; }
+  .star { color: var(--gold); }
+  .testi-text { font-size: 15px; color: #374151; line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-head); font-weight: 800; font-size: 16px; color: #fff;
+    flex-shrink: 0;
+  }
+  .testi-name { font-weight: 700; font-size: 14px; color: var(--navy); font-family: var(--font-head); }
+  .testi-role { font-size: 12px; color: var(--muted); }
+
+  /* ── AREAS ── */
+  .areas-bg { background: var(--off); }
+  .areas-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+  .area-chip {
+    display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1.5px solid var(--border); border-radius: 100px;
+    padding: 10px 20px; font-size: 14px; font-weight: 600; color: var(--navy);
+    transition: all .25s; cursor: pointer;
+  }
+  .area-chip:hover { border-color: var(--blue-2); color: var(--blue-2); box-shadow: 0 4px 16px rgba(37,99,235,.12); transform: translateY(-2px); }
+  .area-chip svg { color: var(--blue-2); }
+  .area-soon { opacity: .5; pointer-events: none; }
+  .area-tag { font-size: 10px; background: rgba(37,99,235,.1); color: var(--blue-2); border-radius: 4px; padding: 2px 6px; font-weight: 700; letter-spacing: .06em; }
+
+  /* ── FINAL CTA ── */
+  .cta-section {
+    background: linear-gradient(135deg, var(--blue) 0%, #1A3FA8 50%, var(--navy) 100%);
+    padding: 90px 5%; text-align: center; position: relative; overflow: hidden;
+  }
+  .cta-bg { position: absolute; inset: 0; background-image: radial-gradient(circle at 30% 50%, rgba(56,189,248,.15), transparent 50%), radial-gradient(circle at 70% 50%, rgba(245,158,11,.08), transparent 50%); }
+  .cta-inner { position: relative; z-index: 2; max-width: 640px; margin: 0 auto; }
+  .cta-title { font-family: var(--font-head); font-weight: 800; font-size: clamp(28px, 4vw, 48px); color: #fff; letter-spacing: -1px; margin-bottom: 16px; }
+  .cta-sub { font-size: 17px; color: rgba(255,255,255,.65); margin-bottom: 36px; line-height: 1.6; }
+  .cta-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-cta-white {
+    padding: 15px 32px; border-radius: 12px; font-size: 15px; font-weight: 700;
+    color: var(--blue); background: #fff; border: none; cursor: pointer;
+    transition: all .3s; font-family: var(--font-body);
+    box-shadow: 0 6px 24px rgba(0,0,0,.15);
+  }
+  .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0,0,0,.2); }
+  .btn-cta-outline {
+    padding: 15px 32px; border-radius: 12px; font-size: 15px; font-weight: 600;
+    color: rgba(255,255,255,.9); background: rgba(255,255,255,.1);
+    border: 1.5px solid rgba(255,255,255,.3); cursor: pointer;
+    transition: all .3s; font-family: var(--font-body); backdrop-filter: blur(8px);
+  }
+  .btn-cta-outline:hover { background: rgba(255,255,255,.18); }
+
+  /* ── FOOTER ── */
+  .footer { background: var(--navy); padding: 70px 5% 30px; }
+  .footer-grid { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,.08); margin-bottom: 28px; }
+  .footer-brand p { font-size: 14px; color: rgba(255,255,255,.45); line-height: 1.7; margin-top: 14px; max-width: 260px; }
+  .footer-social { display: flex; gap: 10px; margin-top: 20px; }
+  .social-btn {
+    width: 36px; height: 36px; border-radius: 9px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.5);
+    transition: all .25s; cursor: pointer;
+  }
+  .social-btn:hover { background: rgba(37,99,235,.3); border-color: rgba(37,99,235,.4); color: #fff; }
+  .footer-col h4 { font-family: var(--font-head); font-weight: 700; font-size: 14px; color: rgba(255,255,255,.8); margin-bottom: 18px; letter-spacing: .04em; text-transform: uppercase; }
+  .footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,.4); text-decoration: none; margin-bottom: 10px; transition: color .2s; }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-contact-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; }
+  .footer-contact-item svg { color: var(--accent); margin-top: 1px; flex-shrink: 0; }
+  .footer-contact-item span { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.5; }
+  .footer-bottom { max-width: 1280px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,.3); }
+  .footer-copy span { color: var(--accent); }
+  .footer-tagline { font-size: 12px; color: rgba(255,255,255,.2); font-style: italic; }
+
+  /* ── MOBILE NAV ── */
+  .mobile-nav {
+    position: fixed; inset: 0; background: rgba(7,17,43,.97); z-index: 2000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+    backdrop-filter: blur(20px);
+  }
+  .mobile-nav a { font-family: var(--font-head); font-weight: 700; font-size: 24px; color: #fff; text-decoration: none; }
+  .mobile-nav-close { position: absolute; top: 20px; right: 20px; background: none; border: none; cursor: pointer; color: #fff; }
+  .mobile-nav-btns { display: flex; gap: 12px; margin-top: 16px; }
+
+  /* ── FEATURED QUICK ── */
+  .quick-list { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .quick-item {
+    display: flex; align-items: center; gap: 8px;
+    background: #fff; border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 18px; font-size: 14px; font-weight: 600; color: var(--navy);
+    cursor: pointer; transition: all .25s;
+  }
+  .quick-item:hover { border-color: var(--blue-2); color: var(--blue-2); transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+  .quick-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue-2); }
+
+  /* REVEAL ANIMATION */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { display: none; }
+    .service-grid { grid-template-columns: repeat(2, 1fr); }
+    .why-grid { grid-template-columns: 1fr; gap: 40px; }
+    .hiw-grid { grid-template-columns: repeat(2, 1fr); }
+    .hiw-grid::before { display: none; }
+    .testi-grid { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-actions { display: none; }
+    .menu-toggle { display: block; }
+    .service-grid { grid-template-columns: 1fr; }
+    .hiw-grid { grid-template-columns: 1fr; }
+    .testi-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .hero-stats { gap: 20px; flex-wrap: wrap; }
+    .why-cards { grid-template-columns: 1fr; }
+    .stats-row { gap: 24px; flex-wrap: wrap; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  }
+`;
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+const services = [
+  { icon: "ac", title: "AC Repair & Installation", desc: "Split AC installation, gas refill, deep cleaning, and general servicing by certified technicians.", color: "#DBEAFE" },
+  { icon: "electrical", title: "Electrical Services", desc: "Switchboard repair, wiring, fan installation, and all residential electrical work.", color: "#EDE9FE" },
+  { icon: "plumbing", title: "Plumbing Services", desc: "Pipe leak repair, tap installation, bathroom fitting, and drainage solutions.", color: "#D1FAE5" },
+  { icon: "appliance", title: "Appliance Repair", desc: "Washing machine, refrigerator, microwave, and geyser repair by expert engineers.", color: "#FEF3C7" },
+  { icon: "handyman", title: "Handyman Services", desc: "TV mounting, furniture assembly, drilling, carpentry, and general home repairs.", color: "#FCE7F3" },
+  { icon: "cctv", title: "CCTV & Security", desc: "Security camera installation, network setup, and smart home security systems.", color: "#ECFDF5" },
+];
+
+const steps = [
+  { n: "01", title: "Choose Service", desc: "Browse categories and select the service you need." },
+  { n: "02", title: "Pick a Time Slot", desc: "Choose a convenient date and time for your booking." },
+  { n: "03", title: "Technician Arrives", desc: "A verified expert arrives on time, fully equipped." },
+  { n: "04", title: "Pay Securely", desc: "Job done. Pay digitally after you're fully satisfied." },
+];
+
+const whyCards = [
+  { icon: "shield", title: "Verified Technicians", desc: "All professionals are background-checked and certified." },
+  { icon: "dollar", title: "Transparent Pricing", desc: "Know the cost upfront. No hidden charges, ever." },
+  { icon: "clock", title: "Fast Response", desc: "On-site within 2–4 hours for urgent service calls." },
+  { icon: "check", title: "Service Guarantee", desc: "Free re-work within 7 days if you're not satisfied." },
+];
+
+const testimonials = [
+  { name: "Arjun Menon", role: "Kozhikode", text: "Got my AC serviced within 3 hours of booking. The technician was professional and the pricing was exactly as quoted. Excellent service!", rating: 5, color: "#1A50D4" },
+  { name: "Priya Nair", role: "Malappuram", text: "Booked an electrician for switchboard repair. Arrived on time, clean work, fair price. Will definitely use Earthspace Services again.", rating: 5, color: "#059669" },
+  { name: "Mohammed Riyas", role: "Kondotty", text: "Fixed a stubborn pipe leak in under an hour. Very happy with the plumber's skill. The app made booking super easy.", rating: 5, color: "#D97706" },
+];
+
+const areas = [
+  { name: "Kozhikode", active: true },
+  { name: "Malappuram", active: true },
+  { name: "Kondotty", active: true },
+  { name: "Tirur", active: true },
+  { name: "Manjeri", active: true },
+  { name: "Perinthalmanna", active: false },
+  { name: "Kalpetta", active: false },
+  { name: "Palakkad", active: false },
+];
+
+const quickServices = ["AC Servicing", "Fan Installation", "Switchboard Repair", "RO Repair", "Pipe Leak Fix", "Geyser Repair", "CCTV Setup"];
+
+// ─── HOOKS ────────────────────────────────────────────────────────────────────
+function useScrollReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("visible"); }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+}
+
+// ─── COMPONENT ───────────────────────────────────────────────────────────────
+export default function EarthspaceServices() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [service, setService] = useState("");
+  const [location, setLocation] = useState("");
+  const [date, setDate] = useState("");
+  useScrollReveal();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <>
+      <style>{css}</style>
+
+      {/* ── MOBILE NAV ── */}
+      {mobileOpen && (
+        <div className="mobile-nav">
+          <button className="mobile-nav-close" onClick={() => setMobileOpen(false)}>
+            <Icon d={icons.x} size={28} />
+          </button>
+          {["Home","Services","How it Works","Areas","Contact"].map(l => (
+            <a key={l} href="#" onClick={() => setMobileOpen(false)}>{l}</a>
+          ))}
+          <div className="mobile-nav-btns">
+            <button className="btn-ghost" style={{color:"#fff",borderColor:"rgba(255,255,255,.3)"}}>Login</button>
+            <button className="btn-primary">Sign Up</button>
+          </div>
+        </div>
+      )}
+
+      {/* ── NAV ── */}
+      <nav className={`nav${scrolled ? " scrolled" : ""}`}>
+        <a className="nav-logo" href="#">
+          <div className="logo-badge">ES</div>
+          <span className="logo-text">Earthspace <span>Services</span></span>
+        </a>
+        <div className="nav-links">
+          {["Home","Services","How it Works","Areas","Contact"].map(l => (
+            <a key={l} href="#">{l}</a>
+          ))}
+        </div>
+        <div className="nav-actions">
+          <button className="btn-ghost">Login</button>
+          <button className="btn-primary">Sign Up Free</button>
+        </div>
+        <button className="menu-toggle" onClick={() => setMobileOpen(true)}>
+          <Icon d={icons.menu} size={24} />
+        </button>
+      </nav>
+
+      {/* ── HERO ── */}
+      <section className="hero">
+        <div className="hero-bg">
+          <div className="grid-lines" />
+          <div className="orb orb-1" />
+          <div className="orb orb-2" />
+          <div className="orb orb-3" />
+        </div>
+        <div className="hero-inner">
+          <div className="hero-left">
+            <div className="hero-badge">
+              <div className="badge-dot" />
+              <span className="badge-text">Now Available in Kozhikode & Malappuram</span>
+            </div>
+            <h1 className="hero-title">
+              Home Maintenance,<br />
+              <em>Done Right.</em>
+            </h1>
+            <p className="hero-sub">
+              Book verified technicians for AC repair, electrical, plumbing, and appliance services — on-demand, at your doorstep.
+            </p>
+            <div className="hero-btns">
+              <button className="btn-hero-primary">
+                Book a Service <Icon d={icons.arrow} size={16} />
+              </button>
+              <button className="btn-hero-outline">Explore Services</button>
+            </div>
+            <div className="hero-stats">
+              {[["1,200+","Jobs Completed"],["120+","Technicians"],["95%","Satisfaction Rate"]].map(([n,l]) => (
+                <div className="stat" key={l}>
+                  <div className="stat-num">{n}</div>
+                  <div className="stat-label">{l}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Booking Card */}
+          <div className="hero-visual">
+            <div className="service-float-card">
+              <p className="sfc-title">Book a Service Instantly</p>
+              <div className="sfc-field">
+                <Icon d={icons.handyman} size={17} stroke="currentColor" />
+                <select value={service} onChange={e => setService(e.target.value)}>
+                  <option value="" disabled>Select Service Category</option>
+                  <option>AC Services</option>
+                  <option>Electrical</option>
+                  <option>Plumbing</option>
+                  <option>Appliance Repair</option>
+                  <option>Handyman</option>
+                  <option>CCTV & Security</option>
+                </select>
+              </div>
+              <div className="sfc-field">
+                <Icon d={icons.location} size={17} />
+                <input placeholder="Your Location (e.g. Kozhikode)" value={location} onChange={e => setLocation(e.target.value)} />
+              </div>
+              <div className="sfc-field">
+                <Icon d={icons.calendar} size={17} />
+                <input type="date" value={date} onChange={e => setDate(e.target.value)} style={{colorScheme:"dark"}} />
+              </div>
+              <button className="btn-book-now">Book Now →</button>
+              <div className="trust-pills">
+                <span className="trust-pill"><Icon d={icons.check} size={11} fill="currentColor" stroke="none" style={{color:"#F59E0B"}} /> Verified Techs</span>
+                <span className="trust-pill"><Icon d={icons.shield} size={11} /> 7-day Guarantee</span>
+                <span className="trust-pill"><Icon d={icons.dollar} size={11} /> Fixed Pricing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── QUICK SERVICES ── */}
+      <section className="section" style={{paddingTop:"50px",paddingBottom:"50px",borderBottom:"1px solid var(--border)"}}>
+        <div className="section-inner">
+          <p style={{fontSize:"13px",fontWeight:"600",color:"var(--muted)",marginBottom:"10px",letterSpacing:".06em",textTransform:"uppercase"}}>Popular Services</p>
+          <div className="quick-list">
+            {quickServices.map(s => (
+              <div className="quick-item" key={s}>
+                <span className="quick-dot" />
+                {s}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section className="section services-bg">
+        <div className="section-inner">
+          <div className="section-head reveal">
+            <div className="section-label">Our Services</div>
+            <h2 className="section-title">Everything Your Home Needs</h2>
+            <p className="section-sub">From air conditioning to security systems — all services under one platform, backed by trained professionals.</p>
+          </div>
+          <div className="service-grid">
+            {services.map((s, i) => (
+              <div className="service-card reveal" key={s.title} style={{animationDelay:`${i*0.1}s`}}>
+                <div className="sc-icon"><Icon d={icons[s.icon]} size={22} /></div>
+                <h3 className="sc-title">{s.title}</h3>
+                <p className="sc-desc">{s.desc}</p>
+                <button className="sc-btn">Book Now <Icon d={icons.arrow} size={14} /></button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOW IT WORKS ── */}
+      <section className="section">
+        <div className="section-inner">
+          <div className="section-head reveal" style={{textAlign:"center",alignItems:"center",display:"flex",flexDirection:"column"}}>
+            <div className="section-label">Process</div>
+            <h2 className="section-title">How It Works</h2>
+            <p className="section-sub" style={{textAlign:"center"}}>Getting a technician to your door has never been simpler. Four steps is all it takes.</p>
+          </div>
+          <div className="hiw-grid">
+            {steps.map((s, i) => (
+              <div className="hiw-card reveal" key={s.n} style={{transitionDelay:`${i*0.15}s`}}>
+                <div className="hiw-num">
+                  <div className="hiw-num-bg" />
+                  {s.n}
+                </div>
+                <h3 className="hiw-title">{s.title}</h3>
+                <p className="hiw-desc">{s.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY CHOOSE ── */}
+      <section className="section why-section">
+        <div className="why-bg" />
+        <div className="section-inner">
+          <div className="why-grid">
+            <div className="why-left reveal">
+              <div className="section-label" style={{background:"rgba(56,189,248,.1)",borderColor:"rgba(56,189,248,.2)",color:"var(--accent)"}}>Why Earthspace</div>
+              <h2 className="section-title">Built on Trust &amp; Reliability</h2>
+              <p className="section-sub">We don't just fix things — we build long-term relationships with homeowners through consistent, professional service.</p>
+              <div className="stats-row">
+                {[["1,200+","Jobs Done"],["120+","Technicians"],["4.8★","Avg Rating"],["2 hr","Avg Response"]].map(([n,l]) => (
+                  <div className="stat-block" key={l}>
+                    <div className="stat-block-num">{n}</div>
+                    <div className="stat-block-label">{l}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="why-cards reveal">
+              {whyCards.map((w, i) => (
+                <div className="why-card" key={w.title} style={{transitionDelay:`${i*0.1}s`}}>
+                  <div className="wc-icon"><Icon d={icons[w.icon]} size={20} /></div>
+                  <h4 className="wc-title">{w.title}</h4>
+                  <p className="wc-desc">{w.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIALS ── */}
+      <section className="section">
+        <div className="section-inner">
+          <div className="section-head reveal" style={{textAlign:"center",display:"flex",flexDirection:"column",alignItems:"center"}}>
+            <div className="section-label">Testimonials</div>
+            <h2 className="section-title">Customers Love Us</h2>
+            <p className="section-sub" style={{textAlign:"center"}}>Don't take our word for it — here's what real customers from your neighbourhood have to say.</p>
+          </div>
+          <div className="testi-grid">
+            {testimonials.map((t, i) => (
+              <div className="testi-card reveal" key={t.name} style={{transitionDelay:`${i*0.15}s`}}>
+                <div className="testi-stars">
+                  {Array.from({length: t.rating}).map((_,j) => (
+                    <Icon key={j} d={icons.star} size={16} fill="#F59E0B" stroke="none" />
+                  ))}
+                </div>
+                <p className="testi-text">"{t.text}"</p>
+                <div className="testi-author">
+                  <div className="testi-avatar" style={{background:t.color}}>{t.name[0]}</div>
+                  <div>
+                    <div className="testi-name">{t.name}</div>
+                    <div className="testi-role">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICE AREAS ── */}
+      <section className="section areas-bg">
+        <div className="section-inner">
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-end",flexWrap:"wrap",gap:"20px",marginBottom:"36px"}}>
+            <div className="reveal">
+              <div className="section-label">Coverage</div>
+              <h2 className="section-title">Where We Operate</h2>
+              <p className="section-sub">Currently serving select cities in Kerala, with rapid expansion underway.</p>
+            </div>
+            <div className="reveal" style={{background:"rgba(37,99,235,.06)",border:"1px solid rgba(37,99,235,.12)",borderRadius:"12px",padding:"14px 20px",textAlign:"right"}}>
+              <div style={{fontFamily:"var(--font-head)",fontWeight:"800",fontSize:"22px",color:"var(--blue-2)"}}>5+</div>
+              <div style={{fontSize:"12px",color:"var(--muted)",marginTop:"2px"}}>Cities Active</div>
+            </div>
+          </div>
+          <div className="areas-grid reveal">
+            {areas.map(a => (
+              <div className={`area-chip${a.active ? "" : " area-soon"}`} key={a.name}>
+                <Icon d={icons.location} size={15} />
+                {a.name}
+                {!a.active && <span className="area-tag">SOON</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FINAL CTA ── */}
+      <section className="cta-section">
+        <div className="cta-bg" />
+        <div className="cta-inner reveal">
+          <div className="section-label" style={{background:"rgba(255,255,255,.1)",borderColor:"rgba(255,255,255,.2)",color:"rgba(255,255,255,.85)",margin:"0 auto 20px"}}>Get Started</div>
+          <h2 className="cta-title">Need a Repair Today?</h2>
+          <p className="cta-sub">Book a trusted technician in under 2 minutes. We'll be there, on time, every time.</p>
+          <div className="cta-btns">
+            <button className="btn-cta-white">Book a Service Now</button>
+            <button className="btn-cta-outline">Create Free Account</button>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="footer">
+        <div className="footer-grid">
+          <div className="footer-brand">
+            <a className="nav-logo" href="#" style={{textDecoration:"none"}}>
+              <div className="logo-badge">ES</div>
+              <span className="logo-text" style={{color:"#fff"}}>Earthspace <span>Services</span></span>
+            </a>
+            <p>A division of Earthspace Project Solutions LLP. Bringing reliable home maintenance to every doorstep in Kerala.</p>
+            <div className="footer-social">
+              {[icons.fb, icons.twitter, icons.instagram].map((ic, i) => (
+                <div className="social-btn" key={i}><Icon d={ic} size={15} /></div>
+              ))}
+            </div>
+          </div>
+          <div className="footer-col">
+            <h4>Services</h4>
+            {["AC Repair","Electrical","Plumbing","Appliance Repair","Handyman","CCTV"].map(s => <a key={s} href="#">{s}</a>)}
+          </div>
+          <div className="footer-col">
+            <h4>Company</h4>
+            {["About Us","How it Works","Service Areas","Careers","Blog"].map(l => <a key={l} href="#">{l}</a>)}
+          </div>
+          <div className="footer-col">
+            <h4>Contact</h4>
+            <div className="footer-contact-item">
+              <Icon d={icons.phone} size={14} />
+              <span>+91 98765 43210</span>
+            </div>
+            <div className="footer-contact-item">
+              <Icon d={icons.mail} size={14} />
+              <span>services@earthspaceprojects.in</span>
+            </div>
+            <div className="footer-contact-item">
+              <Icon d={icons.location} size={14} />
+              <span>Kozhikode, Kerala, India</span>
+            </div>
+            <div className="footer-contact-item">
+              <Icon d={icons.globe} size={14} />
+              <span>earthspaceprojects.in</span>
+            </div>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <p className="footer-copy">© 2025 <span>Earthspace Services</span> — A division of Earthspace Project Solutions LLP. All rights reserved.</p>
+          <p className="footer-tagline">Built with precision for Kerala's homes.</p>
+        </div>
+      </footer>
+    </>
+  );
+}

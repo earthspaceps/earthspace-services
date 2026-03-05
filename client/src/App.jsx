@@ -10,6 +10,7 @@ import TechnicianApp from './apps/technician/TechnicianApp';
 import AdminApp from './apps/admin/AdminApp';
 // Shared Auth
 import LoginPage from './apps/customer/pages/LoginPage';
+import LandingPage from './apps/customer/pages/LandingPage';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { user, loading } = useAuth();
@@ -37,7 +38,8 @@ export default function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
-                        <Route path="/" element={<RoleRouter />} />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/dashboard" element={<RoleRouter />} />
 
                         {/* Customer Routes */}
                         <Route path="/customer/*" element={
