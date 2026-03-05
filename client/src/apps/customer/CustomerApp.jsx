@@ -19,16 +19,47 @@ const NAV_LINKS = [
 function ProfilePage() {
     const { user, logout } = useAuth();
     return (
-        <div style={{ padding: '60px var(--content-padding)', maxWidth: 480, margin: '0 auto' }}>
-            <div className="card card-body text-center" style={{ marginBottom: 24, borderRadius: 0, border: '2px solid #000', padding: '40px' }}>
-                <div className="avatar avatar-lg" style={{ margin: '0 auto 16px', background: '#000', color: '#fff', borderRadius: 0, width: 64, height: 64, fontSize: '1.5rem', fontWeight: 800 }}>{user?.name?.[0]?.toUpperCase()}</div>
-                <h3 style={{ textTransform: 'uppercase', marginBottom: 8 }}>{user?.name}</h3>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{user?.email || user?.phone}</p>
-                <div style={{ marginTop: 24, padding: '4px 12px', background: '#000', color: '#fff', fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em', display: 'inline-block' }}>{user?.role?.toUpperCase()}</div>
+        <div style={{ padding: '80px var(--content-padding)', maxWidth: 640, margin: '0 auto' }}>
+            <div className="card card-body" style={{ marginBottom: 40, borderRadius: 0, border: '1px solid #000', padding: '60px 40px', background: '#fff', textAlign: 'left' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 32, marginBottom: 40 }}>
+                    <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 80, height: 80, fontSize: '2rem', fontWeight: 900 }}>{user?.name?.[0]?.toUpperCase()}</div>
+                    <div>
+                        <h2 style={{ textTransform: 'uppercase', marginBottom: 4, fontSize: '1.8rem', fontWeight: 900, letterSpacing: '-0.02em' }}>{user?.name}</h2>
+                        <div style={{ color: '#666', fontSize: '0.8rem', fontWeight: 700, letterSpacing: '0.1em' }}>{user?.email?.toUpperCase() || user?.phone}</div>
+                    </div>
+                </div>
+
+                <div style={{ borderTop: '1px solid #000', paddingTop: 32 }}>
+                    <div style={{ marginBottom: 24 }}>
+                        <label style={{ fontSize: '0.65rem', fontWeight: 800, color: '#000', letterSpacing: '0.1em', display: 'block', marginBottom: 8 }}>ACCOUNT ROLE</label>
+                        <div style={{ fontSize: '0.9rem', fontWeight: 900, textTransform: 'uppercase' }}>{user?.role}</div>
+                    </div>
+                    <div>
+                        <button
+                            className="btn btn-primary"
+                            style={{
+                                borderRadius: 0,
+                                padding: '16px 40px',
+                                background: '#000',
+                                color: '#fff',
+                                border: '1px solid #000',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.background = '#fff';
+                                e.currentTarget.style.color = '#000';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.background = '#000';
+                                e.currentTarget.style.color = '#fff';
+                            }}
+                            onClick={() => { if (window.confirm('Log out from EarthSpace?')) { logout(); window.location.href = '/login'; } }}
+                        >
+                            TERMINATE SESSION
+                        </button>
+                    </div>
+                </div>
             </div>
-            <button className="btn btn-outline btn-block" style={{ borderRadius: 0, color: 'var(--color-danger)', borderColor: 'var(--color-danger)' }} onClick={() => { if (window.confirm('Log out?')) { logout(); window.location.href = '/login'; } }}>
-                LOG OUT
-            </button>
         </div>
     );
 }

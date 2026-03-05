@@ -5,7 +5,7 @@ import { useAuth } from '../../../shared/AuthContext';
 import api from '../../../shared/api';
 
 export default function LoginPage() {
-    const { login } = useAuth();
+    const { user, login } = useAuth();
     const navigate = useNavigate();
     const [mode, setMode] = useState('login'); // 'login' or 'register'
     const [showPass, setShowPass] = useState(false);
@@ -15,6 +15,12 @@ export default function LoginPage() {
         name: '', email: '', phone: '', password: '', otp: '', role: 'customer',
         specializations: '', experienceYears: '', bio: '', idProofUrl: ''
     });
+
+    React.useEffect(() => {
+        if (user) {
+            navigate(user.role === 'admin' ? '/admin' : user.role === 'technician' ? '/technician' : '/customer');
+        }
+    }, [user, navigate]);
 
     const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 

@@ -216,11 +216,11 @@ const LandingPage = () => {
                     </p>
                     <div style={{ display: 'flex', gap: '1.5rem' }}>
                         {user ? (
-                            <Link to="/dashboard" className="btn-bw btn-bw-filled">Go to Dashboard</Link>
+                            <Link to={user.role === 'admin' ? '/admin' : user.role === 'technician' ? '/technician' : '/customer'} className="btn-bw btn-bw-filled">GO TO HUB</Link>
                         ) : (
-                            <Link to="/login" className="btn-bw btn-bw-filled">Book a Service</Link>
+                            <Link to="/login" className="btn-bw btn-bw-filled">START BOOKING</Link>
                         )}
-                        <a href="#services" className="btn-bw btn-bw-outline">Explore Scope</a>
+                        <a href="#services" className="btn-bw btn-bw-outline">EXPLORE SCOPE</a>
                     </div>
                 </div>
             </section>
@@ -304,28 +304,28 @@ const LandingPage = () => {
                     <Link to="/login" className="btn-bw" style={{ borderColor: '#fff', color: '#fff' }}>Start Booking</Link>
                 </div>
 
-                <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '4rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', textAlign: 'left' }}>
+                <div style={{ borderTop: '1px solid #fff', paddingTop: '60px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'left' }}>
                     <div>
-                        <img src="/logo.png" alt="EarthSpace" style={{ height: '30px', filter: 'brightness(0) invert(1)', marginBottom: '1.5rem' }} />
-                        <p style={{ color: '#666', fontSize: '0.85rem' }}>A specialized maintenance division of EarthSpace Project Solutions LLP.</p>
+                        <img src="/logo.png" alt="EarthSpace" style={{ height: '32px', filter: 'brightness(0) invert(1)', marginBottom: '24px' }} />
+                        <p style={{ color: '#999', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: 1.8 }}>A specialized maintenance division of<br />EarthSpace Project Solutions LLP.</p>
                     </div>
                     <div>
-                        <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem', marginBottom: '1.5rem', color: '#fff' }}>Links</h5>
+                        <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.7rem', marginBottom: '24px', color: '#fff', fontWeight: 900 }}>RESOURCES</h5>
                         <ul style={{ listStyle: 'none', padding: 0 }}>
-                            <li style={{ marginBottom: '0.5rem' }}><a href="#" className="footer-link">Insights</a></li>
-                            <li style={{ marginBottom: '0.5rem' }}><a href="#" className="footer-link">Projects</a></li>
-                            <li style={{ marginBottom: '0.5rem' }}><a href="#" className="footer-link">Careers</a></li>
+                            <li style={{ marginBottom: '12px' }}><a href="#" className="footer-link">TECH INSIGHTS</a></li>
+                            <li style={{ marginBottom: '12px' }}><a href="#" className="footer-link">PROJECT PORTFOLIO</a></li>
+                            <li style={{ marginBottom: '12px' }}><a href="#" className="footer-link">CAREER OPENINGS</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem', marginBottom: '1.5rem', color: '#fff' }}>Contact</h5>
-                        <p style={{ color: '#666', fontSize: '0.85rem' }}>contact@earthspaceprojects.in</p>
-                        <p style={{ color: '#666', fontSize: '0.85rem' }}>+91 96057 69752</p>
+                        <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.7rem', marginBottom: '24px', color: '#fff', fontWeight: 900 }}>CONTACT HUB</h5>
+                        <p style={{ color: '#999', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.02em', marginBottom: '8px' }}>SUPPORT@EARTHSPACE.PRO</p>
+                        <p style={{ color: '#fff', fontSize: '1rem', fontWeight: 900 }}>+91 96057 69752</p>
                     </div>
                 </div>
-                <div style={{ marginTop: '4rem', borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#444' }}>
-                    <span>© 2026 EarthSpace Project Solutions LLP.</span>
-                    <span>DESIGNED FOR PRECISION.</span>
+                <div style={{ marginTop: '80px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '32px', display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#666', fontWeight: 800, letterSpacing: '0.1em' }}>
+                    <span>© 2026 EARTHSPACE PROJECT SOLUTIONS LLP.</span>
+                    <span>ENGINEERED FOR PRECISION.</span>
                 </div>
             </footer>
         </div>

@@ -156,26 +156,26 @@ export default function BookingPage() {
                         <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICE ADDRESS</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                             <div className="form-group">
-                                <label className="form-label">ADDRESS LINE 1</label>
-                                <input className="form-control" style={{ borderRadius: 0 }} placeholder="House/Flat No., Building Name" value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 1</label>
+                                <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="HOUSE/FLAT NO., BUILDING NAME" value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
                             </div>
                             <div className="form-group">
-                                <label className="form-label">ADDRESS LINE 2</label>
-                                <input className="form-control" style={{ borderRadius: 0 }} placeholder="Landmark, Area" value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>ADDRESS LINE 2</label>
+                                <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="LANDMARK, AREA" value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                 <div className="form-group">
-                                    <label className="form-label">CITY</label>
-                                    <input className="form-control" style={{ borderRadius: 0 }} placeholder="City" value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
+                                    <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>CITY</label>
+                                    <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="CITY" value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">PINCODE</label>
-                                    <input className="form-control" style={{ borderRadius: 0 }} placeholder="6-digit PIN" value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
+                                    <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>PINCODE</label>
+                                    <input className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} placeholder="6-DIGIT PIN" value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label className="form-label">INSTRUCTIONS</label>
-                                <textarea className="form-control" style={{ borderRadius: 0 }} rows={3} placeholder="Any notes for our engineer..." value={instructions} onChange={e => setInstructions(e.target.value)} />
+                                <label className="form-label" style={{ fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em' }}>SPECIAL INSTRUCTIONS</label>
+                                <textarea className="form-control" style={{ borderRadius: 0, border: '1px solid #eee' }} rows={3} placeholder="ANY NOTES FOR OUR ENGINEER..." value={instructions} onChange={e => setInstructions(e.target.value)} />
                             </div>
                         </div>
                         <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
@@ -236,21 +236,42 @@ export default function BookingPage() {
 
                 {/* Step 4: Confirmed */}
                 {step === 4 && booking && (
-                    <div className="card card-body text-center" style={{ padding: 40 }}>
-                        <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#dcfce7', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-                            <CheckCircle size={40} color="#22c55e" />
+                    <div className="card card-body text-center" style={{ padding: '60px 40px', borderRadius: 0, border: '2px solid #000', background: '#fff' }}>
+                        <div style={{ width: 80, height: 80, background: '#000', borderRadius: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 32px' }}>
+                            <CheckCircle size={40} color="#fff" strokeWidth={1.5} />
                         </div>
-                        <h2 style={{ marginBottom: 8 }}>Booking Confirmed! 🎉</h2>
-                        <p style={{ marginBottom: 24 }}>Your technician has been assigned and will arrive at the scheduled time.</p>
-                        <div style={{ background: 'var(--color-grey-50)', borderRadius: 12, padding: 16, marginBottom: 24, textAlign: 'left' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}><span style={{ color: 'var(--text-secondary)' }}>Booking #</span><span style={{ fontWeight: 700, color: 'var(--color-primary-700)' }}>{booking.bookingNumber}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}><span style={{ color: 'var(--text-secondary)' }}>Service</span><span style={{ fontWeight: 600 }}>{serviceName}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}><span style={{ color: 'var(--text-secondary)' }}>Date</span><span style={{ fontWeight: 600 }}>{selectedDate}</span></div>
-                            <div style={{ display: 'flex', justifyContent: 'space-between' }}><span style={{ color: 'var(--text-secondary)' }}>Time</span><span style={{ fontWeight: 600 }}>{selectedTime}</span></div>
+                        <h2 style={{ marginBottom: 12, fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.02em' }}>BOOKING CONFIRMED</h2>
+                        <p style={{ marginBottom: 40, fontSize: '0.9rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>YOUR ENGINEER HAS BEEN ASSIGNED AND IS EN ROUTE.</p>
+
+                        <div style={{ background: '#fcfcfc', border: '1px solid #eee', padding: '32px', marginBottom: 40, textAlign: 'left' }}>
+                            {[
+                                ['BOOKING NUMBER', booking.bookingNumber],
+                                ['SERVICE TYPE', serviceName],
+                                ['SCHEDULED DATE', selectedDate],
+                                ['SCHEDULED WINDOW', selectedTime]
+                            ].map(([k, v]) => (
+                                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, borderBottom: '1px solid #f0f0f0', paddingBottom: 12 }}>
+                                    <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#999', letterSpacing: '0.1em' }}>{k}</span>
+                                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#000' }}>{v?.toUpperCase()}</span>
+                                </div>
+                            ))}
                         </div>
-                        <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
-                            <button className="btn btn-outline" onClick={() => window.location.href = '/customer/bookings'}>View Bookings</button>
-                            <button className="btn btn-primary" onClick={() => window.location.href = '/customer'}>Back to Home</button>
+
+                        <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+                            <button
+                                className="btn btn-outline"
+                                style={{ borderRadius: 0, padding: '16px 32px' }}
+                                onClick={() => window.location.href = '/customer/bookings'}
+                            >
+                                VIEW ALL BOOKINGS
+                            </button>
+                            <button
+                                className="btn btn-primary"
+                                style={{ borderRadius: 0, padding: '16px 32px' }}
+                                onClick={() => window.location.href = '/customer'}
+                            >
+                                BACK TO HUB
+                            </button>
                         </div>
                     </div>
                 )}

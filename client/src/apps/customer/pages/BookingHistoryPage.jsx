@@ -99,56 +99,82 @@ export default function BookingHistoryPage() {
                             const status = STATUS_CONFIG[b.status] || STATUS_CONFIG.pending;
                             const StatusIcon = status.icon;
                             return (
-                                <div key={b.id} className="card" style={{ borderRadius: 0, border: '1px solid var(--border-color)', marginBottom: 16 }}>
-                                    <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#fafafa' }}>
-                                        <div>
-                                            <span style={{ fontWeight: 800, fontSize: '0.9rem' }}>#{b.bookingNumber}</span>
-                                            <span style={{ margin: '0 8px', color: '#ddd' }}>|</span>
-                                            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{b.scheduledDate} · {b.scheduledTime}</span>
+                                <div
+                                    key={b.id}
+                                    className="architectural-card"
+                                    style={{
+                                        borderRadius: 0,
+                                        border: '1px solid #000',
+                                        background: '#fff',
+                                        marginBottom: 16,
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        overflow: 'hidden'
+                                    }}
+                                    onMouseEnter={e => {
+                                        e.currentTarget.style.transform = 'translateY(-5px)';
+                                        e.currentTarget.style.boxShadow = '10px 10px 0px #000';
+                                    }}
+                                    onMouseLeave={e => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = 'none';
+                                    }}
+                                >
+                                    <div style={{ padding: '16px 24px', borderBottom: '1px solid #000', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#000', color: '#fff' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                            <span style={{ fontWeight: 900, fontSize: '0.85rem', letterSpacing: '0.05em' }}>ORD #{b.bookingNumber}</span>
+                                            <span style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.3)' }} />
+                                            <span style={{ fontSize: '0.65rem', fontWeight: 700, opacity: 0.8, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{b.scheduledDate} @ {b.scheduledTime}</span>
                                         </div>
-                                        <span style={{ fontSize: '0.65rem', background: status.bg, color: status.color, padding: '3px 8px', fontWeight: 800, letterSpacing: '0.05em' }}>
+                                        <span style={{ fontSize: '0.6rem', background: status.bg === '#000' ? '#fff' : status.bg, color: status.bg === '#000' ? '#000' : status.color, padding: '3px 10px', fontWeight: 900, letterSpacing: '0.1em' }}>
                                             {status.label}
                                         </span>
                                     </div>
-                                    <div style={{ padding: '20px' }}>
+                                    <div style={{ padding: '24px' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <div style={{ flex: 1 }}>
-                                                <h4 style={{ marginBottom: 4, textTransform: 'uppercase', fontSize: '1rem' }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
+                                                <h4 style={{ marginBottom: 12, textTransform: 'uppercase', fontSize: '1.1rem', fontWeight: 800, letterSpacing: '0.02em' }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
                                                 {b.technician?.user && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.8rem', color: '#000', margin: '12px 0', fontWeight: 600 }}>
-                                                        <div className="avatar avatar-sm" style={{ background: '#000', color: '#fff', borderRadius: 0 }}>{b.technician.user.name?.[0]}</div>
-                                                        {b.technician.user.name.toUpperCase()} · {b.technician.user.phone}
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.75rem', color: '#000', margin: '20px 0', fontWeight: 800, letterSpacing: '0.05em' }}>
+                                                        <div className="avatar" style={{ background: '#000', color: '#fff', borderRadius: 0, width: 32, height: 32, fontSize: '0.8rem' }}>{b.technician.user.name?.[0]}</div>
+                                                        <div>
+                                                            <div style={{ opacity: 0.5, fontSize: '0.6rem', marginBottom: 2 }}>ASSIGNED ENGINEER</div>
+                                                            {b.technician.user.name.toUpperCase()} · {b.technician.user.phone}
+                                                        </div>
                                                     </div>
                                                 )}
-                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{b.addressSnapshot?.line1}</div>
+                                                <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                    <MapPin size={12} /> {b.addressSnapshot?.line1}
+                                                </div>
                                             </div>
                                             <div style={{ textAlign: 'right' }}>
-                                                <div style={{ fontWeight: 900, fontSize: '1.2rem' }}>₹{b.finalPrice || b.estimatedPrice || b.serviceSnapshot?.basePrice}</div>
-                                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: 4, fontWeight: 700, letterSpacing: '0.05em' }}>
+                                                <div style={{ fontWeight: 900, fontSize: '1.5rem', lineHeight: 1 }}>₹{b.finalPrice || b.estimatedPrice || b.serviceSnapshot?.basePrice}</div>
+                                                <div style={{ fontSize: '0.6rem', color: '#999', textTransform: 'uppercase', marginTop: 8, fontWeight: 800, letterSpacing: '0.1em' }}>
                                                     {b.paymentStatus === 'completed' ? (
-                                                        <span style={{ color: '#000' }}>PAID VIA {b.paymentMethod?.toUpperCase()}</span>
+                                                        <span style={{ color: '#000' }}>PAID · {b.paymentMethod?.toUpperCase()}</span>
                                                     ) : (
-                                                        <span>DUE VIA {b.paymentMethod?.toUpperCase() || 'CASH'}</span>
+                                                        <span>DUE · {b.paymentMethod?.toUpperCase() || 'CASH'}</span>
                                                     )}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+
+                                        <div style={{ display: 'flex', gap: 12, marginTop: 24, paddingTop: 24, borderTop: '1px solid #f0f0f0' }}>
                                             {b.status === 'completed' && (
-                                                <button className="btn btn-sm" style={{ background: '#fef9c3', color: '#a16207', border: '1px solid #fde68a' }} onClick={() => setRatingModal({ bookingId: b.id, technicianId: b.technicianId })}>
-                                                    <Star size={12} /> Rate Service
+                                                <button className="btn btn-sm" style={{ background: '#000', color: '#fff', border: 'none', padding: '10px 20px' }} onClick={() => setRatingModal({ bookingId: b.id, technicianId: b.technicianId })}>
+                                                    RATE PERFORMANCE
                                                 </button>
                                             )}
                                             {['pending', 'confirmed', 'assigned'].includes(b.status) && (
-                                                <button className="btn btn-sm btn-danger" onClick={async () => {
-                                                    if (window.confirm('Cancel this booking?')) {
-                                                        await api.post(`/bookings/${b.id}/cancel`, { reason: 'Cancelled by customer' });
+                                                <button className="btn btn-sm" style={{ background: 'transparent', color: '#ff4444', border: '1px solid #ff4444', padding: '10px 20px' }} onClick={async () => {
+                                                    if (window.confirm('ABORT THIS BOOKING?')) {
+                                                        await api.post(`/bookings/${b.id}/cancel`, { reason: 'CANCELLED BY USER' });
                                                         setBookings(prev => prev.map(x => x.id === b.id ? { ...x, status: 'cancelled' } : x));
                                                     }
                                                 }}>
-                                                    Cancel
+                                                    CANCEL
                                                 </button>
                                             )}
+                                            <button className="btn btn-sm btn-outline" style={{ border: '1px solid #000', padding: '10px 20px', fontSize: '0.7rem' }}>VIEW DETAILS</button>
                                         </div>
                                     </div>
                                 </div>

@@ -77,29 +77,48 @@ export default function ComplaintsPage() {
                         const status = STATUS_ICONS[c.status] || STATUS_ICONS.open;
                         const Icon = status.icon;
                         return (
-                            <div key={c.id} className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)', padding: '24px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
+                            <div
+                                key={c.id}
+                                className="architectural-card"
+                                style={{
+                                    borderRadius: 0,
+                                    border: '1px solid #000',
+                                    background: '#fff',
+                                    padding: '32px',
+                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    marginBottom: 16
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.transform = 'translateY(-5px)';
+                                    e.currentTarget.style.boxShadow = '10px 10px 0px #000';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
+                            >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
                                     <div>
-                                        <h4 style={{ marginBottom: 4, textTransform: 'uppercase' }}>{c.subject}</h4>
-                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
-                                            FILED ON {new Date(c.createdAt).toLocaleDateString()}
+                                        <h4 style={{ marginBottom: 6, textTransform: 'uppercase', fontWeight: 900, letterSpacing: '0.02em', fontSize: '1.2rem' }}>{c.subject}</h4>
+                                        <div style={{ fontSize: '0.7rem', color: '#999', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em' }}>
+                                            INITIATED · {new Date(c.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
-                                    <span style={{ fontSize: '0.65rem', background: status.bg, color: status.color, padding: '3px 8px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    <span style={{ fontSize: '0.6rem', background: status.bg, color: status.color, padding: '4px 12px', fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                                         {c.status.replace('_', ' ')}
                                     </span>
                                 </div>
-                                <p style={{ fontSize: '0.85rem', lineHeight: 1.8, marginBottom: 20 }}>{c.description}</p>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem' }}>
-                                    <div style={{ display: 'flex', gap: 16 }}>
-                                        <span style={{ color: PRIORITY_COLORS[c.priority], fontWeight: 800 }}>PRIORITY: {c.priority.toUpperCase()}</span>
-                                        {c.bookingId && <span style={{ color: 'var(--text-secondary)' }}>REF: {c.bookingId.slice(-8).toUpperCase()}</span>}
+                                <p style={{ fontSize: '0.9rem', lineHeight: 1.8, marginBottom: 24, color: '#333' }}>{c.description}</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.7rem', borderTop: '1px solid #f0f0f0', paddingTop: 20 }}>
+                                    <div style={{ display: 'flex', gap: 24 }}>
+                                        <span style={{ color: PRIORITY_COLORS[c.priority], fontWeight: 900, letterSpacing: '0.05em' }}>PRIORITY: {c.priority.toUpperCase()}</span>
+                                        {c.bookingId && <span style={{ color: '#999', fontWeight: 700 }}>REF_KEY: {c.bookingId.slice(-8).toUpperCase()}</span>}
                                     </div>
                                 </div>
                                 {c.adminResponse && (
-                                    <div style={{ marginTop: 20, padding: '16px', background: '#fafafa', border: '1px solid #eee', borderLeft: '4px solid #000' }}>
-                                        <div style={{ fontWeight: 800, fontSize: '0.75rem', marginBottom: 6, textTransform: 'uppercase' }}>OFFICIAL RESPONSE:</div>
-                                        <p style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>{c.adminResponse}</p>
+                                    <div style={{ marginTop: 24, padding: '24px', background: '#000', color: '#fff' }}>
+                                        <div style={{ fontWeight: 900, fontSize: '0.7rem', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.6 }}>ENGINEERING RESOLUTION</div>
+                                        <p style={{ fontSize: '0.85rem', lineHeight: 1.6 }}>{c.adminResponse}</p>
                                     </div>
                                 )}
                             </div>

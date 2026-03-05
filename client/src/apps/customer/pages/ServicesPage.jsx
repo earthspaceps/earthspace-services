@@ -39,16 +39,18 @@ export default function ServicesPage() {
     return (
         <div style={{ minHeight: '100vh', background: 'var(--bg-page)' }}>
             {/* Header */}
-            <div style={{ background: 'var(--bg-dark)', padding: '40px var(--content-padding)', borderBottom: '1px solid var(--border-color)' }}>
-                <div className="container">
-                    <h2 style={{ color: '#fff', marginBottom: 8, fontSize: '2rem' }}>SOLUTIONS</h2>
-                    <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem' }}>Precision engineering for your home</p>
-                    <form onSubmit={handleSearch} style={{ display: 'flex', gap: 0, maxWidth: 600 }}>
+            <div style={{ background: '#000', padding: '80px var(--content-padding)', borderBottom: '1px solid #333' }}>
+                <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, flexWrap: 'wrap' }}>
+                    <div style={{ flex: '1 1 300px' }}>
+                        <h2 style={{ color: '#fff', marginBottom: 12, fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em', lineHeight: 1 }}>SOLUTIONS</h2>
+                        <p style={{ color: 'rgba(255,255,255,.6)', textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.75rem', fontWeight: 700 }}>PRECISION ENGINEERING FOR YOUR HOME</p>
+                    </div>
+                    <form onSubmit={handleSearch} style={{ display: 'flex', gap: 0, flex: '1 1 400px', maxWidth: 600 }}>
                         <div style={{ flex: 1, position: 'relative' }}>
-                            <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-primary-400)' }} />
-                            <input className="form-control" style={{ paddingLeft: 40, borderRadius: 0, border: 'none' }} placeholder="Search solutions..." value={search} onChange={e => setSearch(e.target.value)} />
+                            <Search size={16} style={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
+                            <input className="form-control" style={{ paddingLeft: 48, borderRadius: 0, border: 'none', height: 56 }} placeholder="SEARCH SOLUTIONS..." value={search} onChange={e => setSearch(e.target.value)} />
                         </div>
-                        <button className="btn btn-primary" type="submit" style={{ padding: '0 32px' }}>SEARCH</button>
+                        <button className="btn btn-primary" type="submit" style={{ padding: '0 40px', height: 56 }}>SEARCH</button>
                     </form>
                 </div>
             </div>
@@ -69,40 +71,83 @@ export default function ServicesPage() {
                 {loading ? (
                     <div className="loading-center"><div className="spinner"></div></div>
                 ) : services.length === 0 ? (
-                    <div className="text-center" style={{ padding: 60 }}>
-                        <Wrench size={48} style={{ color: '#cbd5e1', margin: '0 auto 16px' }} />
-                        <h3>No services found</h3>
-                        <p>Try a different search or category.</p>
+                    <div className="architectural-card" style={{ padding: '80px 40px', border: '1px solid #000', borderRadius: 0, textAlign: 'left', background: '#fff' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 32 }}>
+                            <div style={{ background: '#000', color: '#fff', padding: 20 }}>
+                                <Wrench size={32} strokeWidth={1.5} />
+                            </div>
+                            <div>
+                                <h3 style={{ textTransform: 'uppercase', fontWeight: 900, letterSpacing: '-0.02em', fontSize: '1.5rem', margin: 0 }}>NO SOLUTIONS FOUND</h3>
+                                <p style={{ color: '#666', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', marginTop: 4, textTransform: 'uppercase' }}>ENGINEERING QUERY RETURNED ZERO MATCHES</p>
+                            </div>
+                        </div>
+                        <p style={{ color: '#000', fontSize: '0.9rem', maxWidth: 400, lineHeight: 1.8 }}>PLEASE ADJUST YOUR FILTER PARAMETERS OR SEARCH QUERY. OUR CORE SCOPE COVERS ELECTRICAL, PLUMBING, HVAC, AND GENERAL STRUCTURAL MAINTENANCE.</p>
+                        <button
+                            className="btn btn-primary"
+                            style={{ borderRadius: 0, marginTop: 40, padding: '16px 40px' }}
+                            onClick={() => { setSearch(''); setCategory(''); }}
+                        >
+                            RESET CATALOG
+                        </button>
                     </div>
                 ) : (
-                    <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))' }}>
+                    <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 32 }}>
                         {services.map(service => {
                             const catSlug = service.category?.slug || '';
-                            const color = CATEGORY_COLORS[catSlug] || '#3b82f6';
                             const Icon = CATEGORY_ICONS[catSlug] || Wrench;
                             return (
-                                <div key={service.id} className="service-card" style={{ borderRadius: 0, border: '1px solid var(--border-color)', background: '#fff' }}>
-                                    <div className="service-card-header" style={{ background: '#000', padding: '20px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                                            <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,.15)', color: '#fff', padding: '2px 8px', letterSpacing: '0.1em', fontWeight: 600 }}>{service.category?.name.toUpperCase()}</span>
-                                            <Icon size={18} color="#fff" strokeWidth={1.5} />
+                                <div
+                                    key={service.id}
+                                    className="service-card architectural-card"
+                                    style={{
+                                        borderRadius: 0,
+                                        border: '1px solid #000',
+                                        background: '#fff',
+                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}
+                                    onMouseEnter={e => {
+                                        e.currentTarget.style.transform = 'translateY(-10px)';
+                                        e.currentTarget.style.boxShadow = '15px 15px 0px #000';
+                                    }}
+                                    onMouseLeave={e => {
+                                        e.currentTarget.style.transform = 'translateY(0)';
+                                        e.currentTarget.style.boxShadow = 'none';
+                                    }}
+                                >
+                                    <div style={{ background: '#000', padding: '24px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+                                            <span style={{ fontSize: '0.6rem', background: 'rgba(255,255,255,.1)', color: '#fff', padding: '3px 10px', letterSpacing: '0.15em', fontWeight: 800 }}>{service.category?.name.toUpperCase()}</span>
+                                            <Icon size={20} color="#fff" strokeWidth={1} />
                                         </div>
-                                        <h3 style={{ color: '#fff', fontSize: '1rem', letterSpacing: '0.02em' }}>{service.name.toUpperCase()}</h3>
+                                        <h3 style={{ color: '#fff', fontSize: '1.1rem', letterSpacing: '0.04em', fontWeight: 800 }}>{service.name.toUpperCase()}</h3>
                                     </div>
-                                    <div className="service-card-body">
-                                        <p className="text-sm" style={{ marginBottom: 16, lineHeight: 1.6 }}>{service.description}</p>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 16, color: '#64748b', fontSize: '0.8rem' }}>
-                                            <Clock size={14} />{service.durationMinutes} mins estimated
-                                            <span style={{ margin: '0 4px' }}>·</span>
-                                            <Star size={14} style={{ color: '#fbbf24' }} />4.8 rated
+                                    <div style={{ padding: '24px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                        <p style={{ fontSize: '0.85rem', marginBottom: 20, lineHeight: 1.7, color: '#444' }}>{service.description}</p>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, color: '#888', fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                            <Clock size={14} />{service.durationMinutes} MINS
+                                            <span style={{ margin: '0 4px', opacity: 0.3 }}>|</span>
+                                            <Star size={14} style={{ color: '#000' }} /> 4.8 RATING
                                         </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid #eee', paddingTop: 20 }}>
                                             <div>
-                                                <div className="service-price">{formatPrice(service)}</div>
-                                                <div className="service-price-label">{service.priceType === 'starting_from' ? 'Final price after inspection' : 'Flat price'}</div>
+                                                <div style={{ fontSize: '1.25rem', fontWeight: 900 }}>{formatPrice(service)}</div>
+                                                <div style={{ fontSize: '0.65rem', color: '#999', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>{service.priceType === 'starting_from' ? 'AFTER INSPECTION' : 'FIXED RATE'}</div>
                                             </div>
                                             <Link to={`/customer/book?service=${service.id}&name=${encodeURIComponent(service.name)}&price=${service.basePrice}`}>
-                                                <button className="btn btn-primary btn-sm">Book Now</button>
+                                                <button
+                                                    className="btn btn-primary btn-sm"
+                                                    style={{
+                                                        borderRadius: 0,
+                                                        padding: '10px 20px',
+                                                        transition: 'all 0.2s ease'
+                                                    }}
+                                                    onMouseEnter={e => e.currentTarget.style.background = '#333'}
+                                                    onMouseLeave={e => e.currentTarget.style.background = '#000'}
+                                                >
+                                                    BOOK NOW
+                                                </button>
                                             </Link>
                                         </div>
                                     </div>

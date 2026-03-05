@@ -76,54 +76,133 @@ export default function HomePage() {
                 </div>
             </div>
 
-            {/* Service Categories */}
-            <section style={{ padding: '60px 0', background: '#fff' }}>
+            {/* OUR CORE SCOPE Section */}
+            <section style={{ padding: '80px 0', background: '#fff', borderBottom: '1px solid #f0f0f0' }}>
                 <div className="container">
-                    <div className="text-center mb-6">
-                        <h2>Our Services</h2>
-                        <p style={{ marginTop: 8 }}>Choose from our wide range of professional home services</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
+                        <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, flex: '1 1 300px' }}>
+                            OUR<br />CORE SCOPE
+                        </h2>
+                        <p style={{ flex: '1 1 400px', fontSize: '1rem', color: '#666', lineHeight: 1.6, maxWidth: 500 }}>
+                            Specialized systems maintenance designed to preserve the structural and functional excellence of your property.
+                        </p>
                     </div>
-                    <div className="grid-5" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 20 }}>
-                        {(categories.length > 0 ? categories : [
-                            { slug: 'ac-services', name: 'AC Services', description: 'Repair, installation & maintenance' },
-                            { slug: 'electrical', name: 'Electrical', description: 'Wiring, switches & CCTV' },
-                            { slug: 'plumbing', name: 'Plumbing', description: 'Leak, drain & pipe repair' },
-                            { slug: 'appliance-repair', name: 'Appliance Repair', description: 'Fridge, AC, washer & more' },
-                            { slug: 'handyman', name: 'Handyman', description: 'Furniture, carpentry & drilling' },
-                        ]).map(cat => {
-                            const Icon = CATEGORY_ICONS[cat.slug] || Wrench;
-                            const color = CATEGORY_COLORS[cat.slug] || '#3b82f6';
-                            return (
-                                <Link key={cat.slug} to={`/customer/services?category=${cat.slug}`}>
-                                    <div className="service-cat-card">
-                                        <div className="cat-icon" style={{ background: `${color}15`, color }}>
-                                            <Icon size={28} />
-                                        </div>
-                                        <h3>{cat.name}</h3>
-                                        <p>{cat.description}</p>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 0, border: '1px solid #000' }}>
+                        {[
+                            {
+                                slug: 'electrical',
+                                name: 'ELECTRICAL SERVICES',
+                                desc: 'Expert wiring, repairs, and installations.',
+                                icon: Zap
+                            },
+                            {
+                                slug: 'plumbing',
+                                name: 'PLUMBING SOLUTIONS',
+                                desc: 'Fixing leaks and full plumbing setup.',
+                                icon: Droplets
+                            },
+                            {
+                                slug: 'ac-services',
+                                name: 'HVAC & AC SERVICE',
+                                desc: 'Maintain your cooling systems efficiently.',
+                                icon: Wind
+                            },
+                            {
+                                slug: 'general',
+                                name: 'GENERAL MAINTENANCE',
+                                desc: 'Annual and on-demand home care.',
+                                icon: Hammer
+                            }
+                        ].map((cat, idx) => (
+                            <Link
+                                key={cat.slug}
+                                to={`/customer/services?category=${cat.slug}`}
+                                className="core-scope-card"
+                                style={{
+                                    padding: '40px',
+                                    border: idx === 3 ? 'none' : '1px solid #000',
+                                    borderTop: 'none',
+                                    borderBottom: 'none',
+                                    borderLeft: idx === 0 ? 'none' : '1px solid #000',
+                                    background: '#fff',
+                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 24,
+                                    textDecoration: 'none',
+                                    color: 'inherit'
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.background = '#000';
+                                    e.currentTarget.style.color = '#fff';
+                                    e.currentTarget.querySelector('svg').style.color = '#fff';
+                                    e.currentTarget.querySelectorAll('.badge-check').forEach(b => b.style.color = '#fff');
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.background = '#fff';
+                                    e.currentTarget.style.color = 'inherit';
+                                    e.currentTarget.querySelector('svg').style.color = '#ccc';
+                                    e.currentTarget.querySelectorAll('.badge-check').forEach(b => b.style.color = '#000');
+                                }}
+                            >
+                                <cat.icon size={24} style={{ color: '#ccc', transition: 'color 0.3s' }} />
+                                <div>
+                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: 12, letterSpacing: '0.02em' }}>{cat.name}</h3>
+                                    <p style={{ fontSize: '0.85rem', color: 'inherit', opacity: 0.7, marginBottom: 20 }}>{cat.desc}</p>
+                                </div>
+                                <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+                                    <div className="badge-check" style={{ fontSize: '0.65rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '0.1em' }}>
+                                        <CheckCircle size={10} /> CERTIFIED PROS
                                     </div>
-                                </Link>
-                            );
-                        })}
+                                    <div className="badge-check" style={{ fontSize: '0.65rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '0.1em' }}>
+                                        <CheckCircle size={10} /> MATERIAL WARRANTY
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </section>
 
             {/* Why Choose Us */}
-            <section style={{ padding: '80px 0', background: '#f8f8f8', borderBottom: '1px solid var(--border-color)' }}>
+            <section style={{ padding: '100px 0', background: '#fcfcfc', borderBottom: '1px solid #000' }}>
                 <div className="container">
-                    <div className="text-center mb-6">
-                        <h2 style={{ fontSize: '2.5rem' }}>WHY EARTHSPACE?</h2>
-                        <p style={{ marginTop: 8, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem' }}>Setting the benchmark in facility management</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
+                        <h2 style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0 }}>
+                            WHY<br />EARTHSPACE?
+                        </h2>
+                        <p style={{ flex: '1 1 400px', fontSize: '0.85rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700 }}>
+                            SETTING THE GLOBAL BENCHMARK IN PRECISION FACILITY MANAGEMENT
+                        </p>
                     </div>
-                    <div className="grid-4">
+
+                    <div className="grid-4" style={{ gap: 32 }}>
                         {WHY_CHOOSE.map((item, i) => (
-                            <div key={i} className="card card-body text-center" style={{ padding: 32, borderRadius: 0, border: '1px solid #eee' }}>
-                                <div style={{ width: 64, height: 64, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: '#fff' }}>
+                            <div
+                                key={i}
+                                className="architectural-card"
+                                style={{
+                                    padding: '40px 32px',
+                                    background: '#fff',
+                                    border: '1px solid #000',
+                                    transition: 'all 0.3s ease',
+                                    textAlign: 'left'
+                                }}
+                                onMouseEnter={e => {
+                                    e.currentTarget.style.transform = 'translateY(-10px)';
+                                    e.currentTarget.style.boxShadow = '20px 20px 0px #000';
+                                }}
+                                onMouseLeave={e => {
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
+                            >
+                                <div style={{ width: 48, height: 48, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24, color: '#fff' }}>
                                     {item.icon}
                                 </div>
-                                <h4 style={{ marginBottom: 12 }}>{item.title}</h4>
-                                <p style={{ fontSize: '0.85rem', fontWeight: 300 }}>{item.desc}</p>
+                                <h4 style={{ marginBottom: 16, fontSize: '1rem', fontWeight: 800 }}>{item.title.toUpperCase()}</h4>
+                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6, color: '#666' }}>{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -131,20 +210,22 @@ export default function HomePage() {
             </section>
 
             {/* How It Works */}
-            <section style={{ padding: '80px 0', background: '#fff' }}>
+            <section style={{ padding: '100px 0', background: '#fff' }}>
                 <div className="container">
-                    <div className="text-center mb-6"><h2 style={{ fontSize: '2.5rem' }}>HOW IT WORKS</h2></div>
-                    <div className="grid-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40 }}>
+                    <div className="text-center mb-16">
+                        <h2 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em' }}>THE PROCESS</h2>
+                    </div>
+                    <div className="grid-4" style={{ gap: 40 }}>
                         {[
                             { step: '01', title: 'SELECT SERVICE', desc: 'Browse and select from 25+ professional solutions.' },
                             { step: '02', title: 'SCHEDULE SLOT', desc: 'Pick your preferred date and time.' },
                             { step: '03', title: 'EXPERT ARRIVAL', desc: 'A certified engineer arrives at your doorstep.' },
                             { step: '04', title: 'QUALITY CHECK', desc: 'Complete the job and rate your experience.' },
                         ].map(s => (
-                            <div key={s.step} className="text-center">
-                                <div style={{ fontSize: '4rem', fontWeight: 900, color: '#f0f0f0', lineHeight: 1, marginBottom: -20 }}>{s.step}</div>
-                                <h4 style={{ marginBottom: 12, position: 'relative', zIndex: 1 }}>{s.title}</h4>
-                                <p style={{ fontSize: '0.85rem', fontWeight: 300 }}>{s.desc}</p>
+                            <div key={s.step} style={{ textAlign: 'left', borderLeft: '4px solid #000', paddingLeft: 24, paddingBottom: 20 }}>
+                                <div style={{ fontSize: '3rem', fontWeight: 900, color: '#000', lineHeight: 1, marginBottom: 12 }}>{s.step}</div>
+                                <h4 style={{ marginBottom: 12, fontWeight: 800 }}>{s.title}</h4>
+                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>{s.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -152,44 +233,77 @@ export default function HomePage() {
             </section>
 
             {/* CTA */}
-            <section style={{ padding: '100px var(--content-padding)', background: '#000', textAlign: 'center', color: '#fff' }}>
-                <h2 style={{ color: '#fff', marginBottom: 16, fontSize: '3rem' }}>READY FOR PRECISION?</h2>
-                <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 40, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.9rem' }}>Experience the EarthSpace standard today.</p>
-                <Link to="/customer/services">
-                    <button className="btn btn-primary btn-lg" style={{ background: '#fff', color: '#000', border: 'none' }}>
-                        EXPLORE SOLUTIONS
-                    </button>
-                </Link>
+            <section style={{ padding: '120px 0', background: '#000', textAlign: 'center', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                    <h2 style={{ color: '#fff', marginBottom: 24, fontSize: '4rem', fontWeight: 900, letterSpacing: '-0.04em' }}>READY FOR PRECISION?</h2>
+                    <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 48, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', fontWeight: 700 }}>EXPERIENCE THE EARTHSPACE ENGINEERING STANDARD TODAY.</p>
+                    <Link to="/customer/services">
+                        <button
+                            className="btn btn-lg"
+                            style={{
+                                background: '#fff',
+                                color: '#000',
+                                border: 'none',
+                                padding: '20px 60px',
+                                fontSize: '1rem',
+                                transition: 'all 0.3s ease'
+                            }}
+                            onMouseEnter={e => {
+                                e.currentTarget.style.transform = 'scale(1.05)';
+                                e.currentTarget.style.letterSpacing = '0.3em';
+                            }}
+                            onMouseLeave={e => {
+                                e.currentTarget.style.transform = 'scale(1)';
+                                e.currentTarget.style.letterSpacing = '0.15em';
+                            }}
+                        >
+                            EXPLORE SOLUTIONS
+                        </button>
+                    </Link>
+                </div>
             </section>
 
             {/* Footer */}
-            <footer style={{ background: '#0f172a', color: 'rgba(255,255,255,.7)', padding: '40px var(--content-padding)' }}>
+            <footer style={{ background: '#000', color: 'rgba(255,255,255,.5)', padding: '80px 0 40px', borderTop: '1px solid #333' }}>
                 <div className="container">
-                    <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 32, marginBottom: 32 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 60, marginBottom: 80 }}>
                         <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>
                                 <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
-                                <span style={{ fontWeight: 800, color: '#fff', fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICES</span>
+                                <span style={{ fontWeight: 900, color: '#fff', fontSize: '1.2rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICES</span>
                             </div>
-                            <p style={{ fontSize: '0.8rem', lineHeight: 1.8, fontWeight: 300 }}>Engineering-led facility management and precision maintenance for modern residential spaces.</p>
+                            <p style={{ fontSize: '0.85rem', lineHeight: 1.8, color: 'rgba(255,255,255,.6)' }}>
+                                ENGINEERING-LED FACILITY MANAGEMENT AND PRECISION MAINTENANCE FOR MODERN RESIDENTIAL SPACES.
+                            </p>
                         </div>
                         <div>
-                            <h4 style={{ color: '#fff', marginBottom: 12 }}>Services</h4>
-                            {['AC Services', 'Electrical', 'Plumbing', 'Appliance Repair', 'Handyman'].map(s => (
-                                <div key={s} style={{ fontSize: '0.85rem', marginBottom: 6 }}>{s}</div>
+                            <h4 style={{ color: '#fff', marginBottom: 24, fontSize: '0.8rem', letterSpacing: '0.1em' }}>SOLUTIONS</h4>
+                            {['AC SERVICES', 'ELECTRICAL', 'PLUMBING', 'APPLIANCE REPAIR', 'HANDYMAN'].map(s => (
+                                <Link key={s} to="/customer/services" style={{ display: 'block', fontSize: '0.75rem', marginBottom: 12, transition: 'color 0.2s' }} onMouseEnter={e => e.currentTarget.style.color = '#fff'} onMouseLeave={e => e.currentTarget.style.color = 'inherit'}>{s}</Link>
                             ))}
                         </div>
                         <div>
-                            <h4 style={{ color: '#fff', marginBottom: 12 }}>Contact</h4>
-                            <div style={{ fontSize: '0.85rem' }}>
-                                <div style={{ marginBottom: 6 }}>📞 +91-9999-999999</div>
-                                <div style={{ marginBottom: 6 }}>✉️ support@earthspaceservices.com</div>
-                                <div>🌐 www.earthspaceservices.com</div>
+                            <h4 style={{ color: '#fff', marginBottom: 24, fontSize: '0.8rem', letterSpacing: '0.1em' }}>CONNECT</h4>
+                            <div style={{ fontSize: '0.75rem', lineHeight: 2 }}>
+                                <div style={{ marginBottom: 8 }}>📞 +91-9999-999999</div>
+                                <div style={{ marginBottom: 8 }}>✉️ SUPPORT@EARTHSPACESERVICES.COM</div>
+                                <div style={{ display: 'flex', gap: 16, marginTop: 16 }}>
+                                    {/* Social placeholders */}
+                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}>IN</div>
+                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}>TW</div>
+                                    <div style={{ width: 32, height: 32, border: '1px solid #333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }} onMouseEnter={e => e.currentTarget.style.borderColor = '#fff'} onMouseLeave={e => e.currentTarget.style.borderColor = '#333'}>IG</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div style={{ borderTop: '1px solid rgba(255,255,255,.1)', paddingTop: 20, textAlign: 'center', fontSize: '0.8rem' }}>
-                        © 2024 Earthspace Services. All rights reserved.
+                    <div style={{ borderTop: '1px solid #1a1a1a', paddingTop: 40, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 20 }}>
+                        <div style={{ fontSize: '0.7rem', letterSpacing: '0.05em' }}>
+                            © 2024 EARTHSPACE SERVICES. ALL RIGHTS RESERVED.
+                        </div>
+                        <div style={{ display: 'flex', gap: 24, fontSize: '0.7rem' }}>
+                            <span style={{ cursor: 'pointer' }}>PRIVACY POLICY</span>
+                            <span style={{ cursor: 'pointer' }}>TERMS OF SERVICE</span>
+                        </div>
                     </div>
                 </div>
             </footer>
