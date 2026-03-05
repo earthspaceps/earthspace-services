@@ -46,10 +46,22 @@ function TechDashboard() {
     return (
         <div>
             {/* Welcome Banner */}
-            <div style={{ background: 'linear-gradient(135deg,#1e3a8a,#2563eb)', borderRadius: 16, padding: '24px 28px', marginBottom: 24, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+            <div style={{
+                background: 'linear-gradient(135deg, var(--color-primary-900), var(--color-primary-700))',
+                borderRadius: 'var(--radius-lg)',
+                padding: '28px 32px',
+                marginBottom: 24,
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: 16,
+                boxShadow: 'var(--shadow-md)'
+            }}>
                 <div>
-                    <h2 style={{ color: '#fff' }}>Welcome back, {user?.name?.split(' ')[0]}! 👋</h2>
-                    <p style={{ color: 'rgba(255,255,255,.8)', marginTop: 4 }}>Here's your dashboard for today.</p>
+                    <h2 style={{ color: '#fff', fontSize: '1.5rem', fontWeight: 800 }}>Welcome back, {user?.name?.split(' ')[0]}! 👋</h2>
+                    <p style={{ color: 'var(--color-primary-100)', marginTop: 4, opacity: 0.9 }}>Here's your dashboard for today.</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,.8)' }}>Availability</span>
@@ -335,11 +347,21 @@ function Sidebar({ isOpen, onClose }) {
                 <X size={20} />
             </button>
             <div className="sidebar-logo">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <Wrench size={22} color="#60a5fa" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                        width: 36,
+                        height: 36,
+                        borderRadius: 'var(--radius-md)',
+                        background: 'linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900))',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Briefcase size={20} color="#fff" />
+                    </div>
                     <div>
-                        <div style={{ fontWeight: 800, fontSize: '0.95rem' }}>Earthspace</div>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician Portal</div>
+                        <div style={{ fontWeight: 800, fontSize: '0.95rem', color: '#fff', letterSpacing: '-0.01em' }}>EARTHSPACE</div>
+                        <div style={{ fontSize: '0.65rem', color: 'var(--color-primary-300)', fontWeight: 600, textTransform: 'uppercase' }}>Technician</div>
                     </div>
                 </div>
             </div>

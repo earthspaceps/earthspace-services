@@ -38,13 +38,35 @@ function Sidebar({ isOpen, onClose }) {
                 <X size={20} />
             </button>
             <div className="sidebar-logo">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <div style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--color-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Wrench size={20} color="#fff" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{
+                        width: 38,
+                        height: 38,
+                        borderRadius: 'var(--radius-md)',
+                        background: 'linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900))',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
+                    }}>
+                        <Briefcase size={20} color="#fff" strokeWidth={2.5} />
                     </div>
                     <div>
-                        <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.95rem' }}>Earthspace</div>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Admin Panel</div>
+                        <div style={{
+                            fontWeight: 800,
+                            color: '#fff',
+                            fontSize: '1rem',
+                            letterSpacing: '-0.02em',
+                            lineHeight: 1
+                        }}>EARTHSPACE</div>
+                        <div style={{
+                            fontSize: '0.65rem',
+                            color: 'var(--color-primary-300)',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em',
+                            fontWeight: 600,
+                            marginTop: 4
+                        }}>Services Portal</div>
                     </div>
                 </div>
             </div>

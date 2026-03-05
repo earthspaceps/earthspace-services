@@ -41,12 +41,20 @@ export default function CustomerApp() {
     return (
         <div style={{ minHeight: '100vh' }}>
             {/* Top Navbar */}
-            <nav className="customer-navbar">
+            <nav className="customer-navbar" style={{ background: 'var(--bg-dark)' }}>
                 <div className="brand">
-                    <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(255,255,255,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Wrench size={18} color="#fff" />
+                    <div style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 'var(--radius-sm)',
+                        background: 'linear-gradient(135deg, var(--color-primary-700), var(--color-primary-900))',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <Briefcase size={18} color="#fff" />
                     </div>
-                    <span className="brand-name">Earthspace Services</span>
+                    <span className="brand-name" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase' }}>Earthspace Services</span>
                 </div>
 
                 {/* Desktop Nav */}

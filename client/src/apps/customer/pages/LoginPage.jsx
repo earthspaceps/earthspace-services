@@ -79,25 +79,34 @@ export default function LoginPage() {
             <div className="auth-card">
                 {/* Logo */}
                 <div className="auth-logo">
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 8 }}>
-                        <div style={{ width: 44, height: 44, borderRadius: 12, background: 'linear-gradient(135deg,#2563eb,#1e40af)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Wrench size={22} color="#fff" />
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginBottom: 12 }}>
+                        <div style={{
+                            width: 48,
+                            height: 48,
+                            borderRadius: 'var(--radius-lg)',
+                            background: 'linear-gradient(135deg, var(--color-primary-800), var(--color-primary-900))',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 4px 15px rgba(16, 42, 67, 0.2)'
+                        }}>
+                            <Briefcase size={24} color="#fff" strokeWidth={2.5} />
                         </div>
                     </div>
-                    <div className="brand">Earthspace Services</div>
-                    <div className="tagline">Reliable Home Maintenance Experts</div>
+                    <div className="brand" style={{ fontWeight: 800, letterSpacing: '-0.02em', textTransform: 'uppercase', color: 'var(--color-primary-900)' }}>Earthspace Services</div>
+                    <div className="tagline" style={{ color: 'var(--color-primary-500)', fontWeight: 600 }}>Precision Home Engineering</div>
                 </div>
 
                 {/* Tab toggle */}
-                <div style={{ display: 'flex', background: '#f1f5f9', borderRadius: 10, padding: 4, marginBottom: 16 }}>
+                <div style={{ display: 'flex', background: 'var(--color-primary-50)', borderRadius: 'var(--radius-md)', padding: 4, marginBottom: 20 }}>
                     {[['login', 'Email Login'], ['otp', 'OTP Login']].map(([m, label]) => (
                         <button key={m} onClick={() => { setMode(m); setStep(1); setError(''); }}
                             style={{
-                                flex: 1, padding: '8px 0', borderRadius: 8, border: 'none', fontWeight: 600, fontSize: '0.85rem',
+                                flex: 1, padding: '10px 0', borderRadius: 'var(--radius-sm)', border: 'none', fontWeight: 600, fontSize: '0.85rem',
                                 background: mode === m ? '#fff' : 'transparent',
-                                color: mode === m ? '#2563eb' : '#64748b',
-                                boxShadow: mode === m ? '0 1px 4px rgba(0,0,0,.1)' : 'none',
-                                transition: 'all .2s'
+                                color: mode === m ? 'var(--color-primary-700)' : 'var(--color-primary-400)',
+                                boxShadow: mode === m ? 'var(--shadow-sm)' : 'none',
+                                transition: 'all var(--transition-fast)'
                             }}>{label}</button>
                     ))}
                 </div>
