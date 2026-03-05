@@ -58,33 +58,33 @@ const createBooking = async (req, res, next) => {
 
         // --- Auto-assign technician (non-critical, won't block booking) ---
         try {
-            const availableTech = await Technician.findOne({
+            Technician.findOne({
                 where: { status: 'verified', isAvailable: true },
                 include: [{ model: User, as: 'user' }],
-            });
-            if (availableTech) {
-                await booking.update({ technicianId: availableTech.id, status: 'assigned' });
-                try { await notificationService.sendNotification(availableTech.userId, 'New Job Assigned', `You have a new booking #${booking.bookingNumber}`, 'push'); } catch (_) { }
-            }
+            }).then(async (availableTech) => {
+                if (availableTech) {
+                    await booking.update({ technicianId: availableTech.id, status: 'assigned' });
+                    notificationService.sendNotification(availableTech.userId, 'New Job Assigned', `You have a new booking #${booking.bookingNumber}`, 'push').catch(() => { });
+                }
+            }).catch(e => console.error('[createBooking] Tech assignment async error:', e.message));
         } catch (techErr) {
             console.error('[createBooking] Technician assignment error (non-fatal):', techErr.message);
-            // Non-fatal — booking still succeeds
         }
 
-        // --- Notify customer (non-critical, won't block booking) ---
+        // --- Notify customer (non-critical, won-t block booking) ---
         try {
-            const customer = await User.findByPk(customerId);
-            if (customer) {
-                try { await notificationService.sendNotification(customerId, 'Booking Confirmed', `Your booking #${booking.bookingNumber} is confirmed!`, 'push'); } catch (_) { }
-                try { await notificationService.sendEmail(customer.email, 'Booking Confirmation - Earthspace Services', `Your booking #${booking.bookingNumber} has been placed successfully.`); } catch (_) { }
-            }
+            User.findByPk(customerId).then(customer => {
+                if (customer) {
+                    notificationService.sendNotification(customerId, 'Booking Confirmed', `Your booking #${booking.bookingNumber} is confirmed!`, 'push').catch(() => { });
+                    notificationService.sendEmail(customer.email, 'Booking Confirmation - Earthspace Services', `Your booking #${booking.bookingNumber} has been placed successfully.`).catch(() => { });
+                }
+            }).catch(e => console.error('[createBooking] Customer notify async error:', e.message));
         } catch (notifyErr) {
             console.error('[createBooking] Notification error (non-fatal):', notifyErr.message);
-            // Non-fatal
         }
 
-        // Return the booking — no reload needed, data is already populated
-        res.status(201).json({ success: true, message: 'Booking created successfully.', data: { booking } });
+        // Return plain object to avoid serialization issues
+        res.status(201).json({ success: true, message: 'Booking created successfully.', data: { booking: booking.get({ plain: true }) } });
 
     } catch (err) {
         console.error('[createBooking] Unexpected error:', err);
