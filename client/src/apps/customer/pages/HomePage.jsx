@@ -13,11 +13,11 @@ const CATEGORY_ICONS = {
 };
 
 const CATEGORY_COLORS = {
-    'ac-services': '#3b82f6',
-    'electrical': '#f59e0b',
-    'plumbing': '#06b6d4',
-    'appliance-repair': '#8b5cf6',
-    'handyman': '#10b981',
+    'ac-services': '#000000',
+    'electrical': '#000000',
+    'plumbing': '#000000',
+    'appliance-repair': '#000000',
+    'handyman': '#000000',
 };
 
 const WHY_CHOOSE = [
@@ -50,28 +50,27 @@ export default function HomePage() {
 
     return (
         <div>
-            {/* Hero */}
-            <section className="hero">
-                <div className="hero-content">
-                    <h1 style={{ marginBottom: 12 }}>Your Home, <span style={{ color: '#93c5fd' }}>Our Expertise</span></h1>
-                    <p className="hero-tagline">Reliable Home Maintenance Experts at Your Doorstep.<br />Book verified technicians in minutes.</p>
-                    <form className="hero-search" onSubmit={handleSearch}>
-                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search AC repair, electrician, plumber..." />
-                        <button type="submit">Search</button>
+            <section className="hero" style={{ background: 'var(--bg-dark)', padding: '80px 0', borderBottom: '1px solid var(--border-color)' }}>
+                <div className="hero-content" style={{ textAlign: 'center', color: '#fff' }}>
+                    <h1 style={{ marginBottom: 16, color: '#fff' }}>PRECISION <span style={{ color: 'var(--color-primary-300)' }}>HOME CARE</span></h1>
+                    <p style={{ color: 'rgba(255,255,255,.7)', fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: 32 }}>ENGINEERING-LED FACILITY MANAGEMENT</p>
+                    <form className="hero-search" onSubmit={handleSearch} style={{ maxWidth: 600, margin: '0 auto', display: 'flex', gap: 0 }}>
+                        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search services..." style={{ flex: 1, padding: '16px 20px', borderRadius: 0, border: 'none' }} />
+                        <button type="submit" className="btn btn-primary" style={{ padding: '0 32px' }}>SEARCH</button>
                     </form>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6, marginTop: 16, color: 'rgba(255,255,255,.7)', fontSize: '0.85rem' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10, marginTop: 24, color: 'rgba(255,255,255,.5)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
                         <MapPin size={14} /> {location}
                     </div>
                 </div>
             </section>
 
             {/* Stats Banner */}
-            <div style={{ background: 'linear-gradient(135deg,#1e40af,#2563eb)', padding: '20px 0' }}>
-                <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 16 }}>
-                    {[['50,000+', 'Happy Customers'], ['1,200+', 'Verified Technicians'], ['25+', 'Services'], ['4.8/5', 'Average Rating']].map(([v, l]) => (
+            <div style={{ background: '#000', padding: '32px 0', borderBottom: '1px solid #333' }}>
+                <div className="container" style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24 }}>
+                    {[['50K+', 'CUSTOMERS'], ['1.2K+', 'ENGINEERS'], ['25+', 'SOLUTIONS'], ['4.8/5', 'RATING']].map(([v, l]) => (
                         <div key={l} style={{ textAlign: 'center', color: '#fff' }}>
-                            <div style={{ fontSize: '1.6rem', fontWeight: 800 }}>{v}</div>
-                            <div style={{ fontSize: '0.8rem', opacity: .8 }}>{l}</div>
+                            <div style={{ fontSize: '2rem', fontWeight: 800, letterSpacing: '-0.02em' }}>{v}</div>
+                            <div style={{ fontSize: '0.7rem', opacity: .6, textTransform: 'uppercase', letterSpacing: '0.15em', marginTop: 4 }}>{l}</div>
                         </div>
                     ))}
                 </div>
@@ -111,20 +110,20 @@ export default function HomePage() {
             </section>
 
             {/* Why Choose Us */}
-            <section style={{ padding: '60px 0', background: 'var(--color-grey-50)' }}>
+            <section style={{ padding: '80px 0', background: '#f8f8f8', borderBottom: '1px solid var(--border-color)' }}>
                 <div className="container">
                     <div className="text-center mb-6">
-                        <h2>Why Earthspace Services?</h2>
-                        <p style={{ marginTop: 8 }}>We set the standard for home maintenance services</p>
+                        <h2 style={{ fontSize: '2.5rem' }}>WHY EARTHSPACE?</h2>
+                        <p style={{ marginTop: 8, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem' }}>Setting the benchmark in facility management</p>
                     </div>
                     <div className="grid-4">
                         {WHY_CHOOSE.map((item, i) => (
-                            <div key={i} className="card card-body text-center" style={{ padding: 28 }}>
-                                <div style={{ width: 56, height: 56, borderRadius: 14, background: 'linear-gradient(135deg,#dbeafe,#eff6ff)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', color: '#2563eb' }}>
+                            <div key={i} className="card card-body text-center" style={{ padding: 32, borderRadius: 0, border: '1px solid #eee' }}>
+                                <div style={{ width: 64, height: 64, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: '#fff' }}>
                                     {item.icon}
                                 </div>
-                                <h4 style={{ marginBottom: 8 }}>{item.title}</h4>
-                                <p className="text-sm">{item.desc}</p>
+                                <h4 style={{ marginBottom: 12 }}>{item.title}</h4>
+                                <p style={{ fontSize: '0.85rem', fontWeight: 300 }}>{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -132,20 +131,20 @@ export default function HomePage() {
             </section>
 
             {/* How It Works */}
-            <section style={{ padding: '60px 0', background: '#fff' }}>
+            <section style={{ padding: '80px 0', background: '#fff' }}>
                 <div className="container">
-                    <div className="text-center mb-6"><h2>How It Works</h2></div>
-                    <div className="grid-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+                    <div className="text-center mb-6"><h2 style={{ fontSize: '2.5rem' }}>HOW IT WORKS</h2></div>
+                    <div className="grid-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 40 }}>
                         {[
-                            { step: '01', title: 'Choose Service', desc: 'Browse and select from 25+ home services.' },
-                            { step: '02', title: 'Book a Slot', desc: 'Pick your preferred date and time.' },
-                            { step: '03', title: 'Expert Arrives', desc: 'A verified technician comes to your home.' },
-                            { step: '04', title: 'Pay & Rate', desc: 'Pay securely and rate your experience.' },
+                            { step: '01', title: 'SELECT SERVICE', desc: 'Browse and select from 25+ professional solutions.' },
+                            { step: '02', title: 'SCHEDULE SLOT', desc: 'Pick your preferred date and time.' },
+                            { step: '03', title: 'EXPERT ARRIVAL', desc: 'A certified engineer arrives at your doorstep.' },
+                            { step: '04', title: 'QUALITY CHECK', desc: 'Complete the job and rate your experience.' },
                         ].map(s => (
                             <div key={s.step} className="text-center">
-                                <div style={{ width: 56, height: 56, borderRadius: 50, background: 'linear-gradient(135deg,#2563eb,#1e40af)', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.1rem', fontWeight: 800, margin: '0 auto 16px' }}>{s.step}</div>
-                                <h4 style={{ marginBottom: 8 }}>{s.title}</h4>
-                                <p className="text-sm">{s.desc}</p>
+                                <div style={{ fontSize: '4rem', fontWeight: 900, color: '#f0f0f0', lineHeight: 1, marginBottom: -20 }}>{s.step}</div>
+                                <h4 style={{ marginBottom: 12, position: 'relative', zIndex: 1 }}>{s.title}</h4>
+                                <p style={{ fontSize: '0.85rem', fontWeight: 300 }}>{s.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -153,12 +152,12 @@ export default function HomePage() {
             </section>
 
             {/* CTA */}
-            <section style={{ padding: '60px var(--content-padding)', background: 'linear-gradient(135deg,#1e3a8a,#2563eb)', textAlign: 'center', color: '#fff' }}>
-                <h2 style={{ color: '#fff', marginBottom: 12 }}>Ready to Book Your First Service?</h2>
-                <p style={{ color: 'rgba(255,255,255,.8)', marginBottom: 28 }}>Get started in under 2 minutes. No registration required to browse.</p>
+            <section style={{ padding: '100px var(--content-padding)', background: '#000', textAlign: 'center', color: '#fff' }}>
+                <h2 style={{ color: '#fff', marginBottom: 16, fontSize: '3rem' }}>READY FOR PRECISION?</h2>
+                <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 40, textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.9rem' }}>Experience the EarthSpace standard today.</p>
                 <Link to="/customer/services">
-                    <button className="btn" style={{ background: '#fff', color: '#2563eb', fontSize: '1rem', padding: '14px 32px' }}>
-                        Browse Services →
+                    <button className="btn btn-primary btn-lg" style={{ background: '#fff', color: '#000', border: 'none' }}>
+                        EXPLORE SOLUTIONS
                     </button>
                 </Link>
             </section>
@@ -168,11 +167,11 @@ export default function HomePage() {
                 <div className="container">
                     <div className="grid-3" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 32, marginBottom: 32 }}>
                         <div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
-                                <div style={{ width: 36, height: 36, borderRadius: 8, background: '#2563eb', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Wrench size={18} color="#fff" /></div>
-                                <span style={{ fontWeight: 800, color: '#fff', fontSize: '1.1rem' }}>Earthspace Services</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
+                                <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
+                                <span style={{ fontWeight: 800, color: '#fff', fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICES</span>
                             </div>
-                            <p style={{ fontSize: '0.85rem', lineHeight: 1.7 }}>Reliable Home Maintenance Experts at Your Doorstep.</p>
+                            <p style={{ fontSize: '0.8rem', lineHeight: 1.8, fontWeight: 300 }}>Engineering-led facility management and precision maintenance for modern residential spaces.</p>
                         </div>
                         <div>
                             <h4 style={{ color: '#fff', marginBottom: 12 }}>Services</h4>

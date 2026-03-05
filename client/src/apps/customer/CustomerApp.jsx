@@ -19,15 +19,15 @@ const NAV_LINKS = [
 function ProfilePage() {
     const { user, logout } = useAuth();
     return (
-        <div style={{ padding: '32px var(--content-padding)', maxWidth: 480, margin: '0 auto' }}>
-            <div className="card card-body text-center" style={{ marginBottom: 16 }}>
-                <div className="avatar avatar-lg" style={{ margin: '0 auto 12px' }}>{user?.name?.[0]?.toUpperCase()}</div>
-                <h3>{user?.name}</h3>
-                <p className="text-sm">{user?.email || user?.phone}</p>
-                <span className="badge badge-primary mt-2">{user?.role?.toUpperCase()}</span>
+        <div style={{ padding: '60px var(--content-padding)', maxWidth: 480, margin: '0 auto' }}>
+            <div className="card card-body text-center" style={{ marginBottom: 24, borderRadius: 0, border: '2px solid #000', padding: '40px' }}>
+                <div className="avatar avatar-lg" style={{ margin: '0 auto 16px', background: '#000', color: '#fff', borderRadius: 0, width: 64, height: 64, fontSize: '1.5rem', fontWeight: 800 }}>{user?.name?.[0]?.toUpperCase()}</div>
+                <h3 style={{ textTransform: 'uppercase', marginBottom: 8 }}>{user?.name}</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>{user?.email || user?.phone}</p>
+                <div style={{ marginTop: 24, padding: '4px 12px', background: '#000', color: '#fff', fontSize: '0.65rem', fontWeight: 800, letterSpacing: '0.1em', display: 'inline-block' }}>{user?.role?.toUpperCase()}</div>
             </div>
-            <button className="btn btn-danger btn-block" onClick={() => { if (window.confirm('Log out?')) { logout(); window.location.href = '/login'; } }}>
-                <LogOut size={16} /> Log Out
+            <button className="btn btn-outline btn-block" style={{ borderRadius: 0, color: 'var(--color-danger)', borderColor: 'var(--color-danger)' }} onClick={() => { if (window.confirm('Log out?')) { logout(); window.location.href = '/login'; } }}>
+                LOG OUT
             </button>
         </div>
     );
@@ -89,9 +89,9 @@ export default function CustomerApp() {
                 {NAV_LINKS.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
-                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3, color: active ? 'var(--color-primary-900)' : 'var(--text-secondary)', textDecoration: 'none', padding: '4px 0' }}>
-                            <Icon size={20} />
-                            <span style={{ fontSize: '0.65rem', fontWeight: active ? 700 : 400, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{label}</span>
+                        <Link key={to} to={to} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, color: active ? '#000' : '#bbb', textDecoration: 'none', padding: '8px 0' }}>
+                            <Icon size={18} strokeWidth={active ? 2.5 : 1.5} />
+                            <span style={{ fontSize: '0.6rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{label}</span>
                         </Link>
                     );
                 })}

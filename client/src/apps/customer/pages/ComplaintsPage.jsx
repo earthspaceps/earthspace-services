@@ -3,17 +3,17 @@ import { MessageSquare, AlertTriangle, CheckCircle, Clock, Loader, Plus } from '
 import api from '../../../shared/api';
 
 const PRIORITY_COLORS = {
-    low: '#10b981',
-    medium: '#3b82f6',
-    high: '#f59e0b',
-    urgent: '#ef4444'
+    low: '#999',
+    medium: '#666',
+    high: '#333',
+    urgent: '#000'
 };
 
 const STATUS_ICONS = {
-    open: { icon: Clock, color: '#3b82f6', bg: '#dbeafe' },
-    in_review: { icon: Clock, color: '#f59e0b', bg: '#fef9c3' },
-    resolved: { icon: CheckCircle, color: '#10b981', bg: '#d1fae5' },
-    closed: { icon: CheckCircle, color: '#64748b', bg: '#f1f5f9' }
+    open: { icon: Clock, color: '#000', bg: '#f0f0f0' },
+    in_review: { icon: Clock, color: '#666', bg: '#f5f5f5' },
+    resolved: { icon: CheckCircle, color: '#fff', bg: '#000' },
+    closed: { icon: CheckCircle, color: '#999', bg: '#eee' }
 };
 
 export default function ComplaintsPage() {
@@ -55,13 +55,13 @@ export default function ComplaintsPage() {
 
     return (
         <div style={{ padding: '32px var(--content-padding)', maxWidth: 800, margin: '0 auto' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
                 <div>
-                    <h2>Support & Complaints</h2>
-                    <p className="text-sm text-secondary">Track your issues and get resolutions</p>
+                    <h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>COMPLAINTS</h2>
+                    <p className="text-sm" style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.7rem' }}>SUPPORT & TICKETING</p>
                 </div>
-                <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-                    <Plus size={16} /> New Complaint
+                <button className="btn btn-primary" style={{ borderRadius: 0 }} onClick={() => setShowModal(true)}>
+                    + NEW COMPLAINT
                 </button>
             </div>
 
@@ -77,29 +77,29 @@ export default function ComplaintsPage() {
                         const status = STATUS_ICONS[c.status] || STATUS_ICONS.open;
                         const Icon = status.icon;
                         return (
-                            <div key={c.id} className="card card-body">
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
+                            <div key={c.id} className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)', padding: '24px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 16 }}>
                                     <div>
-                                        <h4 style={{ marginBottom: 4 }}>{c.subject}</h4>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                                            Filed on {new Date(c.createdAt).toLocaleDateString()}
+                                        <h4 style={{ marginBottom: 4, textTransform: 'uppercase' }}>{c.subject}</h4>
+                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
+                                            FILED ON {new Date(c.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
-                                    <span className="badge" style={{ background: status.bg, color: status.color, display: 'flex', alignItems: 'center', gap: 4 }}>
-                                        <Icon size={12} /> {c.status.replace('_', ' ')}
+                                    <span style={{ fontSize: '0.65rem', background: status.bg, color: status.color, padding: '3px 8px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                        {c.status.replace('_', ' ')}
                                     </span>
                                 </div>
-                                <p style={{ fontSize: '0.9rem', lineHeight: 1.6, marginBottom: 16 }}>{c.description}</p>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
-                                    <div style={{ display: 'flex', gap: 12 }}>
-                                        <span style={{ color: PRIORITY_COLORS[c.priority], fontWeight: 600 }}>Priority: {c.priority.toUpperCase()}</span>
-                                        {c.bookingId && <span style={{ color: 'var(--text-secondary)' }}>Booking ID: {c.bookingId.slice(0, 8)}</span>}
+                                <p style={{ fontSize: '0.85rem', lineHeight: 1.8, marginBottom: 20 }}>{c.description}</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem' }}>
+                                    <div style={{ display: 'flex', gap: 16 }}>
+                                        <span style={{ color: PRIORITY_COLORS[c.priority], fontWeight: 800 }}>PRIORITY: {c.priority.toUpperCase()}</span>
+                                        {c.bookingId && <span style={{ color: 'var(--text-secondary)' }}>REF: {c.bookingId.slice(-8).toUpperCase()}</span>}
                                     </div>
                                 </div>
                                 {c.adminResponse && (
-                                    <div style={{ marginTop: 16, padding: 12, background: '#f8fafc', borderRadius: 8, borderLeft: '3px solid #10b981' }}>
-                                        <div style={{ fontWeight: 600, fontSize: '0.85rem', marginBottom: 4 }}>Resolution Note:</div>
-                                        <p style={{ fontSize: '0.85rem' }}>{c.adminResponse}</p>
+                                    <div style={{ marginTop: 20, padding: '16px', background: '#fafafa', border: '1px solid #eee', borderLeft: '4px solid #000' }}>
+                                        <div style={{ fontWeight: 800, fontSize: '0.75rem', marginBottom: 6, textTransform: 'uppercase' }}>OFFICIAL RESPONSE:</div>
+                                        <p style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>{c.adminResponse}</p>
                                     </div>
                                 )}
                             </div>
@@ -109,45 +109,45 @@ export default function ComplaintsPage() {
             )}
 
             {showModal && (
-                <div className="modal-overlay" onClick={() => setShowModal(false)}>
-                    <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 500 }}>
-                        <div className="modal-header">
-                            <h3>File a Complaint</h3>
+                <div className="modal-overlay" onClick={() => setShowModal(false)} style={{ background: 'rgba(0,0,0,0.8)' }}>
+                    <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 500, borderRadius: 0, border: '2px solid #000' }}>
+                        <div className="modal-header" style={{ borderBottom: '1px solid #eee' }}>
+                            <h3 style={{ textTransform: 'uppercase' }}>NEW COMPLAINT</h3>
                             <button className="btn btn-ghost btn-sm" onClick={() => setShowModal(false)}>✕</button>
                         </div>
                         <form onSubmit={handleSubmit}>
-                            <div className="modal-body">
-                                <div className="form-group mb-3">
-                                    <label className="form-label">Related Booking (Optional)</label>
-                                    <select className="form-control" value={form.bookingId} onChange={e => setForm({ ...form, bookingId: e.target.value })}>
-                                        <option value="">None</option>
+                            <div className="modal-body" style={{ padding: '24px' }}>
+                                <div className="form-group mb-4">
+                                    <label className="form-label" style={{ fontSize: '0.7rem' }}>RELATED BOOKING</label>
+                                    <select className="form-control" style={{ borderRadius: 0 }} value={form.bookingId} onChange={e => setForm({ ...form, bookingId: e.target.value })}>
+                                        <option value="">NONE / GENERAL</option>
                                         {bookings.map(b => (
-                                            <option key={b.id} value={b.id}>#{b.bookingNumber} - {b.serviceSnapshot.name}</option>
+                                            <option key={b.id} value={b.id}>#{b.bookingNumber} - {b.serviceSnapshot.name.toUpperCase()}</option>
                                         ))}
                                     </select>
                                 </div>
-                                <div className="form-group mb-3">
-                                    <label className="form-label">Subject</label>
-                                    <input className="form-control" required placeholder="Short summary of the issue" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
+                                <div className="form-group mb-4">
+                                    <label className="form-label" style={{ fontSize: '0.7rem' }}>SUBJECT</label>
+                                    <input className="form-control" style={{ borderRadius: 0 }} required placeholder="Brief summary" value={form.subject} onChange={e => setForm({ ...form, subject: e.target.value })} />
                                 </div>
-                                <div className="form-group mb-3">
-                                    <label className="form-label">Description</label>
-                                    <textarea className="form-control" required rows={4} placeholder="Describe the issue in detail" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
+                                <div className="form-group mb-4">
+                                    <label className="form-label" style={{ fontSize: '0.7rem' }}>DESCRIPTION</label>
+                                    <textarea className="form-control" style={{ borderRadius: 0 }} required rows={4} placeholder="Detailed explanation..." value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">Priority</label>
-                                    <select className="form-control" value={form.priority} onChange={e => setForm({ ...form, priority: e.target.value })}>
-                                        <option value="low">Low</option>
-                                        <option value="medium">Medium</option>
-                                        <option value="high">High</option>
-                                        <option value="urgent">Urgent</option>
+                                    <label className="form-label" style={{ fontSize: '0.7rem' }}>PRIORITY</label>
+                                    <select className="form-control" style={{ borderRadius: 0 }} value={form.priority} onChange={e => setForm({ ...form, priority: e.target.value })}>
+                                        <option value="low">LOW</option>
+                                        <option value="medium">MEDIUM</option>
+                                        <option value="high">HIGH</option>
+                                        <option value="urgent">URGENT</option>
                                     </select>
                                 </div>
                             </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-outline" onClick={() => setShowModal(false)}>Cancel</button>
-                                <button type="submit" className="btn btn-primary" disabled={submitting}>
-                                    {submitting ? <Loader size={16} className="animate-spin" /> : 'Submit Complaint'}
+                            <div className="modal-footer" style={{ borderTop: 'none', padding: '0 24px 24px' }}>
+                                <button type="button" className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={() => setShowModal(false)}>CANCEL</button>
+                                <button type="submit" className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} disabled={submitting}>
+                                    {submitting ? 'SUBMITTING...' : 'SUBMIT TICKET'}
                                 </button>
                             </div>
                         </form>

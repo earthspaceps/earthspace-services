@@ -4,7 +4,7 @@ import { Search, Filter, Wind, Zap, Droplets, Wrench, Hammer, Clock, Star } from
 import api from '../../../shared/api';
 
 const CATEGORY_ICONS = { 'ac-services': Wind, 'electrical': Zap, 'plumbing': Droplets, 'appliance-repair': Wrench, 'handyman': Hammer };
-const CATEGORY_COLORS = { 'ac-services': '#3b82f6', 'electrical': '#f59e0b', 'plumbing': '#06b6d4', 'appliance-repair': '#8b5cf6', 'handyman': '#10b981' };
+const CATEGORY_COLORS = { 'ac-services': '#000', 'electrical': '#000', 'plumbing': '#000', 'appliance-repair': '#000', 'handyman': '#000' };
 
 export default function ServicesPage() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -38,35 +38,32 @@ export default function ServicesPage() {
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--bg-page)' }}>
-            {/* Search Bar */}
-            <div style={{ background: 'linear-gradient(135deg,#1e3a8a,#2563eb)', padding: '28px var(--content-padding)' }}>
+            {/* Header */}
+            <div style={{ background: 'var(--bg-dark)', padding: '40px var(--content-padding)', borderBottom: '1px solid var(--border-color)' }}>
                 <div className="container">
-                    <h2 style={{ color: '#fff', marginBottom: 16 }}>Browse Services</h2>
-                    <form onSubmit={handleSearch} style={{ display: 'flex', gap: 10 }}>
+                    <h2 style={{ color: '#fff', marginBottom: 8, fontSize: '2rem' }}>SOLUTIONS</h2>
+                    <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 24, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem' }}>Precision engineering for your home</p>
+                    <form onSubmit={handleSearch} style={{ display: 'flex', gap: 0, maxWidth: 600 }}>
                         <div style={{ flex: 1, position: 'relative' }}>
-                            <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
-                            <input className="form-control" style={{ paddingLeft: 40 }} placeholder="Search services..." value={search} onChange={e => setSearch(e.target.value)} />
+                            <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-primary-400)' }} />
+                            <input className="form-control" style={{ paddingLeft: 40, borderRadius: 0, border: 'none' }} placeholder="Search solutions..." value={search} onChange={e => setSearch(e.target.value)} />
                         </div>
-                        <button className="btn btn-primary" type="submit">Search</button>
+                        <button className="btn btn-primary" type="submit" style={{ padding: '0 32px' }}>SEARCH</button>
                     </form>
                 </div>
             </div>
 
             <div className="container" style={{ padding: '24px var(--content-padding)' }}>
                 {/* Category Filter Tabs */}
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 24 }}>
-                    <button onClick={() => setCategory('')} className={`btn btn-sm ${!activeCategory ? 'btn-primary' : 'btn-outline'}`}>All Services</button>
-                    {categories.map(cat => {
-                        const Icon = CATEGORY_ICONS[cat.slug] || Wrench;
-                        const color = CATEGORY_COLORS[cat.slug] || '#3b82f6';
-                        return (
-                            <button key={cat.slug} onClick={() => setCategory(cat.slug)}
-                                className={`btn btn-sm ${activeCategory === cat.slug ? 'btn-primary' : 'btn-outline'}`}
-                                style={activeCategory === cat.slug ? {} : { borderColor: color, color }}>
-                                <Icon size={14} />{cat.name}
-                            </button>
-                        );
-                    })}
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 32 }}>
+                    <button onClick={() => setCategory('')} className={`btn btn-sm ${!activeCategory ? 'btn-primary' : 'btn-outline'}`} style={{ borderRadius: 0 }}>ALL SOLUTIONS</button>
+                    {categories.map(cat => (
+                        <button key={cat.slug} onClick={() => setCategory(cat.slug)}
+                            className={`btn btn-sm ${activeCategory === cat.slug ? 'btn-primary' : 'btn-outline'}`}
+                            style={{ borderRadius: 0 }}>
+                            {cat.name.toUpperCase()}
+                        </button>
+                    ))}
                 </div>
 
                 {loading ? (
@@ -84,15 +81,13 @@ export default function ServicesPage() {
                             const color = CATEGORY_COLORS[catSlug] || '#3b82f6';
                             const Icon = CATEGORY_ICONS[catSlug] || Wrench;
                             return (
-                                <div key={service.id} className="service-card">
-                                    <div className="service-card-header" style={{ background: `linear-gradient(135deg, ${color}, ${color}dd)` }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                                            <div style={{ width: 36, height: 36, borderRadius: 8, background: 'rgba(255,255,255,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                <Icon size={20} color="#fff" />
-                                            </div>
-                                            <span style={{ fontSize: '0.75rem', background: 'rgba(255,255,255,.2)', padding: '3px 8px', borderRadius: 20, fontWeight: 600 }}>{service.category?.name}</span>
+                                <div key={service.id} className="service-card" style={{ borderRadius: 0, border: '1px solid var(--border-color)', background: '#fff' }}>
+                                    <div className="service-card-header" style={{ background: '#000', padding: '20px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                                            <span style={{ fontSize: '0.65rem', background: 'rgba(255,255,255,.15)', color: '#fff', padding: '2px 8px', letterSpacing: '0.1em', fontWeight: 600 }}>{service.category?.name.toUpperCase()}</span>
+                                            <Icon size={18} color="#fff" strokeWidth={1.5} />
                                         </div>
-                                        <h3 style={{ color: '#fff', fontSize: '1rem' }}>{service.name}</h3>
+                                        <h3 style={{ color: '#fff', fontSize: '1rem', letterSpacing: '0.02em' }}>{service.name.toUpperCase()}</h3>
                                     </div>
                                     <div className="service-card-body">
                                         <p className="text-sm" style={{ marginBottom: 16, lineHeight: 1.6 }}>{service.description}</p>

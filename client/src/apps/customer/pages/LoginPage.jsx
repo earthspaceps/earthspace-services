@@ -71,13 +71,15 @@ export default function LoginPage() {
                 position: 'relative',
                 zIndex: 1
             }}>
-                {/* Logo */}
+                {/* Logo Section - Vertical Stack */}
                 <div className="auth-logo" style={{ textAlign: 'center', marginBottom: 32 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 12 }}>
-                        <img src="/logo.png" alt="EarthSpace" style={{ height: 42, filter: 'grayscale(100%) contrast(120%)' }} />
-                        <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em', fontSize: '1.2rem', color: 'var(--text-primary)' }}>SERVICES</span>
+                    <div style={{ marginBottom: 16 }}>
+                        <img src="/logo.png" alt="EarthSpace" style={{ height: 56, margin: '0 auto', filter: 'grayscale(100%) contrast(120%)' }} />
                     </div>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>PRECISION MANAGEMENT</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '1.4rem', color: 'var(--text-primary)', lineHeight: 1 }}>SERVICES</span>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.2em', fontWeight: 600 }}>PRECISION MANAGEMENT</p>
+                    </div>
                 </div>
 
                 {/* Quick Fill Buttons (Test Mode) */}

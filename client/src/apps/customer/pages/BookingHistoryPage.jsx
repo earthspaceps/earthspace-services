@@ -4,13 +4,13 @@ import { Calendar, Clock, Package, Star, XCircle, CheckCircle, Truck, Play, Load
 import api from '../../../shared/api';
 
 const STATUS_CONFIG = {
-    pending: { label: 'Pending', color: '#f59e0b', bg: '#fef9c3', icon: Clock },
-    confirmed: { label: 'Confirmed', color: '#3b82f6', bg: '#dbeafe', icon: CheckCircle },
-    assigned: { label: 'Assigned', color: '#8b5cf6', bg: '#ede9fe', icon: Package },
-    on_the_way: { label: 'On the Way', color: '#06b6d4', bg: '#cffafe', icon: Truck },
-    started: { label: 'In Progress', color: '#f97316', bg: '#ffedd5', icon: Play },
-    completed: { label: 'Completed', color: '#22c55e', bg: '#dcfce7', icon: CheckCircle },
-    cancelled: { label: 'Cancelled', color: '#ef4444', bg: '#fee2e2', icon: XCircle },
+    pending: { label: 'PENDING', color: '#000', bg: '#f0f0f0', icon: Clock },
+    confirmed: { label: 'CONFIRMED', color: '#fff', bg: '#000', icon: CheckCircle },
+    assigned: { label: 'ASSIGNED', color: '#fff', bg: '#333', icon: Package },
+    on_the_way: { label: 'ON THE WAY', color: '#fff', bg: '#444', icon: Truck },
+    started: { label: 'IN PROGRESS', color: '#fff', bg: '#000', icon: Play },
+    completed: { label: 'COMPLETED', color: '#fff', bg: '#000', icon: CheckCircle },
+    cancelled: { label: 'CANCELLED', color: '#fff', bg: '#999', icon: XCircle },
 };
 
 const RatingModal = ({ bookingId, technicianId, onClose, onSubmit }) => {
@@ -29,27 +29,27 @@ const RatingModal = ({ bookingId, technicianId, onClose, onSubmit }) => {
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal" onClick={e => e.stopPropagation()}>
-                <div className="modal-header"><h3>Rate Your Experience</h3><button className="btn btn-ghost btn-sm" onClick={onClose}>✕</button></div>
-                <div className="modal-body">
-                    <div className="text-center mb-4">
-                        <div className="stars" style={{ justifyContent: 'center', gap: 8, marginBottom: 8 }}>
+        <div className="modal-overlay" onClick={onClose} style={{ background: 'rgba(0,0,0,0.8)' }}>
+            <div className="modal" onClick={e => e.stopPropagation()} style={{ borderRadius: 0, border: '2px solid #000' }}>
+                <div className="modal-header" style={{ borderBottom: '1px solid #eee' }}><h3 style={{ textTransform: 'uppercase' }}>RATE YOUR EXPERIENCE</h3><button className="btn btn-ghost btn-sm" onClick={onClose}>✕</button></div>
+                <div className="modal-body" style={{ padding: '32px' }}>
+                    <div className="text-center mb-6">
+                        <div className="stars" style={{ justifyContent: 'center', gap: 12, marginBottom: 12 }}>
                             {[1, 2, 3, 4, 5].map(s => (
-                                <button key={s} onClick={() => setRating(s)} style={{ background: 'none', border: 'none', fontSize: '2rem', cursor: 'pointer', color: s <= rating ? '#fbbf24' : '#d1d5db' }}>★</button>
+                                <button key={s} onClick={() => setRating(s)} style={{ background: 'none', border: 'none', fontSize: '2.5rem', cursor: 'pointer', color: s <= rating ? '#000' : '#ddd' }}>★</button>
                             ))}
                         </div>
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{['', 'Poor', 'Fair', 'Good', 'Very Good', 'Excellent!'][rating]}</p>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700 }}>{['', 'POOR', 'FAIR', 'GOOD', 'VERY GOOD', 'EXCELLENT!'][rating]}</p>
                     </div>
                     <div className="form-group">
-                        <label className="form-label">Write a Review (optional)</label>
-                        <textarea className="form-control" rows={3} placeholder="Share your experience with the technician..." value={review} onChange={e => setReview(e.target.value)} style={{ resize: 'vertical' }} />
+                        <label className="form-label" style={{ fontSize: '0.7rem' }}>REVIEW</label>
+                        <textarea className="form-control" style={{ borderRadius: 0 }} rows={3} placeholder="Share your experience..." value={review} onChange={e => setReview(e.target.value)} />
                     </div>
                 </div>
-                <div className="modal-footer">
-                    <button className="btn btn-outline" onClick={onClose}>Skip</button>
-                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>
-                        {loading ? <Loader size={14} /> : 'Submit Rating'}
+                <div className="modal-footer" style={{ borderTop: 'none', padding: '0 32px 32px' }}>
+                    <button className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={onClose}>SKIP</button>
+                    <button className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} onClick={handleSubmit} disabled={loading}>
+                        {loading ? 'SUBMITTING...' : 'SUBMIT RATING'}
                     </button>
                 </div>
             </div>
@@ -72,15 +72,15 @@ export default function BookingHistoryPage() {
     return (
         <div style={{ minHeight: '100vh', background: 'var(--bg-page)', padding: '32px var(--content-padding)' }}>
             <div className="container" style={{ maxWidth: 720 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-                    <div><h2>My Bookings</h2><p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Track and manage your service bookings</p></div>
-                    <Link to="/customer/services"><button className="btn btn-primary btn-sm">+ New Booking</button></Link>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 32 }}>
+                    <div><h2 style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>MY BOOKINGS</h2><p className="text-sm" style={{ color: 'var(--text-secondary)', textTransform: 'uppercase', fontSize: '0.7rem' }}>HISTORY & TRACKING</p></div>
+                    <Link to="/customer/services"><button className="btn btn-primary btn-sm" style={{ borderRadius: 0 }}>+ NEW BOOKING</button></Link>
                 </div>
 
                 {/* Filter Tabs */}
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
-                    {[['', 'All'], ['pending', 'Pending'], ['assigned', 'Assigned'], ['completed', 'Completed'], ['cancelled', 'Cancelled']].map(([k, label]) => (
-                        <button key={k} onClick={() => setFilter(k)} className={`btn btn-sm ${filter === k ? 'btn-primary' : 'btn-outline'}`}>{label}</button>
+                <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 32 }}>
+                    {[['', 'ALL'], ['pending', 'PENDING'], ['assigned', 'ASSIGNED'], ['completed', 'COMPLETED'], ['cancelled', 'CANCELLED']].map(([k, label]) => (
+                        <button key={k} onClick={() => setFilter(k)} className={`btn btn-sm ${filter === k ? 'btn-primary' : 'btn-outline'}`} style={{ borderRadius: 0, flex: 1, minWidth: 100 }}>{label}</button>
                     ))}
                 </div>
 
@@ -99,36 +99,36 @@ export default function BookingHistoryPage() {
                             const status = STATUS_CONFIG[b.status] || STATUS_CONFIG.pending;
                             const StatusIcon = status.icon;
                             return (
-                                <div key={b.id} className="card">
-                                    <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <div key={b.id} className="card" style={{ borderRadius: 0, border: '1px solid var(--border-color)', marginBottom: 16 }}>
+                                    <div style={{ padding: '16px 20px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#fafafa' }}>
                                         <div>
-                                            <span style={{ fontWeight: 700, color: 'var(--color-primary-700)' }}>#{b.bookingNumber}</span>
-                                            <span style={{ margin: '0 8px', color: 'var(--text-secondary)' }}>·</span>
-                                            <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{b.scheduledDate} at {b.scheduledTime}</span>
+                                            <span style={{ fontWeight: 800, fontSize: '0.9rem' }}>#{b.bookingNumber}</span>
+                                            <span style={{ margin: '0 8px', color: '#ddd' }}>|</span>
+                                            <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{b.scheduledDate} · {b.scheduledTime}</span>
                                         </div>
-                                        <span className="badge" style={{ background: status.bg, color: status.color }}>
-                                            <StatusIcon size={12} />{status.label}
+                                        <span style={{ fontSize: '0.65rem', background: status.bg, color: status.color, padding: '3px 8px', fontWeight: 800, letterSpacing: '0.05em' }}>
+                                            {status.label}
                                         </span>
                                     </div>
-                                    <div style={{ padding: '16px 20px' }}>
+                                    <div style={{ padding: '20px' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <div style={{ flex: 1 }}>
-                                                <h4 style={{ marginBottom: 4 }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
+                                                <h4 style={{ marginBottom: 4, textTransform: 'uppercase', fontSize: '1rem' }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
                                                 {b.technician?.user && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: 8 }}>
-                                                        <div className="avatar avatar-sm">{b.technician.user.name?.[0]}</div>
-                                                        {b.technician.user.name} · {b.technician.user.phone}
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: '0.8rem', color: '#000', margin: '12px 0', fontWeight: 600 }}>
+                                                        <div className="avatar avatar-sm" style={{ background: '#000', color: '#fff', borderRadius: 0 }}>{b.technician.user.name?.[0]}</div>
+                                                        {b.technician.user.name.toUpperCase()} · {b.technician.user.phone}
                                                     </div>
                                                 )}
-                                                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{b.addressSnapshot?.line1}</div>
+                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>{b.addressSnapshot?.line1}</div>
                                             </div>
                                             <div style={{ textAlign: 'right' }}>
-                                                <div style={{ fontWeight: 700, color: 'var(--color-primary-700)' }}>₹{b.finalPrice || b.estimatedPrice || b.serviceSnapshot?.basePrice}</div>
-                                                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: 2 }}>
+                                                <div style={{ fontWeight: 900, fontSize: '1.2rem' }}>₹{b.finalPrice || b.estimatedPrice || b.serviceSnapshot?.basePrice}</div>
+                                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: 4, fontWeight: 700, letterSpacing: '0.05em' }}>
                                                     {b.paymentStatus === 'completed' ? (
-                                                        <span style={{ color: 'var(--color-success)', fontWeight: 600 }}>Paid via {b.paymentMethod}</span>
+                                                        <span style={{ color: '#000' }}>PAID VIA {b.paymentMethod?.toUpperCase()}</span>
                                                     ) : (
-                                                        <span>Due via {b.paymentMethod || 'cash'}</span>
+                                                        <span>DUE VIA {b.paymentMethod?.toUpperCase() || 'CASH'}</span>
                                                     )}
                                                 </div>
                                             </div>

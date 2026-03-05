@@ -69,156 +69,166 @@ export default function BookingPage() {
         <div style={{ minHeight: '100vh', background: 'var(--bg-page)', padding: '32px var(--content-padding)' }}>
             <div className="container" style={{ maxWidth: 640 }}>
                 {/* Progress Steps */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 32 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 0, marginBottom: 40 }}>
                     {STEPS.map((s, i) => (
                         <React.Fragment key={i}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
                                 <div style={{
-                                    width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.9rem',
-                                    background: step > i + 1 ? 'var(--color-success)' : step === i + 1 ? 'var(--color-primary-600)' : 'var(--color-grey-200)',
+                                    width: 32, height: 32, border: '1px solid currentColor', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.8rem',
+                                    background: step >= i + 1 ? '#000' : 'transparent',
                                     color: step >= i + 1 ? '#fff' : 'var(--text-secondary)',
                                 }}>
                                     {step > i + 1 ? '✓' : i + 1}
                                 </div>
-                                <span style={{ fontSize: '0.72rem', marginTop: 4, fontWeight: step === i + 1 ? 600 : 400, color: step === i + 1 ? 'var(--color-primary-700)' : 'var(--text-secondary)' }}>{s}</span>
+                                <span style={{ fontSize: '0.65rem', marginTop: 8, fontWeight: 700, color: step === i + 1 ? '#000' : 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s}</span>
                             </div>
-                            {i < STEPS.length - 1 && <div style={{ flex: 1, height: 2, background: step > i + 1 ? 'var(--color-success)' : 'var(--color-grey-200)', marginBottom: 20 }} />}
+                            {i < STEPS.length - 1 && <div style={{ flex: 1, height: 1, background: step > i + 1 ? '#000' : 'var(--color-grey-200)', marginBottom: 20 }} />}
                         </React.Fragment>
                     ))}
                 </div>
 
                 {/* Service Summary */}
-                <div className="card mb-4" style={{ padding: '16px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div className="card mb-6" style={{ padding: '20px', border: '2px solid #000', borderRadius: 0, display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#fff' }}>
                     <div>
-                        <div style={{ fontWeight: 700 }}>{serviceName}</div>
-                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Home Service</div>
+                        <div style={{ fontWeight: 800, fontSize: '1.1rem', textTransform: 'uppercase' }}>{serviceName}</div>
+                        <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>TECHNICAL SOLUTION</div>
                     </div>
-                    <div style={{ fontWeight: 800, fontSize: '1.2rem', color: 'var(--color-primary-700)' }}>₹{servicePrice}+</div>
+                    <div style={{ fontWeight: 900, fontSize: '1.4rem' }}>₹{servicePrice}+</div>
                 </div>
 
                 {error && <div className="alert alert-danger mb-4">{error}</div>}
 
                 {/* Step 1: Date & Time */}
                 {step === 1 && (
-                    <div className="card card-body">
-                        <h3 className="mb-4"><Calendar size={20} style={{ display: 'inline', marginRight: 8 }} />Select Date & Time</h3>
+                    <div className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)' }}>
+                        <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SELECT DATE & TIME</h3>
 
-                        {/* Mini Calendar */}
-                        <div style={{ marginBottom: 24 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                                <button className="btn btn-ghost btn-sm" onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1); } else setCalMonth(m => m - 1); }}><ChevronLeft size={16} /></button>
-                                <span style={{ fontWeight: 600 }}>{monthName}</span>
-                                <button className="btn btn-ghost btn-sm" onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1); }}><ChevronRight size={16} /></button>
+                        {/* Calendar */}
+                        <div style={{ marginBottom: 32 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+                                <button className="btn btn-ghost btn-sm" onClick={() => { if (calMonth === 0) { setCalMonth(11); setCalYear(y => y - 1); } else setCalMonth(m => m - 1); }}><ChevronLeft size={18} /></button>
+                                <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{monthName}</span>
+                                <button className="btn btn-ghost btn-sm" onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1); }}><ChevronRight size={18} /></button>
                             </div>
                             <div className="calendar-grid" style={{ marginBottom: 8 }}>
-                                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <div key={d} style={{ textAlign: 'center', fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', padding: '4px 0' }}>{d}</div>)}
+                                {['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'].map(d => <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 700, color: 'var(--text-secondary)', padding: '8px 0' }}>{d}</div>)}
                             </div>
                             <div className="calendar-grid">
                                 {Array.from({ length: firstDay }).map((_, i) => <div key={`e${i}`} />)}
                                 {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(d => {
                                     const date = formatDate(calYear, calMonth, d);
                                     const past = isPast(d);
+                                    const isSelected = selectedDate === date;
                                     return (
                                         <button key={d} disabled={past} onClick={() => setSelectedDate(date)}
-                                            className={`cal-day ${past ? 'disabled' : 'available'} ${selectedDate === date ? 'selected' : ''} ${formatDate(today.getFullYear(), today.getMonth(), today.getDate()) === date ? 'today' : ''}`}>{d}</button>
+                                            style={{
+                                                aspectRatio: '1', border: '1px solid #eee', background: isSelected ? '#000' : 'transparent',
+                                                color: isSelected ? '#fff' : past ? '#ccc' : '#000', fontWeight: isSelected ? 800 : 400,
+                                                cursor: past ? 'default' : 'pointer', fontSize: '0.85rem'
+                                            }}>{d}</button>
                                     );
                                 })}
                             </div>
                         </div>
 
                         {/* Time Slots */}
-                        <h4 style={{ marginBottom: 12 }}><Clock size={16} style={{ display: 'inline', marginRight: 6 }} />Select Time</h4>
-                        <div className="time-slots">
+                        <h4 style={{ marginBottom: 16, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '0.9rem' }}>SELECT TIME WINDOW</h4>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 10 }}>
                             {TIME_SLOTS.map(t => (
-                                <button key={t} className={`time-slot ${selectedTime === t ? 'selected' : ''}`} onClick={() => setSelectedTime(t)}>
-                                    {t}
-                                </button>
+                                <button key={t} onClick={() => setSelectedTime(t)} style={{
+                                    padding: '12px 0', border: '1px solid var(--border-color)', borderRadius: 0,
+                                    background: selectedTime === t ? '#000' : 'transparent',
+                                    color: selectedTime === t ? '#fff' : '#000',
+                                    fontWeight: selectedTime === t ? 700 : 400, fontSize: '0.85rem'
+                                }}>{t}</button>
                             ))}
                         </div>
 
-                        <button className="btn btn-primary btn-block btn-lg mt-6" onClick={() => setStep(2)} disabled={!selectedDate || !selectedTime}>
-                            Continue to Address →
+                        <button className="btn btn-primary btn-block btn-lg mt-8" onClick={() => setStep(2)} disabled={!selectedDate || !selectedTime}>
+                            CONTINUE TO ADDRESS
                         </button>
                     </div>
                 )}
 
                 {/* Step 2: Address */}
                 {step === 2 && (
-                    <div className="card card-body">
-                        <h3 className="mb-4"><MapPin size={20} style={{ display: 'inline', marginRight: 8 }} />Service Address</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                    <div className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)' }}>
+                        <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICE ADDRESS</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                             <div className="form-group">
-                                <label className="form-label">Address Line 1 <span style={{ color: 'var(--color-danger)' }}>*</span></label>
-                                <input className="form-control" placeholder="House/Flat No., Building Name, Street" value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
+                                <label className="form-label">ADDRESS LINE 1</label>
+                                <input className="form-control" style={{ borderRadius: 0 }} placeholder="House/Flat No., Building Name" value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
                             </div>
                             <div className="form-group">
-                                <label className="form-label">Address Line 2</label>
-                                <input className="form-control" placeholder="Landmark, Area (optional)" value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
+                                <label className="form-label">ADDRESS LINE 2</label>
+                                <input className="form-control" style={{ borderRadius: 0 }} placeholder="Landmark, Area" value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                 <div className="form-group">
-                                    <label className="form-label">City <span style={{ color: 'var(--color-danger)' }}>*</span></label>
-                                    <input className="form-control" placeholder="City" value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
+                                    <label className="form-label">CITY</label>
+                                    <input className="form-control" style={{ borderRadius: 0 }} placeholder="City" value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
                                 </div>
                                 <div className="form-group">
-                                    <label className="form-label">Pincode</label>
-                                    <input className="form-control" placeholder="Pincode" value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
+                                    <label className="form-label">PINCODE</label>
+                                    <input className="form-control" style={{ borderRadius: 0 }} placeholder="6-digit PIN" value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
                                 </div>
                             </div>
                             <div className="form-group">
-                                <label className="form-label">Special Instructions</label>
-                                <textarea className="form-control" rows={3} placeholder="Any special instructions for the technician..." value={instructions} onChange={e => setInstructions(e.target.value)} style={{ resize: 'vertical' }} />
+                                <label className="form-label">INSTRUCTIONS</label>
+                                <textarea className="form-control" style={{ borderRadius: 0 }} rows={3} placeholder="Any notes for our engineer..." value={instructions} onChange={e => setInstructions(e.target.value)} />
                             </div>
                         </div>
-                        <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
-                            <button className="btn btn-outline" onClick={() => setStep(1)}>← Back</button>
-                            <button className="btn btn-primary btn-block" onClick={() => setStep(3)} disabled={!address.line1 || !address.city}>Continue to Payment →</button>
+                        <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
+                            <button className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={() => setStep(1)}>BACK</button>
+                            <button className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} onClick={() => setStep(3)} disabled={!address.line1 || !address.city}>CONTINUE</button>
                         </div>
                     </div>
                 )}
 
                 {/* Step 3: Payment */}
                 {step === 3 && (
-                    <div className="card card-body">
-                        <h3 className="mb-4"><CreditCard size={20} style={{ display: 'inline', marginRight: 8 }} />Payment Method</h3>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+                    <div className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)' }}>
+                        <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>PAYMENT METHOD</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
                             {PAYMENT_METHODS.map(pm => (
                                 <div key={pm.key} onClick={() => setPaymentMethod(pm.key)} style={{
-                                    border: `2px solid ${paymentMethod === pm.key ? 'var(--color-primary-500)' : 'var(--border-color)'}`,
-                                    borderRadius: 12, padding: '16px 20px', cursor: 'pointer',
+                                    border: `2px solid ${paymentMethod === pm.key ? '#000' : '#eee'}`,
+                                    borderRadius: 0, padding: '20px', cursor: 'pointer',
                                     display: 'flex', alignItems: 'center', gap: 16,
-                                    background: paymentMethod === pm.key ? 'var(--color-primary-50)' : '#fff',
+                                    background: paymentMethod === pm.key ? '#f8f8f8' : '#fff',
                                     transition: 'all .2s',
                                 }}>
-                                    <span style={{ fontSize: '1.6rem' }}>{pm.icon}</span>
-                                    <div>
-                                        <div style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{pm.label}</div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{pm.desc}</div>
+                                    <span style={{ fontSize: '1.5rem' }}>{pm.icon}</span>
+                                    <div style={{ flex: 1 }}>
+                                        <div style={{ fontWeight: 800, textTransform: 'uppercase', fontSize: '0.85rem' }}>{pm.label}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{pm.desc}</div>
                                     </div>
-                                    {paymentMethod === pm.key && <CheckCircle size={20} style={{ marginLeft: 'auto', color: 'var(--color-primary-600)' }} />}
+                                    {paymentMethod === pm.key && <CheckCircle size={20} color="#000" />}
                                 </div>
                             ))}
                         </div>
 
-                        {/* Booking Summary */}
-                        <div style={{ background: 'var(--color-grey-50)', borderRadius: 12, padding: 16, marginBottom: 20 }}>
-                            <h4 style={{ marginBottom: 12 }}>Booking Summary</h4>
-                            {[['Service', serviceName], ['Date', selectedDate], ['Time', selectedTime], ['Address', `${address.line1}, ${address.city}`], ['Payment', PAYMENT_METHODS.find(p => p.key === paymentMethod)?.label]].map(([k, v]) => (
-                                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8, fontSize: '0.875rem' }}>
-                                    <span style={{ color: 'var(--text-secondary)' }}>{k}</span>
-                                    <span style={{ fontWeight: 500 }}>{v}</span>
-                                </div>
-                            ))}
-                            <div className="divider" />
-                            <div style={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700 }}>
-                                <span>Estimate</span><span style={{ color: 'var(--color-primary-700)' }}>₹{servicePrice}+</span>
+                        {/* Summary */}
+                        <div style={{ background: '#000', color: '#fff', padding: '24px', marginBottom: 32 }}>
+                            <h4 style={{ color: '#fff', marginBottom: 16, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em' }}>BOOKING SUMMARY</h4>
+                            <div style={{ display: 'grid', gap: 10 }}>
+                                {[['SOLUTION', serviceName], ['DATE', selectedDate], ['TIME', selectedTime], ['METHOD', PAYMENT_METHODS.find(p => p.key === paymentMethod)?.label]].map(([k, v]) => (
+                                    <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.72rem' }}>
+                                        <span style={{ opacity: 0.6 }}>{k}</span>
+                                        <span style={{ fontWeight: 700 }}>{v?.toUpperCase()}</span>
+                                    </div>
+                                ))}
+                            </div>
+                            <div style={{ borderTop: '1px solid rgba(255,255,255,0.2)', marginTop: 16, paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>TOTAL ESTIMATE</span>
+                                <span style={{ fontSize: '1.4rem', fontWeight: 900 }}>₹{servicePrice}+</span>
                             </div>
                         </div>
 
                         <div style={{ display: 'flex', gap: 12 }}>
-                            <button className="btn btn-outline" onClick={() => setStep(2)}>← Back</button>
-                            <button className="btn btn-primary btn-block btn-lg" onClick={handleBook} disabled={loading}>
-                                {loading ? <><Loader size={16} /> Booking...</> : 'Confirm Booking'}
+                            <button className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={() => setStep(2)}>BACK</button>
+                            <button className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} onClick={handleBook} disabled={loading}>
+                                {loading ? 'PROCESSING...' : 'CONFIRM BOOKING'}
                             </button>
                         </div>
                     </div>
