@@ -15,46 +15,81 @@ const createBooking = async (req, res, next) => {
         const { serviceId, scheduledDate, scheduledTime, address, specialInstructions, paymentMethod = 'cash' } = req.body;
         const customerId = req.user.id;
 
-        const service = await Service.findByPk(serviceId);
+        // --- Validate required fields ---
+        if (!serviceId) return res.status(400).json({ success: false, message: 'serviceId is required.' });
+        if (!scheduledDate) return res.status(400).json({ success: false, message: 'scheduledDate is required.' });
+        if (!scheduledTime) return res.status(400).json({ success: false, message: 'scheduledTime is required.' });
+        if (!address || !address.line1 || !address.city) return res.status(400).json({ success: false, message: 'Address (line1 and city) is required.' });
+
+        // --- Check service exists ---
+        let service;
+        try {
+            service = await Service.findByPk(serviceId);
+        } catch (dbErr) {
+            console.error('[createBooking] Service lookup error:', dbErr);
+            return res.status(500).json({ success: false, message: `Database error during service lookup: ${dbErr.message}` });
+        }
         if (!service) {
-            return res.status(404).json({ success: false, message: 'Requested service not found or inactive.' });
+            return res.status(404).json({ success: false, message: 'Requested service not found.' });
         }
 
-        const booking = await Booking.create({
-            bookingNumber: generateBookingNumber(),
-            customerId,
-            serviceId,
-            status: 'pending',
-            scheduledDate,
-            scheduledTime,
-            addressSnapshot: address,
-            serviceSnapshot: { id: service.id, name: service.name, basePrice: service.basePrice, priceType: service.priceType },
-            specialInstructions,
-            estimatedPrice: service.basePrice,
-            estimatedDurationMinutes: service.durationMinutes,
-            paymentMethod,
-            paymentStatus: 'pending'
-        });
-
-        // Auto-assign nearest available technician (simplified - in prod use geospatial query)
-        const availableTech = await Technician.findOne({
-            where: { status: 'verified', isAvailable: true },
-            include: [{ model: User, as: 'user' }],
-        });
-
-        if (availableTech) {
-            await booking.update({ technicianId: availableTech.id, status: 'assigned' });
-            // Notify technician
-            try { await notificationService.sendNotification(availableTech.userId, 'New Job Assigned', `You have a new booking #${booking.bookingNumber}`, 'push'); } catch (e) { console.error('Tech Notification Error:', e); }
+        // --- Create booking ---
+        let booking;
+        try {
+            booking = await Booking.create({
+                bookingNumber: generateBookingNumber(),
+                customerId,
+                serviceId,
+                status: 'pending',
+                scheduledDate,
+                scheduledTime,
+                addressSnapshot: address,
+                serviceSnapshot: { id: service.id, name: service.name, basePrice: service.basePrice, priceType: service.priceType },
+                specialInstructions: specialInstructions || '',
+                estimatedPrice: service.basePrice,
+                estimatedDurationMinutes: service.durationMinutes || 60,
+                paymentMethod,
+                paymentStatus: 'pending'
+            });
+        } catch (createErr) {
+            console.error('[createBooking] Booking.create error:', createErr);
+            return res.status(500).json({ success: false, message: `Failed to create booking record: ${createErr.message}` });
         }
 
-        // Notify customer
-        const customer = await User.findByPk(customerId);
-        try { await notificationService.sendNotification(customerId, 'Booking Confirmed', `Your booking #${booking.bookingNumber} is confirmed!`, 'push'); } catch (e) { console.error('Customer Notification Error:', e); }
-        try { await notificationService.sendEmail(customer.email, 'Booking Confirmation - Earthspace Services', `Your booking #${booking.bookingNumber} has been placed successfully.`); } catch (e) { console.error('Email Error:', e); }
+        // --- Auto-assign technician (non-critical, won't block booking) ---
+        try {
+            const availableTech = await Technician.findOne({
+                where: { status: 'verified', isAvailable: true },
+                include: [{ model: User, as: 'user' }],
+            });
+            if (availableTech) {
+                await booking.update({ technicianId: availableTech.id, status: 'assigned' });
+                try { await notificationService.sendNotification(availableTech.userId, 'New Job Assigned', `You have a new booking #${booking.bookingNumber}`, 'push'); } catch (_) { }
+            }
+        } catch (techErr) {
+            console.error('[createBooking] Technician assignment error (non-fatal):', techErr.message);
+            // Non-fatal — booking still succeeds
+        }
 
+        // --- Notify customer (non-critical, won't block booking) ---
+        try {
+            const customer = await User.findByPk(customerId);
+            if (customer) {
+                try { await notificationService.sendNotification(customerId, 'Booking Confirmed', `Your booking #${booking.bookingNumber} is confirmed!`, 'push'); } catch (_) { }
+                try { await notificationService.sendEmail(customer.email, 'Booking Confirmation - Earthspace Services', `Your booking #${booking.bookingNumber} has been placed successfully.`); } catch (_) { }
+            }
+        } catch (notifyErr) {
+            console.error('[createBooking] Notification error (non-fatal):', notifyErr.message);
+            // Non-fatal
+        }
+
+        // --- Reload booking to return full data ---
+        await booking.reload();
         res.status(201).json({ success: true, message: 'Booking created successfully.', data: { booking } });
-    } catch (err) { next(err); }
+    } catch (err) {
+        console.error('[createBooking] Unexpected error:', err);
+        next(err);
+    }
 };
 
 // GET /api/bookings (customer: own, admin: all)
