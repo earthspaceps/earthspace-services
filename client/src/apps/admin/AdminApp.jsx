@@ -250,7 +250,17 @@ function BookingsPage() {
             </div>
             <div className="card table-wrapper">
                 {loading ? <div className="loading-center"><div className="spinner" /></div> : (
-                    <table className="bookings-table">
+                    <table className="bookings-table" style={{ tableLayout: 'fixed', width: '100%' }}>
+                        <colgroup>
+                            <col style={{ width: '10%' }} />
+                            <col style={{ width: '14%' }} />
+                            <col style={{ width: '16%' }} />
+                            <col style={{ width: '18%' }} />
+                            <col style={{ width: '8%' }} />
+                            <col style={{ width: '12%' }} />
+                            <col style={{ width: '11%' }} />
+                            <col style={{ width: '11%' }} />
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -265,18 +275,23 @@ function BookingsPage() {
                         </thead>
                         <tbody>
                             {bookings.length === 0 ? (
-                                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40, color: 'var(--text-secondary)' }}>No bookings found.</td></tr>
+                                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40, color: 'rgba(255,255,255,0.4)' }}>No bookings found.</td></tr>
                             ) : bookings.map(b => (
                                 <tr key={b.id}>
-                                    <td style={{ fontWeight: 600, color: 'var(--color-primary-700)' }}>#{b.bookingNumber}</td>
-                                    <td>{b.serviceSnapshot?.name || b.service?.name || '—'}</td>
-                                    <td>{b.customer?.name || '—'}<br /><span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{b.customer?.phone}</span></td>
+                                    <td style={{ fontWeight: 700, color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>#{b.bookingNumber}</td>
+                                    <td style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600 }}>{b.serviceSnapshot?.name || b.service?.name || '—'}</td>
                                     <td>
+                                        <div style={{ overflow: 'hidden' }}>
+                                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontWeight: 600 }}>{b.customer?.name || '—'}</div>
+                                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.customer?.phone}</div>
+                                        </div>
+                                    </td>
+                                    <td style={{ overflow: 'hidden' }}>
                                         {assigningId === b.id ? (
-                                            <div style={{ display: 'flex', gap: 6 }}>
+                                            <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
                                                 <select
                                                     className="form-control"
-                                                    style={{ fontSize: '0.75rem', padding: '2px 4px', height: 'auto', minWidth: 120 }}
+                                                    style={{ fontSize: '0.7rem', padding: '2px 4px', height: 'auto', minWidth: 0, flex: 1 }}
                                                     value={selectedTech}
                                                     onChange={e => setSelectedTech(e.target.value)}
                                                 >
@@ -285,30 +300,33 @@ function BookingsPage() {
                                                         <option key={t.id} value={t.id}>{t.user?.name}</option>
                                                     ))}
                                                 </select>
-                                                <button className="btn btn-primary btn-sm" style={{ padding: '2px 8px' }} onClick={() => handleAssign(b.id)}>✓</button>
-                                                <button className="btn btn-ghost btn-sm" style={{ padding: '2px 8px' }} onClick={() => setAssigningId(null)}>✕</button>
+                                                <button className="btn btn-primary btn-sm" style={{ padding: '2px 6px', minWidth: 0 }} onClick={() => handleAssign(b.id)}>✓</button>
+                                                <button className="btn btn-ghost btn-sm" style={{ padding: '2px 6px', minWidth: 0 }} onClick={() => setAssigningId(null)}>✕</button>
                                             </div>
                                         ) : b.technician?.user?.name ? (
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                                <span>{b.technician.user.name}</span>
+                                            <div style={{ overflow: 'hidden' }}>
+                                                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.technician.user.name}</div>
                                                 {['pending', 'confirmed', 'assigned'].includes(b.status) && (
-                                                    <button className="btn btn-link btn-sm" style={{ padding: 0 }} onClick={() => { setAssigningId(b.id); setSelectedTech(b.technicianId); }}>Change</button>
+                                                    <button style={{ background: 'none', border: 'none', color: '#60a5fa', fontSize: '0.65rem', fontWeight: 800, cursor: 'pointer', padding: 0, marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }} onClick={() => { setAssigningId(b.id); setSelectedTech(b.technicianId); }}>Change</button>
                                                 )}
                                             </div>
                                         ) : (
-                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                                <span style={{ color: '#f59e0b', fontSize: '0.8rem' }}>Unassigned</span>
-                                                <button className="btn btn-link btn-sm" style={{ padding: 0 }} onClick={() => setAssigningId(b.id)}>Assign</button>
+                                            <div>
+                                                <div style={{ color: '#fcd34d', fontSize: '0.75rem', fontWeight: 700 }}>Unassigned</div>
+                                                <button style={{ background: 'none', border: 'none', color: '#60a5fa', fontSize: '0.65rem', fontWeight: 800, cursor: 'pointer', padding: 0, marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }} onClick={() => setAssigningId(b.id)}>Assign</button>
                                             </div>
                                         )}
                                     </td>
-                                    <td style={{ fontWeight: 700 }}>₹{b.serviceSnapshot?.basePrice || b.estimatedPrice || b.finalPrice || 0}</td>
-                                    <td>{b.scheduledDate}<br /><span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{b.scheduledTime}</span></td>
+                                    <td style={{ fontWeight: 800 }}>₹{b.serviceSnapshot?.basePrice || b.estimatedPrice || b.finalPrice || 0}</td>
+                                    <td>
+                                        <div style={{ fontSize: '0.8rem', fontWeight: 600 }}>{b.scheduledDate}</div>
+                                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.35)' }}>{b.scheduledTime}</div>
+                                    </td>
                                     <td><span className={`badge ${STATUS_BADGE[b.status] || 'badge-grey'}`}>{b.status?.replace('_', ' ')}</span></td>
                                     <td>
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                                            <span className={`badge ${b.paymentStatus === 'completed' ? 'badge-success' : 'badge-warning'}`} style={{ fontSize: '0.65rem' }}>{b.paymentStatus || 'pending'}</span>
-                                            <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{b.paymentMethod || 'cash'}</span>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                            <span className={`badge ${b.paymentStatus === 'completed' ? 'badge-success' : 'badge-warning'}`} style={{ fontSize: '0.6rem' }}>{b.paymentStatus || 'pending'}</span>
+                                            <span style={{ fontSize: '0.6rem', color: 'rgba(255,255,255,0.3)', textTransform: 'capitalize' }}>{b.paymentMethod || 'cash'}</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -347,22 +365,33 @@ function UsersPage() {
             </div>
             <div className="card table-wrapper">
                 {loading ? <div className="loading-center"><div className="spinner" /></div> : (
-                    <table>
+                    <table style={{ tableLayout: 'fixed', width: '100%' }}>
+                        <colgroup>
+                            <col style={{ width: '25%' }} />
+                            <col style={{ width: '18%' }} />
+                            <col style={{ width: '25%' }} />
+                            <col style={{ width: '12%' }} />
+                            <col style={{ width: '10%' }} />
+                            <col style={{ width: '10%' }} />
+                        </colgroup>
                         <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>City</th><th>Status</th><th>Action</th></tr></thead>
                         <tbody>
                             {users.length === 0 ? <tr><td colSpan={6} style={{ textAlign: 'center', padding: 40 }}>No users found.</td></tr>
                                 : users.map(u => (
                                     <tr key={u.id}>
-                                        <td style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                            <div className="avatar avatar-sm">{u.name?.[0]}</div>{u.name}
+                                        <td>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                                <div className="avatar avatar-sm" style={{ flexShrink: 0 }}>{u.name?.[0]}</div>
+                                                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.name}</span>
+                                            </div>
                                         </td>
-                                        <td>{u.phone}</td>
-                                        <td>{u.email || '—'}</td>
+                                        <td style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.phone}</td>
+                                        <td style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{u.email || '—'}</td>
                                         <td>{u.city || '—'}</td>
                                         <td><span className={`badge ${u.isActive ? 'badge-success' : 'badge-danger'}`}>{u.isActive ? 'Active' : 'Suspended'}</span></td>
                                         <td>
-                                            <button className={`btn btn-sm ${u.isActive ? 'btn-danger' : 'btn-success'}`} onClick={() => toggleStatus(u.id, u.isActive)} style={{ fontSize: '0.75rem' }}>
-                                                {u.isActive ? <><UserX size={12} /> Suspend</> : <><UserCheck size={12} /> Activate</>}
+                                            <button className={`btn btn-sm ${u.isActive ? 'btn-outline' : 'btn-outline'}`} onClick={() => toggleStatus(u.id, u.isActive)} style={{ fontSize: '0.65rem', padding: '6px 12px', color: u.isActive ? '#fca5a5' : '#86efac', borderColor: u.isActive ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)', whiteSpace: 'nowrap' }}>
+                                                {u.isActive ? <><UserX size={11} /> Suspend</> : <><UserCheck size={11} /> Activate</>}
                                             </button>
                                         </td>
                                     </tr>

@@ -1,421 +1,402 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../../shared/AuthContext';
-import {
-    Briefcase,
-    Wrench,
-    Zap,
-    Droplets,
-    Settings,
-    ShieldCheck,
-    Shield,
-    Clock,
-    CreditCard,
-    Calendar,
-    CheckCircle2,
-    ChevronDown,
-    ChevronRight,
-    ArrowRight,
-    Menu,
-    X,
-    MapPin,
-    Star
-} from 'lucide-react';
+import { Zap, Droplets, Wrench, Settings, ShieldCheck, ArrowRight, CheckCircle2 } from 'lucide-react';
+
+const STYLES = `
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    .lp-root * { box-sizing: border-box; margin: 0; padding: 0; }
+    .lp-root { font-family: 'Inter', sans-serif; background: #000; color: #fff; overflow-x: hidden; min-height: 100vh; }
+
+    /* Animated gradient orbs */
+    .lp-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+        animation: orbFloat 8s ease-in-out infinite;
+    }
+    @keyframes orbFloat {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    /* Navbar */
+    .lp-nav {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 5%; height: 80px;
+        transition: all 0.4s ease;
+    }
+    .lp-nav.scrolled {
+        background: rgba(0,0,0,0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        height: 64px;
+    }
+    .lp-nav-links { display: flex; align-items: center; gap: 2rem; }
+    .lp-nav-link { color: rgba(255,255,255,0.65); font-size: 0.85rem; font-weight: 500; text-decoration: none; transition: color 0.2s; }
+    .lp-nav-link:hover { color: #fff; }
+
+    /* Hero */
+    .lp-hero {
+        min-height: 100vh; display: flex; align-items: center; justify-content: center;
+        text-align: center; padding: 140px 5% 100px; position: relative; overflow: hidden;
+    }
+    .lp-badge {
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 6px 6px 6px 16px; border-radius: 40px;
+        border: 1px solid rgba(255,255,255,0.12);
+        background: rgba(255,255,255,0.04);
+        font-size: 0.8rem; color: rgba(255,255,255,0.7);
+        text-decoration: none; margin-bottom: 2.5rem;
+        transition: all 0.3s ease;
+    }
+    .lp-badge:hover { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.07); }
+    .lp-badge-dot { background: rgba(255,255,255,0.12); border-radius: 50%; padding: 5px; display: flex; }
+    .lp-h1 {
+        font-size: clamp(2.8rem, 8vw, 5.5rem);
+        font-weight: 800; line-height: 1.05; letter-spacing: -0.04em;
+        margin-bottom: 1.5rem; color: #fff;
+    }
+    .lp-h1 span { background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .lp-hero-sub { font-size: 1.1rem; color: rgba(255,255,255,0.55); max-width: 560px; margin: 0 auto 3rem; line-height: 1.7; font-weight: 400; }
+    .lp-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .lp-btn-primary {
+        padding: 14px 32px; border-radius: 12px; font-weight: 700; font-size: 0.9rem;
+        background: #fff; color: #000; border: none; cursor: pointer;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        transition: all 0.3s ease; letter-spacing: 0.01em;
+    }
+    .lp-btn-primary:hover { background: #f0f0f0; transform: translateY(-2px); box-shadow: 0 12px 30px rgba(255,255,255,0.15); }
+    .lp-btn-ghost {
+        padding: 14px 32px; border-radius: 12px; font-weight: 600; font-size: 0.9rem;
+        background: transparent; color: rgba(255,255,255,0.75);
+        border: 1px solid rgba(255,255,255,0.15); cursor: pointer;
+        text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+        transition: all 0.3s ease;
+    }
+    .lp-btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: #fff; background: rgba(255,255,255,0.04); }
+
+    /* Stats ticker */
+    .lp-stats {
+        display: flex; gap: 0; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 4rem;
+        padding-top: 0;
+    }
+    .lp-stat { flex: 1; padding: 1.5rem 2rem; border-right: 1px solid rgba(255,255,255,0.06); text-align: center; }
+    .lp-stat:last-child { border-right: none; }
+    .lp-stat-num { font-size: 2rem; font-weight: 800; color: #fff; line-height: 1; }
+    .lp-stat-lbl { font-size: 0.7rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 6px; font-weight: 600; }
+
+    /* Section */
+    .lp-section { padding: 7rem 5%; position: relative; }
+    .lp-section-tag { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); font-weight: 700; margin-bottom: 1rem; }
+    .lp-section-h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; letter-spacing: -0.03em; color: #fff; line-height: 1.1; }
+    .lp-section-sub { color: rgba(255,255,255,0.5); font-size: 1rem; margin-top: 0.75rem; max-width: 500px; line-height: 1.7; font-weight: 400; }
+    .lp-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); margin: 0; }
+
+    /* Service cards */
+    .lp-services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-top: 3rem; }
+    .lp-service-card {
+        background: rgba(255,255,255,0.035);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px; padding: 28px;
+        display: flex; flex-direction: column; gap: 16px;
+        transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+        cursor: default;
+    }
+    .lp-service-card:hover {
+        background: rgba(255,255,255,0.065);
+        border-color: rgba(255,255,255,0.18);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+    .lp-service-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); }
+    .lp-service-h3 { font-size: 1rem; font-weight: 800; color: #fff; letter-spacing: -0.01em; text-transform: uppercase; }
+    .lp-service-desc { font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.6; flex: 1; }
+    .lp-service-feats { margin-top: auto; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .lp-service-feat { display: flex; align-items: center; gap: 8px; font-size: 0.72rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; }
+    .lp-service-feat-dot { width: 5px; height: 5px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+
+    /* Process steps */
+    .lp-steps-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.06); border-radius: 20px; overflow: hidden; margin-top: 3rem; }
+    .lp-step { background: #000; padding: 32px 28px; display: flex; flex-direction: column; gap: 12px; transition: background 0.3s; }
+    .lp-step:hover { background: rgba(255,255,255,0.03); }
+    .lp-step-num { font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.08); line-height: 1; letter-spacing: -0.04em; }
+    .lp-step-title { font-size: 0.9rem; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.02em; }
+    .lp-step-desc { font-size: 0.82rem; color: rgba(255,255,255,0.4); line-height: 1.6; }
+
+    /* Why us */
+    .lp-why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .lp-why-points { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2.5rem; }
+    .lp-why-point-title { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.5); font-weight: 800; margin-bottom: 8px; }
+    .lp-why-point-desc { font-size: 0.85rem; color: rgba(255,255,255,0.35); line-height: 1.6; }
+    .lp-why-visual {
+        height: 380px; border: 1px solid rgba(255,255,255,0.08); border-radius: 24px;
+        background: rgba(255,255,255,0.02);
+        display: flex; align-items: center; justify-content: center;
+        position: relative; overflow: hidden;
+    }
+    .lp-why-grid-bg {
+        position: absolute; inset: 0;
+        background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        background-size: 40px 40px;
+    }
+
+    /* Footer */
+    .lp-footer { padding: 6rem 5% 3rem; background: rgba(255,255,255,0.015); border-top: 1px solid rgba(255,255,255,0.06); }
+    .lp-footer-cta-h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.5rem; }
+    .lp-footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 3rem; margin-top: 5rem; padding-top: 3rem; border-top: 1px solid rgba(255,255,255,0.06); }
+    .lp-footer-link-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(255,255,255,0.35); font-weight: 800; margin-bottom: 1.2rem; }
+    .lp-footer-link { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.85rem; display: block; margin-bottom: 0.7rem; transition: color 0.2s; }
+    .lp-footer-link:hover { color: #fff; }
+    .lp-footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; font-size: 0.65rem; color: rgba(255,255,255,0.25); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; flex-wrap: wrap; gap: 1rem; }
+
+    /* WhatsApp */
+    .whatsapp-fab { position: fixed; bottom: 28px; right: 28px; z-index: 999; width: 56px; height: 56px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 8px 30px rgba(37,211,102,0.4); transition: all 0.3s ease; }
+    .whatsapp-fab:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(37,211,102,0.6); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .lp-nav-links { display: none; }
+        .lp-h1 { font-size: 2.5rem; }
+        .lp-why-grid { grid-template-columns: 1fr; }
+        .lp-why-visual { display: none; }
+        .lp-stats { flex-direction: column; }
+        .lp-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .lp-stat:last-child { border-bottom: none; }
+        .lp-why-points { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+        .lp-section { padding: 5rem 1rem; }
+        .lp-hero { padding: 120px 1rem 80px; }
+        .lp-h1 { font-size: 2rem; }
+        .lp-footer { padding: 4rem 1rem 2rem; }
+    }
+`;
 
 const LandingPage = () => {
     const { user } = useAuth();
     const [scrolled, setScrolled] = useState(false);
-    const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 50);
+        const handleScroll = () => setScrolled(window.scrollY > 60);
         window.addEventListener('scroll', handleScroll);
-
-        // Plan2: Intersection Observer for Reveal Animations
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            observer.disconnect();
-        };
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     const services = [
-        { icon: <Zap size={24} />, title: 'Electrical Services', desc: 'Expert wiring, repairs, and installations.' },
-        { icon: <Droplets size={24} />, title: 'Plumbing Solutions', desc: 'Fixing leaks and full plumbing setup.' },
-        { icon: <Wrench size={24} />, title: 'HVAC & AC Service', desc: 'Maintain your cooling systems efficiently.' },
-        { icon: <Settings size={24} />, title: 'General Maintenance', desc: 'Annual and on-demand home care.' },
+        { icon: <Zap size={22} color="rgba(255,255,255,0.7)" />, title: 'Electrical Services', desc: 'Expert wiring, fault detection, repairs, and full electrical installations.', color: '#f59e0b' },
+        { icon: <Droplets size={22} color="rgba(255,255,255,0.7)" />, title: 'Plumbing Solutions', desc: 'Fixing leaks, pipe replacements, and complete plumbing system setup.', color: '#3b82f6' },
+        { icon: <Wrench size={22} color="rgba(255,255,255,0.7)" />, title: 'HVAC & AC Service', desc: 'Maintain your cooling and heating systems for maximum efficiency.', color: '#22c55e' },
+        { icon: <Settings size={22} color="rgba(255,255,255,0.7)" />, title: 'General Maintenance', desc: 'Annual inspections, on-demand repairs, and preventive home care.', color: '#a855f7' },
     ];
 
     const steps = [
-        { n: "01", title: "Select Service", desc: "Choose the maintenance you need via our portal." },
-        { n: "02", title: "Schedule Date", desc: "Pick a time slot that fits your busy schedule." },
-        { n: "03", title: "Verified Service", desc: "A qualified technician arrives at your door." },
-        { n: "04", title: "Digital Payment", desc: "Seamless billing and completion report." },
+        { n: '01', title: 'Select Service', desc: 'Browse our catalog and choose the solution you need.' },
+        { n: '02', title: 'Schedule Date', desc: 'Pick a date and time slot that fits your schedule.' },
+        { n: '03', title: 'Verified Arrival', desc: 'A background-checked technician arrives on time.' },
+        { n: '04', title: 'Digital Payment', desc: 'Seamless billing with digital receipt and service report.' },
     ];
 
     return (
-        <div className="landing-container" style={{
-            background: 'radial-gradient(circle at top right, #1a1a1a, #000)',
-            color: '#fff',
-            fontFamily: "'Inter', sans-serif",
-            overflowX: 'hidden',
-            lineHeight: 1.6
-        }}>
-            <style>{`
-                @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-                
-                .blueprint-bg {
-                    background-image: 
-                        linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-                    background-size: 40px 40px;
-                }
+        <div className="lp-root">
+            <style>{STYLES}</style>
 
-                .nav-link {
-                    text-transform: uppercase;
-                    font-size: 0.75rem;
-                    letter-spacing: 0.1em;
-                    font-weight: 600;
-                    color: #050505;
-                    text-decoration: none;
-                    transition: opacity 0.3s;
-                }
-
-                .nav-link:hover {
-                    opacity: 0.6;
-                }
-
-                .hero-headline {
-                    font-size: clamp(3rem, 8vw, 6rem);
-                    font-weight: 800;
-                    line-height: 0.95;
-                    letter-spacing: -0.05em;
-                    text-transform: uppercase;
-                }
-
-                .btn-bw {
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 1rem 2.5rem;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    letter-spacing: 0.1em;
-                    font-size: 0.8rem;
-                    cursor: pointer;
-                    border-radius: 999px;
-                    border: 1px solid rgba(0, 0, 0, 0.1);
-                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                    text-decoration: none;
-                    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-                    color: #000;
-                    box-shadow: 
-                        0 4px 12px rgba(0, 0, 0, 0.08), 
-                        inset 0 1px 0 rgba(255, 255, 255, 1),
-                        inset 0 -1px 2px rgba(0, 0, 0, 0.05);
-                }
-
-                .btn-bw-filled {
-                    background: linear-gradient(180deg, #050505 0%, #262626 100%);
-                    color: #fff;
-                    border: 1px solid #000;
-                    box-shadow: 
-                        0 4px 12px rgba(0, 0, 0, 0.2), 
-                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
-                }
-
-                .btn-bw-filled:hover {
-                    background: #ffffff;
-                    color: #050505;
-                    transform: translateY(-4px);
-                    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-                }
-
-                .btn-bw-outline:hover {
-                    background: #f8fafc;
-                    color: #050505;
-                    transform: translateY(-2px);
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-                }
-
-                .service-card {
-                    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-                    height: 100%;
-                }
-
-                .service-card:hover {
-                    transform: translateY(-10px);
-                }
-
-                .footer-link {
-                    color: #999;
-                    text-decoration: none;
-                    transition: color 0.3s;
-                    font-size: 0.9rem;
-                }
-
-                .footer-link:hover {
-                    color: #fff;
-                }
-
-                @keyframes revealUp {
-                    from { opacity: 0; transform: translateY(30px); }
-                    to { opacity: 1; transform: translateY(0); }
-                }
-
-                .reveal {
-                    animation: revealUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                }
-
-                .mobile-menu-enter {
-                    animation: slideDown 0.4s ease forwards;
-                }
-
-                @keyframes slideDown {
-                    from { transform: translateY(-100%); }
-                    to { transform: translateY(0); }
-                }
-            `}</style>
+            {/* Background orbs */}
+            <div className="lp-orb" style={{ width: 500, height: 500, top: -200, right: -100, background: 'radial-gradient(circle, rgba(99,102,241,0.12), transparent)', animationDelay: '0s' }} />
+            <div className="lp-orb" style={{ width: 400, height: 400, top: '40%', left: -150, background: 'radial-gradient(circle, rgba(16,185,129,0.08), transparent)', animationDelay: '3s' }} />
+            <div className="lp-orb" style={{ width: 350, height: 350, bottom: '20%', right: '10%', background: 'radial-gradient(circle, rgba(245,158,11,0.08), transparent)', animationDelay: '5s' }} />
 
             {/* Navbar */}
-            <nav className={`customer-navbar ${scrolled ? 'shrunk' : ''}`} style={{
-                position: 'fixed',
-                top: 0,
-                width: '100%',
-                zIndex: 1000,
-                backgroundColor: scrolled ? 'rgba(0,0,0,0.9)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(12px)' : 'none',
-                padding: '0 5%',
-                height: scrolled ? '70px' : '90px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.1)' : 'none'
-            }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div style={{ padding: 8, background: '#fff', borderRadius: 8 }}>
-                        <img src="/logo.png" alt="EarthSpace" style={{ height: '24px', filter: 'grayscale(100%) brightness(0)' }} />
-                    </div>
-                    <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.1rem', color: '#fff' }}>SERVICES</span>
+            <nav className={`lp-nav${scrolled ? ' scrolled' : ''}`}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#fff', boxShadow: '0 0 10px rgba(255,255,255,0.8)' }} />
+                    <span style={{ fontWeight: 900, fontSize: '1rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#fff' }}>EarthSpace <span style={{ fontWeight: 300, opacity: 0.45 }}>Services</span></span>
                 </div>
-
-                <div className="desktop-links" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
-                    <a href="#services" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Services</a>
-                    <a href="#process" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Process</a>
-                    <a href="#why-us" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Why Us</a>
-                    <a href="#contact" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Contact</a>
+                <div className="lp-nav-links">
+                    <a href="#services" className="lp-nav-link">Services</a>
+                    <a href="#process" className="lp-nav-link">Process</a>
+                    <a href="#why-us" className="lp-nav-link">Why Us</a>
+                    <a href="#contact" className="lp-nav-link">Contact</a>
                 </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                    <Link to="/login" style={{ color: '#fff', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>Sign In</Link>
-                    <Link to="/login?mode=register" style={{
-                        padding: '10px 24px',
-                        backgroundColor: '#fff',
-                        color: '#000',
-                        borderRadius: '30px',
-                        textDecoration: 'none',
-                        fontSize: '0.9rem',
-                        fontWeight: 700,
-                        transition: 'transform 0.3s'
-                    }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                        Register
-                    </Link>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {user ? (
+                        <Link to="/customer" className="lp-btn-primary" style={{ padding: '10px 22px' }}>Dashboard</Link>
+                    ) : (
+                        <>
+                            <Link to="/login" style={{ color: 'rgba(255,255,255,0.65)', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500 }}>Sign In</Link>
+                            <Link to="/login?mode=register" className="lp-btn-primary" style={{ padding: '10px 22px', fontSize: '0.85rem' }}>Get Started</Link>
+                        </>
+                    )}
                 </div>
             </nav>
 
-            {/* Hero Section */}
-            <section className="texture-overlay" style={{
-                background: '#000',
-                color: '#fff',
-                minHeight: '100vh',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                padding: '140px 5% 100px',
-                position: 'relative',
-                overflow: 'hidden'
-            }}>
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%)' }}></div>
-
-                <div className="reveal active" style={{ maxWidth: '1000px', position: 'relative', zIndex: 2 }}>
-                    {/* Pill Badge */}
-                    <a href="#services" style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 12,
-                        padding: '6px 6px 6px 16px',
-                        backgroundColor: 'rgba(255,255,255,0.08)',
-                        borderRadius: '40px',
-                        border: '1px solid rgba(255,255,255,0.1)',
-                        marginBottom: '3rem',
-                        fontSize: '0.85rem',
-                        fontWeight: 500,
-                        color: 'rgba(255,255,255,0.8)',
-                        textDecoration: 'none'
-                    }}>
-                        Empowered by EarthSpace Project Solutions
-                        <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '50%', padding: '4px' }}>
-                            <ArrowRight size={14} />
-                        </div>
+            {/* Hero */}
+            <section className="lp-hero">
+                <div style={{ maxWidth: 800, position: 'relative', zIndex: 2 }}>
+                    <a href="#services" className="lp-badge">
+                        Empowered by EarthSpace Project Solutions LLP
+                        <div className="lp-badge-dot"><ArrowRight size={12} /></div>
                     </a>
-
-                    <h1 style={{
-                        fontSize: 'clamp(3rem, 10vw, 5.5rem)',
-                        fontWeight: 700,
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.04em',
-                        marginBottom: '2rem',
-                        color: '#fff'
-                    }}>
-                        Modern Solutions for <br />
-                        <span style={{ color: '#fff' }}>Home Engineering.</span>
+                    <h1 className="lp-h1">
+                        Modern Home Services<br />
+                        <span>Built on Precision.</span>
                     </h1>
-
-                    <p style={{
-                        fontSize: 'clamp(1rem, 2vw, 1.25rem)',
-                        color: 'rgba(255,255,255,0.6)',
-                        maxWidth: '700px',
-                        margin: '0 auto 3.5rem',
-                        fontWeight: 400,
-                        lineHeight: 1.6
-                    }}>
-                        Highly precise specialized systems maintenance for modern living and workspaces. Experience maintenance that feels the way it should.
+                    <p className="lp-hero-sub">
+                        Specialized facility maintenance by certified engineers. From electrical to HVAC — done right, every time.
                     </p>
-
-                    <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', alignItems: 'center' }}>
-                        <Link to="/login" style={{
-                            padding: '16px 36px',
-                            backgroundColor: '#fff',
-                            color: '#000',
-                            borderRadius: '12px',
-                            textDecoration: 'none',
-                            fontSize: '1rem',
-                            fontWeight: 700,
-                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-                            boxShadow: '0 10px 30px rgba(255,255,255,0.1)'
-                        }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
-                            Start Maintaining
+                    <div className="lp-cta-group">
+                        <Link to={user ? '/customer/services' : '/login'} className="lp-btn-primary">
+                            Book a Service <ArrowRight size={16} />
                         </Link>
+                        <a href="#services" className="lp-btn-ghost">Explore Services</a>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="lp-stats">
+                        {[
+                            { num: '500+', lbl: 'Jobs Completed' },
+                            { num: '50+', lbl: 'Verified Engineers' },
+                            { num: '98%', lbl: 'Satisfaction Rate' },
+                            { num: '24hr', lbl: 'Response Time' },
+                        ].map(s => (
+                            <div key={s.lbl} className="lp-stat">
+                                <div className="lp-stat-num">{s.num}</div>
+                                <div className="lp-stat-lbl">{s.lbl}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
+
+            <div className="lp-divider" />
 
             {/* Services Section */}
-            <section id="services" style={{ padding: '8rem 5%', borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(0,0,0,0.3)' }}>
-                <div className="grid-2 reveal" style={{ gap: '4rem', marginBottom: '6rem', alignItems: 'end' }}>
-                    <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, margin: 0, lineHeight: 0.9, color: '#fff' }}>
-                        Our <br />Core Scope
-                    </h2>
-                    <p style={{ margin: 0, color: 'rgba(255,255,255,0.55)', fontSize: '1.1rem' }}>
-                        Specialized systems maintenance designed to preserve the structural and functional excellence of your property.
-                    </p>
-                </div>
-
-                <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
-                    {services.map((s, i) => (
-                        <div key={i} className="service-card card" style={{ display: 'flex', flexDirection: 'column', padding: '2.5rem', gap: '1.5rem' }}>
-                            <div style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.06)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.8)' }}>{s.icon}</div>
-                            <h3 style={{ fontSize: '1.2rem', textTransform: 'uppercase', marginBottom: 0, fontWeight: 900, letterSpacing: '-0.02em', color: '#fff' }}>{s.title}</h3>
-                            <p style={{ fontSize: '0.9rem', fontWeight: 300, lineHeight: 1.7, color: 'rgba(255,255,255,0.55)', margin: 0 }}>{s.desc}</p>
-                            <ul style={{ listStyle: 'none', padding: 0, marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '1.5rem' }}>
-                                <li style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.5)', marginBottom: '0.75rem' }}>
-                                    <span style={{ color: '#22c55e' }}>✓</span> Certified Pros
-                                </li>
-                                <li style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.5)' }}>
-                                    <span style={{ color: '#22c55e' }}>✓</span> Material Warranty
-                                </li>
-                            </ul>
+            <section id="services" className="lp-section" style={{ position: 'relative' }}>
+                <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '2rem', marginBottom: '1rem' }}>
+                        <div>
+                            <p className="lp-section-tag">Our Core Scope</p>
+                            <h2 className="lp-section-h2">Precision Maintenance<br />for Every System.</h2>
                         </div>
-                    ))}
+                        <p className="lp-section-sub" style={{ maxWidth: 360 }}>
+                            Specialized systems maintenance designed to preserve the structural and functional excellence of your property.
+                        </p>
+                    </div>
+                    <div className="lp-services-grid">
+                        {services.map((s, i) => (
+                            <div key={i} className="lp-service-card">
+                                <div className="lp-service-icon" style={{ borderColor: `${s.color}22`, background: `${s.color}10` }}>
+                                    {s.icon}
+                                </div>
+                                <h3 className="lp-service-h3">{s.title}</h3>
+                                <p className="lp-service-desc">{s.desc}</p>
+                                <div className="lp-service-feats">
+                                    <div className="lp-service-feat"><div className="lp-service-feat-dot" />Certified Professionals</div>
+                                    <div className="lp-service-feat"><div className="lp-service-feat-dot" />Material Warranty</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
+
+            <div className="lp-divider" />
 
             {/* Process Section */}
-            <section id="process" style={{ padding: '8rem 5%', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="reveal" style={{ textAlign: 'center', marginBottom: '6rem' }}>
-                    <h2 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', textTransform: 'uppercase', fontWeight: 800, letterSpacing: '-0.02em', color: '#fff' }}>The Blueprint Process</h2>
-                </div>
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '2rem', flexWrap: 'wrap' }}>
-                    {steps.map((s, i) => (
-                        <div key={i} className="reveal reveal-stagger" style={{ flex: 1, minWidth: '240px', borderTop: '1px solid rgba(255,255,255,0.12)', paddingTop: '2.5rem', '--delay': i }}>
-                            <span style={{ fontSize: '3.5rem', fontWeight: 800, color: 'rgba(255,255,255,0.1)', display: 'block', lineHeight: 1, marginBottom: '1rem' }}>{s.n}</span>
-                            <h4 style={{ textTransform: 'uppercase', fontWeight: 700, marginBottom: '1rem', color: '#fff' }}>{s.title}</h4>
-                            <p style={{ fontSize: '0.95rem', color: 'rgba(255,255,255,0.5)', fontWeight: 300 }}>{s.desc}</p>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Why Us Section */}
-            <section id="why-us" style={{ padding: '8rem 5%', backgroundColor: '#050505', color: '#fff' }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'center' }}>
+            <section id="process" className="lp-section">
+                <div style={{ maxWidth: 1280, margin: '0 auto' }}>
                     <div>
-                        <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, lineHeight: 0.9, color: '#fff', marginBottom: '2.5rem' }}>
-                            Engineered <br /><span style={{ color: '#999', fontStyle: 'italic', fontWeight: 300 }}>Reliability</span>
-                        </h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
-                            <div>
-                                <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>01. VERIFIED</h5>
-                                <p style={{ color: '#999', fontSize: '0.95rem' }}>Rigorous background checks for every professional technician.</p>
-                            </div>
-                            <div>
-                                <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '1rem' }}>02. PRICING</h5>
-                                <p style={{ color: '#999', fontSize: '0.95rem' }}>Transparent, architecture-grade estimates with no hidden costs.</p>
-                            </div>
-                        </div>
+                        <p className="lp-section-tag">How It Works</p>
+                        <h2 className="lp-section-h2">The Blueprint Process</h2>
+                        <p className="lp-section-sub">Four simple steps from booking to completion.</p>
                     </div>
-                    <div style={{ height: '400px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
-                        <div className="blueprint-bg" style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)' }}></div>
-                        <div style={{ position: 'relative', textAlign: 'center' }}>
-                            <ShieldCheck size={80} strokeWidth={1} style={{ marginBottom: '2rem' }} />
-                            <div style={{ fontSize: '3rem', fontWeight: 800 }}>100%</div>
-                            <div style={{ textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', color: '#999' }}>Service Compliance</div>
-                        </div>
+                    <div className="lp-steps-grid">
+                        {steps.map((s, i) => (
+                            <div key={i} className="lp-step">
+                                <div className="lp-step-num">{s.n}</div>
+                                <div className="lp-step-title">{s.title}</div>
+                                <div className="lp-step-desc">{s.desc}</div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer id="contact" className="texture-overlay" style={{ padding: '8rem 5% 4rem', backgroundColor: '#050505', color: '#fff', textAlign: 'center' }}>
-                <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, color: '#fff', marginBottom: '2rem' }}>Ready to Maintain?</h2>
-                <div style={{ marginBottom: '4rem' }}>
-                    <Link to="/login" className="btn-bw" style={{ borderColor: '#fff', color: '#fff' }}>Start Booking</Link>
-                </div>
+            <div className="lp-divider" />
 
-                <div style={{ borderTop: '1px solid #fff', paddingTop: '60px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', textAlign: 'left' }}>
-                    <div>
-                        <img src="/logo.png" alt="EarthSpace" style={{ height: '32px', filter: 'brightness(0) invert(1)', marginBottom: '24px' }} />
-                        <p style={{ color: '#999', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: 1.8 }}>A specialized maintenance division of<br />EarthSpace Project Solutions LLP.</p>
-                    </div>
-                    <div>
-                        <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.7rem', marginBottom: '24px', color: '#fff', fontWeight: 900 }}>RESOURCES</h5>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            <li style={{ marginBottom: '12px' }}><a href="#" className="footer-link">TECH INSIGHTS</a></li>
-                            <li style={{ marginBottom: '12px' }}><a href="#" className="footer-link">PROJECT PORTFOLIO</a></li>
-                            <li style={{ marginBottom: '12px' }}><a href="#" className="footer-link">CAREER OPENINGS</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h5 style={{ textTransform: 'uppercase', letterSpacing: '0.15em', fontSize: '0.7rem', marginBottom: '24px', color: '#fff', fontWeight: 900 }}>CONTACT HUB</h5>
-                        <p style={{ color: '#999', fontSize: '0.85rem', fontWeight: 700, letterSpacing: '0.02em', marginBottom: '8px' }}>SUPPORT@EARTHSPACE.PRO</p>
-                        <p style={{ color: '#fff', fontSize: '1rem', fontWeight: 900 }}>+91 96057 69752</p>
+            {/* Why Us */}
+            <section id="why-us" className="lp-section">
+                <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+                    <div className="lp-why-grid">
+                        <div>
+                            <p className="lp-section-tag">Why EarthSpace</p>
+                            <h2 className="lp-section-h2">Engineered<br /><span style={{ fontWeight: 300, color: 'rgba(255,255,255,0.45)', fontStyle: 'italic' }}>Reliability.</span></h2>
+                            <div className="lp-why-points">
+                                {[
+                                    { t: '01. Verified', d: 'Rigorous background checks for every professional technician we deploy.' },
+                                    { t: '02. Transparent', d: 'Architecture-grade estimates with zero hidden costs or surprise charges.' },
+                                    { t: '03. On-Time', d: 'Guaranteed punctuality with real-time tracking for your booking.' },
+                                    { t: '04. Insured', d: 'Every job is backed by material warranty and service guarantee.' },
+                                ].map(p => (
+                                    <div key={p.t}>
+                                        <div className="lp-why-point-title">{p.t}</div>
+                                        <div className="lp-why-point-desc">{p.d}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="lp-why-visual">
+                            <div className="lp-why-grid-bg" />
+                            <div style={{ position: 'relative', textAlign: 'center' }}>
+                                <ShieldCheck size={72} strokeWidth={1} style={{ marginBottom: '1.5rem', color: 'rgba(255,255,255,0.6)' }} />
+                                <div style={{ fontSize: '3.5rem', fontWeight: 900, letterSpacing: '-0.04em' }}>100%</div>
+                                <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: 'rgba(255,255,255,0.35)', marginTop: 8, fontWeight: 700 }}>Service Compliance</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div style={{ marginTop: '80px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '32px', display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', color: '#666', fontWeight: 800, letterSpacing: '0.1em' }}>
-                    <span>© 2026 EARTHSPACE PROJECT SOLUTIONS LLP.</span>
-                    <span>ENGINEERED FOR PRECISION.</span>
+            </section>
+
+            <div className="lp-divider" />
+
+            {/* Footer CTA + Links */}
+            <footer id="contact" className="lp-footer">
+                <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+                    <div style={{ textAlign: 'center', paddingBottom: '3rem' }}>
+                        <h2 className="lp-footer-cta-h2">Ready to Maintain?</h2>
+                        <p style={{ color: 'rgba(255,255,255,0.4)', marginBottom: '2.5rem', fontSize: '1rem' }}>Schedule your first service in under 2 minutes.</p>
+                        <Link to={user ? '/customer/services' : '/login'} className="lp-btn-primary" style={{ fontSize: '0.95rem', padding: '16px 40px' }}>
+                            Start Booking <ArrowRight size={16} />
+                        </Link>
+                    </div>
+                    <div className="lp-footer-links">
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: '1rem' }}>
+                                <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />
+                                <span style={{ fontWeight: 900, fontSize: '0.9rem', letterSpacing: '0.05em' }}>EARTHSPACE SERVICES</span>
+                            </div>
+                            <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.8rem', lineHeight: 1.7 }}>A specialized maintenance division of EarthSpace Project Solutions LLP.</p>
+                        </div>
+                        <div>
+                            <div className="lp-footer-link-title">Resources</div>
+                            <a href="#" className="lp-footer-link">Tech Insights</a>
+                            <a href="#" className="lp-footer-link">Project Portfolio</a>
+                            <a href="#" className="lp-footer-link">Career Openings</a>
+                        </div>
+                        <div>
+                            <div className="lp-footer-link-title">Contact Hub</div>
+                            <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: '0.8rem', marginBottom: '0.5rem' }}>support@earthspace.pro</p>
+                            <p style={{ color: '#fff', fontWeight: 700, fontSize: '1rem' }}>+91 96057 69752</p>
+                        </div>
+                    </div>
+                    <div className="lp-footer-bottom">
+                        <span>© 2026 EarthSpace Project Solutions LLP.</span>
+                        <span>Engineered for Precision.</span>
+                    </div>
                 </div>
             </footer>
 
