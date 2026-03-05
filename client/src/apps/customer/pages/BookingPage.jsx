@@ -139,10 +139,10 @@ export default function BookingPage() {
                                 <span style={{ fontWeight: 900, textTransform: 'uppercase', letterSpacing: '0.2em', color: '#fff', fontSize: '1rem' }}>{monthName} {calYear}</span>
                                 <button className="btn btn-ghost btn-sm" style={{ color: '#fff' }} onClick={() => { if (calMonth === 11) { setCalMonth(0); setCalYear(y => y + 1); } else setCalMonth(m => m + 1); }}><ChevronRight size={20} /></button>
                             </div>
-                            <div className="calendar-grid" style={{ marginBottom: 12 }}>
+                            <div className="calendar-grid" style={{ marginBottom: 12, display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
                                 {['SU', 'MO', 'TU', 'WE', 'TH', 'FR', 'SA'].map(d => <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 900, color: 'rgba(255,255,255,0.4)', padding: '12px 0' }}>{d}</div>)}
                             </div>
-                            <div className="calendar-grid" style={{ gap: '8px' }}>
+                            <div className="calendar-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '8px' }}>
                                 {Array.from({ length: firstDay }).map((_, i) => <div key={`e${i}`} />)}
                                 {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(d => {
                                     const date = formatDate(calYear, calMonth, d);

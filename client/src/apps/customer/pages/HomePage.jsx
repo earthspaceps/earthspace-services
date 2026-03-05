@@ -124,63 +124,65 @@ export default function HomePage() {
             </div>
 
             {/* OUR CORE SCOPE Section */}
-            <section style={{ padding: '100px 0', background: '#fff', borderBottom: '1px solid #f0f0f0' }}>
+            <section style={{ padding: '100px 0', background: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="container">
                     <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
-                        <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, flex: '1 1 300px' }}>
+                        <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, flex: '1 1 300px', color: '#fff' }}>
                             OUR<br />CORE SCOPE
                         </h2>
-                        <p style={{ flex: '1 1 400px', fontSize: '1rem', color: '#666', lineHeight: 1.6, maxWidth: 500 }}>
+                        <p style={{ flex: '1 1 400px', fontSize: '1rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, maxWidth: 500 }}>
                             Specialized systems maintenance designed to preserve the structural and functional excellence of your property.
                         </p>
                     </div>
 
-                    <div className="grid-4 reveal" style={{ gap: 0, border: '1px solid #000' }}>
+                    <div className="grid-4 reveal" style={{ gap: 16 }}>
                         {[
                             { slug: 'electrical', name: 'ELECTRICAL SERVICES', desc: 'Expert wiring, repairs, and installations.', icon: Zap },
                             { slug: 'plumbing', name: 'PLUMBING SOLUTIONS', desc: 'Fixing leaks and full plumbing setup.', icon: Droplets },
                             { slug: 'ac-services', name: 'HVAC & AC SERVICE', desc: 'Maintain your cooling systems efficiently.', icon: Wind },
                             { slug: 'general', name: 'GENERAL MAINTENANCE', desc: 'Annual and on-demand home care.', icon: Hammer }
-                        ].map((cat, idx) => (
+                        ].map((cat) => (
                             <Link
                                 key={cat.slug}
                                 to={`/customer/services?category=${cat.slug}`}
-                                className="core-scope-card"
                                 style={{
-                                    padding: '40px',
-                                    borderRight: idx === 3 ? 'none' : '1px solid #000',
-                                    background: '#fff',
-                                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                                    padding: '32px',
+                                    background: 'rgba(255,255,255,0.035)',
+                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    borderRadius: '20px',
+                                    transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: 24,
+                                    gap: 20,
                                     textDecoration: 'none',
                                     color: 'inherit'
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.background = '#000';
-                                    e.currentTarget.style.color = '#fff';
-                                    e.currentTarget.querySelector('svg').style.color = '#fff';
-                                    e.currentTarget.querySelectorAll('.badge-check').forEach(b => b.style.color = '#fff');
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.065)';
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+                                    e.currentTarget.style.transform = 'translateY(-6px)';
+                                    e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.background = '#fff';
-                                    e.currentTarget.style.color = 'inherit';
-                                    e.currentTarget.querySelector('svg').style.color = '#ccc';
-                                    e.currentTarget.querySelectorAll('.badge-check').forEach(b => b.style.color = '#000');
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.035)';
+                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                    e.currentTarget.style.transform = 'translateY(0)';
+                                    e.currentTarget.style.boxShadow = 'none';
                                 }}
                             >
-                                <cat.icon size={24} style={{ color: '#ccc', transition: 'color 0.3s' }} />
-                                <div>
-                                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, marginBottom: 12, letterSpacing: '0.02em' }}>{cat.name}</h3>
-                                    <p style={{ fontSize: '0.85rem', color: 'inherit', opacity: 0.7, marginBottom: 20 }}>{cat.desc}</p>
+                                <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <cat.icon size={24} style={{ color: 'rgba(255,255,255,0.7)' }} />
                                 </div>
-                                <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
-                                    <div className="badge-check" style={{ fontSize: '0.65rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '0.1em' }}>
-                                        <CheckCircle size={10} /> CERTIFIED PROS
+                                <div>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: 12, letterSpacing: '-0.01em', color: '#fff', textTransform: 'uppercase' }}>{cat.name}</h3>
+                                    <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{cat.desc}</p>
+                                </div>
+                                <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                    <div style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
+                                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} /> CERTIFIED PROS
                                     </div>
-                                    <div className="badge-check" style={{ fontSize: '0.65rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 6, letterSpacing: '0.1em' }}>
-                                        <CheckCircle size={10} /> MATERIAL WARRANTY
+                                    <div style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
+                                        <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} /> MATERIAL WARRANTY
                                     </div>
                                 </div>
                             </Link>
@@ -190,13 +192,13 @@ export default function HomePage() {
             </section>
 
             {/* Why Choose Us */}
-            <section style={{ padding: '100px 0', background: '#fcfcfc', borderBottom: '1px solid #000' }}>
+            <section style={{ padding: '100px 0', background: 'rgba(0,0,0,0.3)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                 <div className="container">
                     <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
-                        <h2 style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0 }}>
+                        <h2 style={{ fontSize: '3rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, color: '#fff' }}>
                             WHY<br />EARTHSPACE?
                         </h2>
-                        <p style={{ flex: '1 1 400px', fontSize: '0.85rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700 }}>
+                        <p style={{ flex: '1 1 400px', fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.15em', fontWeight: 700 }}>
                             SETTING THE GLOBAL BENCHMARK IN PRECISION FACILITY MANAGEMENT
                         </p>
                     </div>
@@ -208,26 +210,27 @@ export default function HomePage() {
                                 className="architectural-card reveal reveal-stagger"
                                 style={{
                                     padding: '40px 32px',
-                                    background: '#fff',
-                                    border: '1px solid #000',
+                                    background: 'rgba(255,255,255,0.035)',
+                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    borderRadius: '20px',
                                     transition: 'all 0.3s ease',
                                     textAlign: 'left',
                                     '--delay': i
                                 }}
                                 onMouseEnter={e => {
                                     e.currentTarget.style.transform = 'translateY(-10px)';
-                                    e.currentTarget.style.boxShadow = '20px 20px 0px #000';
+                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4)';
                                 }}
                                 onMouseLeave={e => {
                                     e.currentTarget.style.transform = 'translateY(0)';
                                     e.currentTarget.style.boxShadow = 'none';
                                 }}
                             >
-                                <div style={{ width: 48, height: 48, background: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24, color: '#fff' }}>
+                                <div style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.06)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24, color: '#fff' }}>
                                     {item.icon}
                                 </div>
-                                <h4 style={{ marginBottom: 16, fontSize: '1rem', fontWeight: 800 }}>{item.title.toUpperCase()}</h4>
-                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6, color: '#666' }}>{item.desc}</p>
+                                <h4 style={{ marginBottom: 16, fontSize: '1rem', fontWeight: 800, color: '#fff' }}>{item.title.toUpperCase()}</h4>
+                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.45)' }}>{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -235,22 +238,25 @@ export default function HomePage() {
             </section>
 
             {/* How It Works */}
-            <section style={{ padding: '100px 0', background: '#fff' }}>
+            <section style={{ padding: '100px 0', background: 'transparent' }}>
                 <div className="container">
                     <div className="text-center mb-16 reveal">
-                        <h2 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em' }}>THE PROCESS</h2>
+                        <h2 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff' }}>THE PROCESS</h2>
                     </div>
-                    <div className="grid-4" style={{ gap: 40 }}>
+                    <div className="grid-4" style={{ gap: 1, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', overflow: 'hidden' }}>
                         {[
                             { step: '01', title: 'SELECT SERVICE', desc: 'Browse and select from 25+ professional solutions.' },
                             { step: '02', title: 'SCHEDULE SLOT', desc: 'Pick your preferred date and time.' },
                             { step: '03', title: 'EXPERT ARRIVAL', desc: 'A certified engineer arrives at your doorstep.' },
                             { step: '04', title: 'QUALITY CHECK', desc: 'Complete the job and rate your experience.' },
                         ].map((s, i) => (
-                            <div key={s.step} className="reveal reveal-stagger" style={{ textAlign: 'left', borderLeft: '4px solid #000', paddingLeft: 24, paddingBottom: 20, '--delay': i }}>
-                                <div style={{ fontSize: '3rem', fontWeight: 900, color: '#000', lineHeight: 1, marginBottom: 12 }}>{s.step}</div>
-                                <h4 style={{ marginBottom: 12, fontWeight: 800 }}>{s.title}</h4>
-                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6 }}>{s.desc}</p>
+                            <div key={s.step} className="reveal reveal-stagger" style={{ textAlign: 'left', background: '#000', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '12px', transition: 'background 0.3s', '--delay': i }}
+                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.03)'}
+                                onMouseLeave={e => e.currentTarget.style.background = '#000'}
+                            >
+                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.08)', lineHeight: 1, letterSpacing: '-0.04em' }}>{s.step}</div>
+                                <h4 style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.02em', margin: 0 }}>{s.title}</h4>
+                                <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, margin: 0 }}>{s.desc}</p>
                             </div>
                         ))}
                     </div>

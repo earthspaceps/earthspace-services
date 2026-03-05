@@ -45,13 +45,13 @@ const createBooking = async (req, res, next) => {
         if (availableTech) {
             await booking.update({ technicianId: availableTech.id, status: 'assigned' });
             // Notify technician
-            await notificationService.sendNotification(availableTech.userId, 'New Job Assigned', `You have a new booking #${booking.bookingNumber}`, 'push');
+            try { await notificationService.sendNotification(availableTech.userId, 'New Job Assigned', `You have a new booking #${booking.bookingNumber}`, 'push'); } catch (e) { console.error('Tech Notification Error:', e); }
         }
 
         // Notify customer
         const customer = await User.findByPk(customerId);
-        await notificationService.sendNotification(customerId, 'Booking Confirmed', `Your booking #${booking.bookingNumber} is confirmed!`, 'push');
-        await notificationService.sendEmail(customer.email, 'Booking Confirmation - Earthspace Services', `Your booking #${booking.bookingNumber} has been placed successfully.`);
+        try { await notificationService.sendNotification(customerId, 'Booking Confirmed', `Your booking #${booking.bookingNumber} is confirmed!`, 'push'); } catch (e) { console.error('Customer Notification Error:', e); }
+        try { await notificationService.sendEmail(customer.email, 'Booking Confirmation - Earthspace Services', `Your booking #${booking.bookingNumber} has been placed successfully.`); } catch (e) { console.error('Email Error:', e); }
 
         res.status(201).json({ success: true, message: 'Booking created successfully.', data: { booking } });
     } catch (err) { next(err); }

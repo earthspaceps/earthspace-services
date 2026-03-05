@@ -458,14 +458,16 @@ body {
   letter-spacing: 0.05em;
 }
 
+.form-control:focus~label,
+.form-control:not(:placeholder-shown)~label,
 .form-input:focus~label,
 .form-input:not(:placeholder-shown)~label {
   top: -10px;
   left: 12px;
   font-size: 0.7rem;
-  background: #fff;
+  background: #0A0D14;
   padding: 0 8px;
-  color: #000;
+  color: #fff;
   z-index: 10;
 }
 
