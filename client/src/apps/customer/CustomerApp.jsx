@@ -12,8 +12,7 @@ import ComplaintsPage from './pages/ComplaintsPage';
 const NAV_LINKS = [
     { to: '/customer', icon: Home, label: 'Home', exact: true },
     { to: '/customer/services', icon: Grid, label: 'Services' },
-    { to: '/customer/bookings', icon: Calendar, label: 'My Bookings' },
-    { to: '/customer/complaints', icon: MessageSquare, label: 'Complaints' },
+    { to: '/customer/bookings', icon: Calendar, label: 'Bookings' },
     { to: '/customer/profile', icon: User, label: 'Profile' },
 ];
 
@@ -155,8 +154,11 @@ function ProfilePage() {
                             <InfoRow label="PINCODE" value={user?.pincode} />
                         </div>
 
-                        <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 32, display: 'flex', justifyContent: 'flex-end' }}>
-                            <button className="btn btn-outline" style={{ borderColor: '#ff4444', color: '#ff4444', padding: '12px 24px' }} onClick={handleLogout}>
+                        <div style={{ borderTop: '1px solid #f0f0f0', paddingTop: 32, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Link to="/customer/complaints" className="btn btn-outline" style={{ padding: '12px 24px', flex: 1, marginRight: 16 }}>
+                                <MessageSquare size={16} style={{ marginRight: 8 }} /> COMPLAINTS
+                            </Link>
+                            <button className="btn btn-outline" style={{ borderColor: '#ff4444', color: '#ff4444', padding: '12px 24px', flex: 1 }} onClick={handleLogout}>
                                 <LogOut size={16} style={{ marginRight: 8 }} /> SIGN OUT
                             </button>
                         </div>

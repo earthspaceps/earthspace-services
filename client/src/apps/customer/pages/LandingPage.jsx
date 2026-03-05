@@ -166,6 +166,7 @@ const STYLES = `
     @media (max-width: 768px) {
         .whatsapp-fab { bottom: 5rem; right: 1.5rem; }
         .lp-nav-links { display: none; }
+        .lp-get-started { display: none !important; }
         .lp-h1 { font-size: 2.5rem; }
         .lp-why-grid { grid-template-columns: 1fr; }
         .lp-why-visual { display: none; }
@@ -233,7 +234,7 @@ const LandingPage = () => {
                     ) : (
                         <>
                             <Link to="/login" style={{ color: 'rgba(255,255,255,0.65)', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500 }}>Sign In</Link>
-                            <Link to="/login?mode=register" className="lp-btn-primary" style={{ padding: '10px 22px', fontSize: '0.85rem' }}>Get Started</Link>
+                            <Link to="/login?mode=register" className="lp-btn-primary lp-get-started" style={{ padding: '10px 22px', fontSize: '0.85rem' }}>Get Started</Link>
                         </>
                     )}
                 </div>
