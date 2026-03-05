@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, Package, Star, XCircle, CheckCircle, Truck, Play, Loader } from 'lucide-react';
+import { Calendar, Clock, Package, Star, XCircle, CheckCircle, Truck, Play, Loader, MapPin } from 'lucide-react';
 import api from '../../../shared/api';
 
 const STATUS_CONFIG = {
