@@ -182,64 +182,140 @@ const LandingPage = () => {
                 top: 0,
                 width: '100%',
                 zIndex: 1000,
-                backgroundColor: scrolled ? 'rgba(255,255,255,0.95)' : 'transparent',
-                backdropFilter: scrolled ? 'blur(10px)' : 'none',
-                borderBottom: scrolled ? '1px solid #e5e5e5' : 'none',
-                padding: scrolled ? '0 5%' : '1.5rem 5%',
+                backgroundColor: scrolled ? 'rgba(0,0,0,0.9)' : 'transparent',
+                backdropFilter: scrolled ? 'blur(12px)' : 'none',
+                padding: '0 5%',
+                height: scrolled ? '70px' : '90px',
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                transition: 'all 0.4s ease'
+                transition: 'all 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+                borderBottom: scrolled ? '1px solid rgba(255,255,255,0.1)' : 'none'
             }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <img src="/logo.png" alt="EarthSpace" style={{ height: '40px', filter: 'grayscale(100%) contrast(120%)' }} />
-                    <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '-0.02em', fontSize: '1.2rem' }}>SERVICES</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <div style={{ padding: 8, background: '#fff', borderRadius: 8 }}>
+                        <img src="/logo.png" alt="EarthSpace" style={{ height: '24px', filter: 'grayscale(100%) brightness(0)' }} />
+                    </div>
+                    <span style={{ fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.1rem', color: '#fff' }}>SERVICES</span>
                 </div>
 
-                <div className="desktop-links" style={{ display: 'flex', gap: '3rem', alignItems: 'center' }}>
-                    <a href="#services" className="nav-link">Services</a>
-                    <a href="#process" className="nav-link">Process</a>
-                    {user ? (
-                        <Link to="/dashboard" className="btn-bw btn-bw-outline" style={{ padding: '0.6rem 1.5rem' }}>Dashboard</Link>
-                    ) : (
-                        <Link to="/login" className="btn-bw btn-bw-outline" style={{ padding: '0.6rem 1.5rem' }}>Login</Link>
-                    )}
+                <div className="desktop-links" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
+                    <a href="#services" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Features</a>
+                    <a href="#process" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Solutions</a>
+                    <a href="#" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Pricing</a>
+                    <a href="#" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>About</a>
                 </div>
 
-                <button onClick={() => setMobileOpen(!mobileOpen)} className="mobile-toggle">
-                    {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    <Link to="/login" style={{ color: '#fff', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>Login</Link>
+                    <Link to="/login" style={{
+                        padding: '10px 24px',
+                        backgroundColor: '#fff',
+                        color: '#000',
+                        borderRadius: '30px',
+                        textDecoration: 'none',
+                        fontSize: '0.9rem',
+                        fontWeight: 700,
+                        transition: 'transform 0.3s'
+                    }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+                        Sign Up
+                    </Link>
+                </div>
             </nav>
 
             {/* Hero Section */}
-            <section className="blueprint-bg texture-overlay" style={{
-                borderBottom: '1px solid #e5e5e5',
-                padding: '120px 5% 80px'
+            <section className="texture-overlay" style={{
+                background: '#000',
+                color: '#fff',
+                minHeight: '100vh',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                padding: '140px 5% 100px',
+                position: 'relative',
+                overflow: 'hidden'
             }}>
-                <div className="reveal active" style={{ maxWidth: '900px' }}>
-                    <div style={{ textTransform: 'uppercase', fontSize: '0.8rem', fontWeight: 600, letterSpacing: '0.2em', marginBottom: '1.5rem', color: '#666' }}>
-                        Structural Integrity • Professional Care
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%)' }}></div>
+
+                <div className="reveal active" style={{ maxWidth: '1000px', position: 'relative', zIndex: 2 }}>
+                    {/* Pill Badge */}
+                    <div style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 12,
+                        padding: '6px 6px 6px 16px',
+                        backgroundColor: 'rgba(255,255,255,0.08)',
+                        borderRadius: '40px',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        marginBottom: '3rem',
+                        fontSize: '0.85rem',
+                        fontWeight: 500,
+                        color: 'rgba(255,255,255,0.8)'
+                    }}>
+                        Introducing Precision Tech for 2026
+                        <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '50%', padding: '4px' }}>
+                            <ArrowRight size={14} />
+                        </div>
                     </div>
-                    <h1 className="hero-headline">
-                        Home <span style={{ fontWeight: 300, fontStyle: 'italic', color: '#666' }}>Maintenance</span><br />
-                        As Architecture.
+
+                    <h1 style={{
+                        fontSize: 'clamp(3rem, 10vw, 5.5rem)',
+                        fontWeight: 700,
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.04em',
+                        marginBottom: '2rem',
+                        color: '#fff'
+                    }}>
+                        Modern Solutions for <br />
+                        <span style={{ color: '#fff' }}>Home Engineering.</span>
                     </h1>
-                    <p style={{ fontSize: '1.25rem', margin: '2.5rem 0 3.5rem', maxWidth: '600px', fontWeight: 300, borderLeft: '1px solid #050505', paddingLeft: '2rem' }}>
-                        Precision-led facility management and maintenance for modern living spaces. Managed by EarthSpace Project Solutions.
+
+                    <p style={{
+                        fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+                        color: 'rgba(255,255,255,0.6)',
+                        maxWidth: '700px',
+                        margin: '0 auto 3.5rem',
+                        fontWeight: 400,
+                        lineHeight: 1.6
+                    }}>
+                        Highly precise specialized systems maintenance for modern living and workspaces. Experience maintenance that feels the way it should.
                     </p>
-                    <div style={{ display: 'flex', gap: '1.5rem' }}>
-                        {user ? (
-                            <Link to={user.role === 'admin' ? '/admin' : user.role === 'technician' ? '/technician' : '/customer'} className="btn-bw btn-bw-filled animate-pulse">GO TO HUB</Link>
-                        ) : (
-                            <Link to="/login" className="btn-bw btn-bw-filled animate-pulse">START BOOKING</Link>
-                        )}
-                        <a href="#services" className="btn-bw btn-bw-outline">EXPLORE SCOPE</a>
+
+                    <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', alignItems: 'center' }}>
+                        <Link to="/login" style={{
+                            padding: '16px 36px',
+                            backgroundColor: '#fff',
+                            color: '#000',
+                            borderRadius: '12px',
+                            textDecoration: 'none',
+                            fontSize: '1rem',
+                            fontWeight: 700,
+                            transition: 'all 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+                            boxShadow: '0 10px 30px rgba(255,255,255,0.1)'
+                        }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                            Start Maintaining
+                        </Link>
+                        <a href="#services" style={{
+                            color: '#fff',
+                            textDecoration: 'none',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 8
+                        }}>
+                            Request a survey <ArrowRight size={18} />
+                        </a>
                     </div>
                 </div>
 
-                {/* Plan2: Bouncing Scroll Indicator */}
-                <div className="scroll-indicator" style={{ position: 'absolute', bottom: '2rem', left: '50%', transform: 'translateX(-50%)', color: '#ccc' }}>
-                    <ChevronDown size={32} strokeWidth={1} />
+                {/* Side Arrows Visual */}
+                <div style={{ position: 'absolute', left: '2rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.3, cursor: 'pointer' }} className="desktop-links">
+                    <ChevronDown size={40} style={{ transform: 'rotate(90deg)' }} strokeWidth={1} />
+                </div>
+                <div style={{ position: 'absolute', right: '2rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.3, cursor: 'pointer' }} className="desktop-links">
+                    <ChevronDown size={40} style={{ transform: 'rotate(-90deg)' }} strokeWidth={1} />
                 </div>
             </section>
 
