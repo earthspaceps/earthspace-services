@@ -8,20 +8,32 @@ const axios = require('axios');
 const BASE = process.env.TEST_API_URL || 'https://earthspace-api.onrender.com';
 
 async function run() {
-    console.log('🔍 Testing Earthspace Booking API...\n');
+    console.log('🔍 Testing Earthspace Booking API...');
+    console.log('🌐 Server:', BASE, '\n');
 
-    // Step 1: Login
+    // Step 1: Login as customer
     let token;
     try {
         const loginRes = await axios.post(`${BASE}/api/auth/login`, {
-            phone: process.env.TEST_PHONE || '9999999999',
-            password: process.env.TEST_PASS || 'Test@1234'
+            phone: process.env.TEST_PHONE || '+919876543210',
+            password: process.env.TEST_PASS || 'admin123'
         });
         token = loginRes.data?.data?.accessToken || loginRes.data?.token;
         console.log('✅ Login OK. Token received:', token ? 'YES' : 'NO');
     } catch (e) {
         console.error('❌ Login failed:', e.response?.data || e.message);
-        return;
+        // Try email login as fallback
+        try {
+            const loginRes2 = await axios.post(`${BASE}/api/auth/login`, {
+                email: 'customer@test.com',
+                password: 'admin123'
+            });
+            token = loginRes2.data?.data?.accessToken || loginRes2.data?.token;
+            console.log('✅ Email Login OK. Token received:', token ? 'YES' : 'NO');
+        } catch (e2) {
+            console.error('❌ Email Login also failed:', e2.response?.data || e2.message);
+            return;
+        }
     }
 
     // Step 2: Get first available service

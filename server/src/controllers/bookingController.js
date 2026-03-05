@@ -83,9 +83,9 @@ const createBooking = async (req, res, next) => {
             // Non-fatal
         }
 
-        // --- Reload booking to return full data ---
-        await booking.reload();
+        // Return the booking — no reload needed, data is already populated
         res.status(201).json({ success: true, message: 'Booking created successfully.', data: { booking } });
+
     } catch (err) {
         console.error('[createBooking] Unexpected error:', err);
         next(err);
