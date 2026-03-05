@@ -305,13 +305,18 @@ p {
 
 /* ---- Cards ---- */
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: #0F0F0F;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
   transition: all var(--transition-base);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.02);
 }
 
 .card-body {
@@ -736,18 +741,21 @@ p {
 
 /* ---- Dashboard KPI Cards ---- */
 .stat-card {
-  background: #fff;
-  border: 1px solid #000;
+  background: #0A0D14;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
   padding: 24px;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #fff;
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 8px 8px 0px #000;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.02);
 }
 
 .stat-icon {
@@ -756,22 +764,20 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0;
+  border-radius: 12px;
 }
 
 .stat-value {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 800;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .stat-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 /* ---- Tables & Badges ---- */
