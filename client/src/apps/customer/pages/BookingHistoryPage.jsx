@@ -107,11 +107,11 @@ export default function BookingHistoryPage() {
                                         overflow: 'hidden'
                                     }}
                                 >
-                                    <div style={{ padding: '20px 24px', borderBottom: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.02)' }}>
+                                    <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--bg-card)' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                            <span style={{ fontWeight: 900, fontSize: '0.9rem', letterSpacing: '0.05em', color: '#fff' }}>ORD #{b.bookingNumber}</span>
-                                            <span style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.2)' }} />
-                                            <span style={{ fontSize: '0.7rem', fontWeight: 800, opacity: 0.6, textTransform: 'uppercase', letterSpacing: '0.1em', color: '#fff' }}>{b.scheduledDate} · {b.scheduledTime}</span>
+                                            <span style={{ fontWeight: 900, fontSize: '0.9rem', letterSpacing: '0.05em', color: 'var(--text-primary)' }}>ORD #{b.bookingNumber}</span>
+                                            <span style={{ width: 1, height: 12, background: 'var(--border-color)' }} />
+                                            <span style={{ fontSize: '0.7rem', fontWeight: 800, opacity: 0.6, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-secondary)' }}>{b.scheduledDate} · {b.scheduledTime}</span>
                                         </div>
                                         <span style={{
                                             fontSize: '0.65rem',
@@ -129,24 +129,24 @@ export default function BookingHistoryPage() {
                                     <div style={{ padding: '24px' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <div style={{ flex: 1 }}>
-                                                <h4 style={{ marginBottom: 16, textTransform: 'uppercase', fontSize: '1.2rem', fontWeight: 900, letterSpacing: '0.02em', color: '#fff' }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
+                                                <h4 style={{ marginBottom: 16, textTransform: 'uppercase', fontSize: '1.2rem', fontWeight: 900, letterSpacing: '0.02em', color: 'var(--text-primary)' }}>{b.serviceSnapshot?.name || b.service?.name}</h4>
                                                 {b.technician?.user && (
-                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.8rem', color: '#fff', margin: '24px 0', fontWeight: 800, letterSpacing: '0.05em' }}>
-                                                        <div className="avatar" style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', width: 40, height: 40, fontSize: '1rem', border: '1px solid rgba(255,255,255,0.1)' }}>{b.technician.user.name?.[0]}</div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, fontSize: '0.8rem', color: 'var(--text-primary)', margin: '24px 0', fontWeight: 800, letterSpacing: '0.05em' }}>
+                                                        <div className="avatar" style={{ background: 'var(--border-color)', color: 'var(--text-primary)', width: 40, height: 40, fontSize: '1rem', border: '1px solid var(--border-color)' }}>{b.technician.user.name?.[0]}</div>
                                                         <div>
-                                                            <div style={{ opacity: 0.4, fontSize: '0.65rem', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.1em' }}>ASSIGNED ENGINEER</div>
-                                                            <div style={{ color: 'var(--color-primary-400)' }}>{b.technician.user.name.toUpperCase()}</div>
-                                                            <div style={{ opacity: 0.6, fontSize: '0.7rem', marginTop: 2 }}>{b.technician.user.phone}</div>
+                                                            <div style={{ opacity: 0.6, fontSize: '0.65rem', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--text-secondary)' }}>ASSIGNED ENGINEER</div>
+                                                            <div style={{ color: 'var(--color-primary-600)' }}>{b.technician.user.name.toUpperCase()}</div>
+                                                            <div style={{ opacity: 0.6, fontSize: '0.7rem', marginTop: 2, color: 'var(--text-secondary)' }}>{b.technician.user.phone}</div>
                                                         </div>
                                                     </div>
                                                 )}
-                                                <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, marginTop: 12 }}>
+                                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, marginTop: 12 }}>
                                                     <MapPin size={14} /> {b.addressSnapshot?.line1}
                                                 </div>
                                             </div>
                                             <div style={{ textAlign: 'right' }}>
-                                                <div style={{ fontWeight: 1000, fontSize: '1.8rem', lineHeight: 1, color: '#fff' }}>₹{b.finalPrice || b.estimatedPrice || b.serviceSnapshot?.basePrice}</div>
-                                                <div style={{ fontSize: '0.65rem', color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginTop: 12, fontWeight: 900, letterSpacing: '0.1em' }}>
+                                                <div style={{ fontWeight: 1000, fontSize: '1.8rem', lineHeight: 1, color: 'var(--text-primary)' }}>₹{b.finalPrice || b.estimatedPrice || b.serviceSnapshot?.basePrice}</div>
+                                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', textTransform: 'uppercase', marginTop: 12, fontWeight: 900, letterSpacing: '0.1em' }}>
                                                     {b.paymentStatus === 'completed' ? (
                                                         <span style={{ color: '#22c55e' }}>PAID · {b.paymentMethod?.toUpperCase()}</span>
                                                     ) : (
@@ -156,7 +156,7 @@ export default function BookingHistoryPage() {
                                             </div>
                                         </div>
 
-                                        <div style={{ display: 'flex', gap: 12, marginTop: 24, paddingTop: 24, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                                        <div style={{ display: 'flex', gap: 12, marginTop: 24, paddingTop: 24, borderTop: '1px solid var(--border-color)' }}>
                                             {b.status === 'completed' && (
                                                 <button className="btn btn-sm btn-primary" style={{ padding: '12px 24px' }} onClick={() => setRatingModal({ bookingId: b.id, technicianId: b.technicianId })}>
                                                     RATE PERFORMANCE

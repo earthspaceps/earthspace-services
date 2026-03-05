@@ -108,26 +108,26 @@ export default function ServicesPage() {
                                 >
                                     {/* Category + Icon Row */}
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                        <span style={{ fontSize: '0.6rem', background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.7)', padding: '5px 12px', letterSpacing: '0.15em', fontWeight: 800, borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)' }}>{service.category?.name.toUpperCase()}</span>
-                                        <div style={{ background: 'rgba(255,255,255,0.06)', borderRadius: '8px', padding: '8px', border: '1px solid rgba(255,255,255,0.08)' }}>
-                                            <Icon size={18} color="rgba(255,255,255,0.7)" strokeWidth={1.5} />
+                                        <span style={{ fontSize: '0.6rem', background: 'rgba(0,0,0,0.04)', color: 'var(--text-secondary)', padding: '5px 12px', letterSpacing: '0.15em', fontWeight: 800, borderRadius: '4px', border: '1px solid var(--border-color)' }}>{service.category?.name.toUpperCase()}</span>
+                                        <div style={{ background: 'rgba(0,0,0,0.04)', borderRadius: '8px', padding: '8px', border: '1px solid var(--border-color)' }}>
+                                            <Icon size={18} color="var(--text-primary)" strokeWidth={1.5} />
                                         </div>
                                     </div>
                                     {/* Title */}
-                                    <h3 style={{ color: '#fff', fontSize: '1.15rem', letterSpacing: '-0.01em', fontWeight: 900, lineHeight: 1.2 }}>{service.name.toUpperCase()}</h3>
+                                    <h3 style={{ color: 'var(--text-primary)', fontSize: '1.15rem', letterSpacing: '-0.01em', fontWeight: 900, lineHeight: 1.2 }}>{service.name.toUpperCase()}</h3>
                                     {/* Description */}
-                                    <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: 'rgba(255,255,255,0.5)', flex: 1 }}>{service.description}</p>
+                                    <p style={{ fontSize: '0.85rem', lineHeight: 1.7, color: 'var(--text-secondary)', flex: 1 }}>{service.description}</p>
                                     {/* Meta */}
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'rgba(255,255,255,0.4)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-secondary)', fontSize: '0.7rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                         <Clock size={13} />{service.durationMinutes} MINS
                                         <span style={{ opacity: 0.3 }}>|</span>
                                         <Star size={13} style={{ color: '#f59e0b' }} /> 4.8
                                     </div>
                                     {/* Price + Book */}
-                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16, marginTop: 4 }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: 16, marginTop: 4 }}>
                                         <div>
-                                            <div style={{ fontSize: '1.3rem', fontWeight: 900, color: '#fff' }}>{formatPrice(service)}</div>
-                                            <div style={{ fontSize: '0.62rem', color: 'rgba(255,255,255,0.35)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700, marginTop: 2 }}>{service.priceType === 'starting_from' ? 'AFTER INSPECTION' : 'FIXED RATE'}</div>
+                                            <div style={{ fontSize: '1.3rem', fontWeight: 900, color: 'var(--text-primary)' }}>{formatPrice(service)}</div>
+                                            <div style={{ fontSize: '0.62rem', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.07em', fontWeight: 700, marginTop: 2 }}>{service.priceType === 'starting_from' ? 'AFTER INSPECTION' : 'FIXED RATE'}</div>
                                         </div>
                                         <Link to={`/customer/book?service=${service.id}&name=${encodeURIComponent(service.name)}&price=${service.basePrice}`}>
                                             <button className="btn btn-primary btn-sm" style={{ padding: '10px 20px' }}>BOOK NOW</button>

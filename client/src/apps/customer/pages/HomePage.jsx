@@ -124,13 +124,13 @@ export default function HomePage() {
             </div>
 
             {/* OUR CORE SCOPE Section */}
-            <section style={{ padding: '100px 0', background: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+            <section style={{ padding: '100px 0', background: 'transparent', borderBottom: '1px solid var(--border-color)' }}>
                 <div className="container">
                     <div className="reveal" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 40, marginBottom: 60, flexWrap: 'wrap' }}>
-                        <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, flex: '1 1 300px', color: '#fff' }}>
+                        <h2 style={{ fontSize: '3.5rem', fontWeight: 900, lineHeight: 0.9, letterSpacing: '-0.02em', margin: 0, flex: '1 1 300px', color: 'var(--text-primary)' }}>
                             OUR<br />CORE SCOPE
                         </h2>
-                        <p style={{ flex: '1 1 400px', fontSize: '1rem', color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, maxWidth: 500 }}>
+                        <p style={{ flex: '1 1 400px', fontSize: '1rem', color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 500 }}>
                             Specialized systems maintenance designed to preserve the structural and functional excellence of your property.
                         </p>
                     </div>
@@ -147,8 +147,8 @@ export default function HomePage() {
                                 to={`/customer/services?category=${cat.slug}`}
                                 style={{
                                     padding: '32px',
-                                    background: 'rgba(255,255,255,0.035)',
-                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    background: 'var(--bg-card)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '20px',
                                     transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                                     display: 'flex',
@@ -158,30 +158,30 @@ export default function HomePage() {
                                     color: 'inherit'
                                 }}
                                 onMouseEnter={e => {
-                                    e.currentTarget.style.background = 'rgba(255,255,255,0.065)';
-                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+                                    e.currentTarget.style.background = 'var(--glass-bg-hover)';
+                                    e.currentTarget.style.borderColor = 'rgba(0,0,0,0.15)';
                                     e.currentTarget.style.transform = 'translateY(-6px)';
-                                    e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.5)';
+                                    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
                                 }}
                                 onMouseLeave={e => {
-                                    e.currentTarget.style.background = 'rgba(255,255,255,0.035)';
-                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+                                    e.currentTarget.style.background = 'var(--bg-card)';
+                                    e.currentTarget.style.borderColor = 'var(--border-color)';
                                     e.currentTarget.style.transform = 'translateY(0)';
                                     e.currentTarget.style.boxShadow = 'none';
                                 }}
                             >
-                                <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                    <cat.icon size={24} style={{ color: 'rgba(255,255,255,0.7)' }} />
+                                <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(0,0,0,0.04)', border: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    <cat.icon size={24} style={{ color: 'var(--text-primary)' }} />
                                 </div>
                                 <div>
-                                    <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: 12, letterSpacing: '-0.01em', color: '#fff', textTransform: 'uppercase' }}>{cat.name}</h3>
-                                    <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{cat.desc}</p>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: 800, marginBottom: 12, letterSpacing: '-0.01em', color: 'var(--text-primary)', textTransform: 'uppercase' }}>{cat.name}</h3>
+                                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.6 }}>{cat.desc}</p>
                                 </div>
-                                <div style={{ marginTop: 'auto', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                                    <div style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
+                                <div style={{ marginTop: 'auto', borderTop: '1px solid var(--border-color)', paddingTop: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                    <div style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '0.08em', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
                                         <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} /> CERTIFIED PROS
                                     </div>
-                                    <div style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '0.08em', color: 'rgba(255,255,255,0.45)', textTransform: 'uppercase' }}>
+                                    <div style={{ fontSize: '0.72rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '0.08em', color: 'var(--text-secondary)', textTransform: 'uppercase' }}>
                                         <div style={{ width: 5, height: 5, borderRadius: '50%', background: '#22c55e' }} /> MATERIAL WARRANTY
                                     </div>
                                 </div>
@@ -210,8 +210,8 @@ export default function HomePage() {
                                 className="architectural-card reveal reveal-stagger"
                                 style={{
                                     padding: '40px 32px',
-                                    background: 'rgba(255,255,255,0.035)',
-                                    border: '1px solid rgba(255,255,255,0.08)',
+                                    background: 'var(--bg-card)',
+                                    border: '1px solid var(--border-color)',
                                     borderRadius: '20px',
                                     transition: 'all 0.3s ease',
                                     textAlign: 'left',
@@ -219,18 +219,18 @@ export default function HomePage() {
                                 }}
                                 onMouseEnter={e => {
                                     e.currentTarget.style.transform = 'translateY(-10px)';
-                                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.4)';
+                                    e.currentTarget.style.boxShadow = 'var(--shadow-xl)';
                                 }}
                                 onMouseLeave={e => {
                                     e.currentTarget.style.transform = 'translateY(0)';
                                     e.currentTarget.style.boxShadow = 'none';
                                 }}
                             >
-                                <div style={{ width: 48, height: 48, background: 'rgba(255,255,255,0.06)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24, color: '#fff' }}>
+                                <div style={{ width: 48, height: 48, background: 'rgba(0,0,0,0.04)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24, color: 'var(--text-primary)' }}>
                                     {item.icon}
                                 </div>
-                                <h4 style={{ marginBottom: 16, fontSize: '1rem', fontWeight: 800, color: '#fff' }}>{item.title.toUpperCase()}</h4>
-                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6, color: 'rgba(255,255,255,0.45)' }}>{item.desc}</p>
+                                <h4 style={{ marginBottom: 16, fontSize: '1rem', fontWeight: 800, color: 'var(--text-primary)' }}>{item.title.toUpperCase()}</h4>
+                                <p style={{ fontSize: '0.8rem', lineHeight: 1.6, color: 'var(--text-secondary)' }}>{item.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -241,22 +241,22 @@ export default function HomePage() {
             <section style={{ padding: '100px 0', background: 'transparent' }}>
                 <div className="container">
                     <div className="text-center mb-16 reveal">
-                        <h2 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em', color: '#fff' }}>THE PROCESS</h2>
+                        <h2 style={{ fontSize: '3rem', fontWeight: 900, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>THE PROCESS</h2>
                     </div>
-                    <div className="grid-4" style={{ gap: 1, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '20px', overflow: 'hidden' }}>
+                    <div className="grid-4" style={{ gap: 1, background: 'var(--border-color)', border: '1px solid var(--border-color)', borderRadius: '20px', overflow: 'hidden' }}>
                         {[
                             { step: '01', title: 'SELECT SERVICE', desc: 'Browse and select from 25+ professional solutions.' },
                             { step: '02', title: 'SCHEDULE SLOT', desc: 'Pick your preferred date and time.' },
                             { step: '03', title: 'EXPERT ARRIVAL', desc: 'A certified engineer arrives at your doorstep.' },
                             { step: '04', title: 'QUALITY CHECK', desc: 'Complete the job and rate your experience.' },
                         ].map((s, i) => (
-                            <div key={s.step} className="reveal reveal-stagger" style={{ textAlign: 'left', background: '#000', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '12px', transition: 'background 0.3s', '--delay': i }}
-                                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.03)'}
-                                onMouseLeave={e => e.currentTarget.style.background = '#000'}
+                            <div key={s.step} className="reveal reveal-stagger" style={{ textAlign: 'left', background: 'var(--bg-card)', padding: '32px 28px', display: 'flex', flexDirection: 'column', gap: '12px', transition: 'background 0.3s', '--delay': i }}
+                                onMouseEnter={e => e.currentTarget.style.background = 'var(--glass-bg-hover)'}
+                                onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-card)'}
                             >
-                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'rgba(255,255,255,0.08)', lineHeight: 1, letterSpacing: '-0.04em' }}>{s.step}</div>
-                                <h4 style={{ fontSize: '0.9rem', fontWeight: 800, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.02em', margin: 0 }}>{s.title}</h4>
-                                <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.4)', lineHeight: 1.6, margin: 0 }}>{s.desc}</p>
+                                <div style={{ fontSize: '2.5rem', fontWeight: 900, color: 'var(--border-color)', lineHeight: 1, letterSpacing: '-0.04em' }}>{s.step}</div>
+                                <h4 style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.02em', margin: 0 }}>{s.title}</h4>
+                                <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>{s.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -264,7 +264,7 @@ export default function HomePage() {
             </section>
 
             {/* CTA */}
-            <section className="texture-overlay" style={{ padding: '120px 0', background: '#000', textAlign: 'center', color: '#fff', position: 'relative', overflow: 'hidden' }}>
+            <section className="texture-overlay" style={{ padding: '120px 0', background: 'var(--color-primary-100)', textAlign: 'center', color: '#fff', position: 'relative', overflow: 'hidden' }}>
                 <div className="reveal" style={{ position: 'relative', zIndex: 1 }}>
                     <h2 style={{ color: '#fff', marginBottom: 24, fontSize: '4rem', fontWeight: 900, letterSpacing: '-0.04em' }}>READY FOR PRECISION?</h2>
                     <p style={{ color: 'rgba(255,255,255,.6)', marginBottom: 48, textTransform: 'uppercase', letterSpacing: '0.2em', fontSize: '0.8rem', fontWeight: 700 }}>EXPERIENCE THE EARTHSPACE ENGINEERING STANDARD TODAY.</p>
@@ -296,7 +296,7 @@ export default function HomePage() {
             </section>
 
             {/* Footer */}
-            <footer className="texture-overlay" style={{ background: '#000', color: 'rgba(255,255,255,.5)', padding: '80px 0 40px', borderTop: '1px solid #333' }}>
+            <footer className="texture-overlay" style={{ background: '#050505', color: 'rgba(255,255,255,.5)', padding: '80px 0 40px', borderTop: '1px solid #1a1a1a' }}>
                 <div className="container">
                     <div className="reveal" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: 60, marginBottom: 80 }}>
                         <div>
