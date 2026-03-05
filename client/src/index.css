@@ -588,12 +588,22 @@ p {
   border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.sidebar.collapsed {
+  width: 80px;
+}
+
 .sidebar-logo {
   padding: 32px 24px 24px;
   border-bottom: 1px solid rgba(255, 255, 255, .05);
+  transition: all 0.3s ease;
+}
+
+.sidebar.collapsed .sidebar-logo {
+  padding: 32px 0 24px;
 }
 
 .sidebar-nav {
+
   flex: 1;
   padding: 24px 16px;
   display: flex;
@@ -653,6 +663,35 @@ p {
   padding: 4px;
   cursor: pointer;
   z-index: 10;
+}
+
+.sidebar-toggle-btn {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle-btn {
+    display: none;
+    /* Hide on mobile where sidebar is overlaid anyway */
+  }
 }
 
 .main-content {

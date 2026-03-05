@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
-import { Wrench, LayoutDashboard, Briefcase, DollarSign, History, User, LogOut, CheckCircle, XCircle, Truck, Play, Camera, Loader, Plus, Menu, X } from 'lucide-react';
+import { Wrench, LayoutDashboard, Briefcase, DollarSign, History, User, LogOut, CheckCircle, XCircle, Truck, Play, Camera, Loader, Plus, Menu, X, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { useAuth } from '../../shared/AuthContext';
 import api from '../../shared/api';
 
@@ -334,6 +334,7 @@ const NAV = [
 
 function Sidebar({ isOpen, onClose }) {
     const { user, logout } = useAuth();
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const location = useLocation();
 
     const handleLinkClick = () => {
@@ -341,35 +342,58 @@ function Sidebar({ isOpen, onClose }) {
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+        <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
             <button className="sidebar-close" onClick={onClose}>
                 <X size={20} />
             </button>
             <div className="sidebar-logo">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                     <img src="/logo.png" alt="EarthSpace" style={{ height: 28, filter: 'brightness(0) invert(1)' }} />
-                    <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#fff', letterSpacing: '-0.02em', textTransform: 'uppercase' }}>SERVICES</div>
+                    {!isCollapsed && <div style={{ fontWeight: 800, fontSize: '0.9rem', color: '#fff', letterSpacing: '-0.02em', textTransform: 'uppercase' }}>SERVICES</div>}
                 </div>
             </div>
             <nav className="sidebar-nav">
                 {NAV.map(({ to, icon: Icon, label, exact }) => {
                     const active = exact ? location.pathname === to : location.pathname.startsWith(to);
                     return (
-                        <Link key={to} to={to} className={`sidebar-link ${active ? 'active' : ''}`} onClick={handleLinkClick}>
-                            <Icon size={18} className="nav-icon" />{label}
+                        <Link
+                            key={to}
+                            to={to}
+                            className={`sidebar-link ${active ? 'active' : ''}`}
+                            onClick={handleLinkClick}
+                            title={label}
+                            style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}
+                        >
+                            <Icon size={18} className="nav-icon" />{!isCollapsed && <span>{label}</span>}
                         </Link>
                     );
                 })}
             </nav>
-            <div style={{ padding: '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                    <div className="avatar avatar-sm">{user?.name?.[0]}</div>
-                    <div><div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff' }}>{user?.name}</div><div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician</div></div>
-                </div>
-                <button className="sidebar-link w-full" onClick={() => { logout(); window.location.href = '/login'; }} style={{ color: '#f87171' }}>
-                    <LogOut size={18} className="nav-icon" />Log Out
+            <div style={{ padding: isCollapsed ? '16px 8px' : '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                {!isCollapsed && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                        <div className="avatar avatar-sm">{user?.name?.[0]}</div>
+                        <div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 120 }}>{user?.name}</div>
+                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Technician</div>
+                        </div>
+                    </div>
+                )}
+                {isCollapsed && (
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                        <div className="avatar avatar-sm" title={user?.name}>{user?.name?.[0]}</div>
+                    </div>
+                )}
+                <button className={`sidebar-link w-full ${isCollapsed ? 'justify-center' : ''}`} onClick={() => { logout(); window.location.href = '/login'; }} style={{ color: '#f87171' }} title="Log Out">
+                    <LogOut size={18} className="nav-icon" />{!isCollapsed && <span>Log Out</span>}
                 </button>
             </div>
+            <button
+                className="sidebar-toggle-btn"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+                {isCollapsed ? <ChevronsRight size={16} /> : <><ChevronsLeft size={16} /> Hide</>}
+            </button>
         </aside>
     );
 }

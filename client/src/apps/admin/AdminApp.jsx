@@ -3,7 +3,8 @@ import { Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
 import {
     LayoutDashboard, Users, Briefcase, DollarSign, Settings, BarChart2,
     MessageSquare, Wrench, LogOut, Bell, TrendingUp, Package, CheckCircle,
-    Clock, XCircle, UserCheck, UserX, Loader, Plus, Edit2, Trash2, Menu, X
+    Clock, XCircle, UserCheck, UserX, Loader, Plus, Edit2, Trash2, Menu, X,
+    ChevronsLeft, ChevronsRight
 } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
 import { useAuth } from '../../shared/AuthContext';
@@ -23,6 +24,7 @@ const NAV = [
 ];
 function Sidebar({ isOpen, onClose }) {
     const { user, logout } = useAuth();
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const location = useLocation();
 
     // Close sidebar when clicking a link on mobile
@@ -33,14 +35,14 @@ function Sidebar({ isOpen, onClose }) {
     };
 
     return (
-        <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+        <aside className={`sidebar ${isOpen ? 'open' : ''} ${isCollapsed ? 'collapsed' : ''}`}>
             <button className="sidebar-close" onClick={onClose}>
                 <X size={20} />
             </button>
             <div className="sidebar-logo">
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, justifyContent: isCollapsed ? 'center' : 'flex-start' }}>
                     <img src="/logo.png" alt="EarthSpace" style={{ height: 32, filter: 'brightness(0) invert(1)' }} />
-                    <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '-0.02em', lineHeight: 1 }}>SERVICES</div>
+                    {!isCollapsed && <div style={{ fontWeight: 800, color: '#fff', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '-0.02em', lineHeight: 1 }}>SERVICES</div>}
                 </div>
             </div>
             <nav className="sidebar-nav">
@@ -52,24 +54,39 @@ function Sidebar({ isOpen, onClose }) {
                             to={to}
                             className={`sidebar-link ${active ? 'active' : ''}`}
                             onClick={handleLinkClick}
+                            title={label}
+                            style={{ justifyContent: isCollapsed ? 'center' : 'flex-start' }}
                         >
-                            <Icon size={18} className="nav-icon" />{label}
+                            <Icon size={18} className="nav-icon" />{!isCollapsed && <span>{label}</span>}
                         </Link>
                     );
                 })}
             </nav>
-            <div style={{ padding: '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                    <div className="avatar avatar-sm">{user?.name?.[0]}</div>
-                    <div>
-                        <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff' }}>{user?.name}</div>
-                        <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Super Admin</div>
+            <div style={{ padding: isCollapsed ? '16px 8px' : '16px 12px', borderTop: '1px solid rgba(255,255,255,.08)' }}>
+                {!isCollapsed && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                        <div className="avatar avatar-sm">{user?.name?.[0]}</div>
+                        <div>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 120 }}>{user?.name}</div>
+                            <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,.5)' }}>Super Admin</div>
+                        </div>
                     </div>
-                </div>
-                <button className="sidebar-link w-full" style={{ color: '#f87171' }} onClick={() => { logout(); window.location.href = '/login'; }}>
-                    <LogOut size={18} className="nav-icon" />Log Out
+                )}
+                {isCollapsed && (
+                    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+                        <div className="avatar avatar-sm" title={user?.name}>{user?.name?.[0]}</div>
+                    </div>
+                )}
+                <button className={`sidebar-link w-full ${isCollapsed ? 'justify-center' : ''}`} style={{ color: '#f87171' }} onClick={() => { logout(); window.location.href = '/login'; }} title="Log Out">
+                    <LogOut size={18} className="nav-icon" />{!isCollapsed && <span>Log Out</span>}
                 </button>
             </div>
+            <button
+                className="sidebar-toggle-btn"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+            >
+                {isCollapsed ? <ChevronsRight size={16} /> : <><ChevronsLeft size={16} /> Hide</>}
+            </button>
         </aside>
     );
 }
