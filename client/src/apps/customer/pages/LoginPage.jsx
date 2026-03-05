@@ -140,7 +140,7 @@ export default function LoginPage() {
                                 </button>
                             </div>
                         </div>
-                        <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={loading} style={{ border: '1px solid var(--color-primary-900)' }}>
+                        <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={loading}>
                             {loading ? <Loader size={16} className="animate-spin" /> : <><ArrowRight size={16} /> SIGN IN</>}
                         </button>
                         <p className="text-center text-sm" style={{ color: 'var(--text-secondary)' }}>
@@ -197,7 +197,7 @@ export default function LoginPage() {
                             {loading ? <Loader size={16} /> : 'Create Account'}
                         </button>
 
-                        <button type="button" className="btn btn-ghost btn-block" onClick={() => setMode('login')}>← Back to Login</button>
+                        <button type="button" className="btn btn-ghost btn-block" style={{ border: 'none', background: 'none' }} onClick={() => setMode('login')}>← Back to Login</button>
                     </form>
                 )}
 

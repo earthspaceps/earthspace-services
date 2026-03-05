@@ -103,34 +103,48 @@ const LandingPage = () => {
                 }
 
                 .btn-bw {
-                    display: inline-block;
-                    padding: 1.2rem 3rem;
-                    font-weight: 600;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 1rem 2.5rem;
+                    font-weight: 700;
                     text-transform: uppercase;
-                    letter-spacing: 0.15em;
-                    font-size: 0.75rem;
+                    letter-spacing: 0.1em;
+                    font-size: 0.8rem;
                     cursor: pointer;
-                    border: 1px solid #050505;
+                    border-radius: 999px;
+                    border: 1px solid rgba(0, 0, 0, 0.1);
                     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
                     text-decoration: none;
+                    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+                    color: #000;
+                    box-shadow: 
+                        0 4px 12px rgba(0, 0, 0, 0.08), 
+                        inset 0 1px 0 rgba(255, 255, 255, 1),
+                        inset 0 -1px 2px rgba(0, 0, 0, 0.05);
                 }
 
                 .btn-bw-filled {
-                    background: #050505;
-                    color: #ffffff;
+                    background: linear-gradient(180deg, #050505 0%, #262626 100%);
+                    color: #fff;
+                    border: 1px solid #000;
+                    box-shadow: 
+                        0 4px 12px rgba(0, 0, 0, 0.2), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
                 }
 
                 .btn-bw-filled:hover {
-                    background: transparent;
+                    background: #ffffff;
                     color: #050505;
-                    transform: translateY(-4px) scale(1.02);
-                    box-shadow: 12px 12px 0px #000;
+                    transform: translateY(-4px);
+                    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
                 }
 
                 .btn-bw-outline:hover {
-                    background: #050505;
-                    color: #ffffff;
+                    background: #f8fafc;
+                    color: #050505;
                     transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
                 }
 
                 .service-card {

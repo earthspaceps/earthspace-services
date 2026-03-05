@@ -151,10 +151,11 @@ export default function BookingPage() {
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: 10 }}>
                             {TIME_SLOTS.map(t => (
                                 <button key={t} onClick={() => setSelectedTime(t)} style={{
-                                    padding: '12px 0', border: '1px solid var(--border-color)', borderRadius: 0,
+                                    padding: '12px 0', border: '1px solid var(--border-color)', borderRadius: '12px',
                                     background: selectedTime === t ? '#000' : 'transparent',
                                     color: selectedTime === t ? '#fff' : '#000',
-                                    fontWeight: selectedTime === t ? 700 : 400, fontSize: '0.85rem'
+                                    fontWeight: selectedTime === t ? 700 : 400, fontSize: '0.85rem',
+                                    transition: 'all 0.2s ease'
                                 }}>{t}</button>
                             ))}
                         </div>
@@ -167,48 +168,48 @@ export default function BookingPage() {
 
                 {/* Step 2: Address */}
                 {step === 2 && (
-                    <div className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)' }}>
+                    <div className="card card-body" style={{ borderRadius: '24px', border: '1px solid var(--border-color)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                         <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>SERVICE ADDRESS</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                             <div className="form-group">
-                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
+                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.line1} onChange={e => setAddress(a => ({ ...a, line1: e.target.value }))} required />
                                 <label>ADDRESS LINE 1</label>
                             </div>
                             <div className="form-group">
-                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
+                                <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.line2} onChange={e => setAddress(a => ({ ...a, line2: e.target.value }))} />
                                 <label>ADDRESS LINE 2</label>
                             </div>
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                 <div className="form-group">
-                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
+                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.city} onChange={e => setAddress(a => ({ ...a, city: e.target.value }))} required />
                                     <label>CITY</label>
                                 </div>
                                 <div className="form-group">
-                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} placeholder=" " value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
+                                    <input className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} placeholder=" " value={address.pincode} onChange={e => setAddress(a => ({ ...a, pincode: e.target.value }))} />
                                     <label>PINCODE</label>
                                 </div>
                             </div>
                             <div className="form-group">
-                                <textarea className="form-input" style={{ width: '100%', padding: '16px', borderRadius: 0, border: '1px solid #000', background: '#fff' }} rows={3} placeholder=" " value={instructions} onChange={e => setInstructions(e.target.value)} />
+                                <textarea className="form-input" style={{ width: '100%', padding: '16px', borderRadius: '12px', border: '1.5px solid #eee', background: '#fff' }} rows={3} placeholder=" " value={instructions} onChange={e => setInstructions(e.target.value)} />
                                 <label>SPECIAL INSTRUCTIONS</label>
                             </div>
                         </div>
                         <div style={{ display: 'flex', gap: 12, marginTop: 32 }}>
-                            <button className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={() => setStep(1)}>BACK</button>
-                            <button className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} onClick={() => setStep(3)} disabled={!address.line1 || !address.city}>CONTINUE</button>
+                            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setStep(1)}>BACK</button>
+                            <button className="btn btn-primary" style={{ flex: 2 }} onClick={() => setStep(3)} disabled={!address.line1 || !address.city}>CONTINUE</button>
                         </div>
                     </div>
                 )}
 
                 {/* Step 3: Payment */}
                 {step === 3 && (
-                    <div className="card card-body" style={{ borderRadius: 0, border: '1px solid var(--border-color)' }}>
+                    <div className="card card-body" style={{ borderRadius: '24px', border: '1px solid var(--border-color)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
                         <h3 className="mb-6" style={{ textTransform: 'uppercase', letterSpacing: '0.05em' }}>PAYMENT METHOD</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 32 }}>
                             {PAYMENT_METHODS.map(pm => (
                                 <div key={pm.key} onClick={() => setPaymentMethod(pm.key)} style={{
                                     border: `2px solid ${paymentMethod === pm.key ? '#000' : '#eee'}`,
-                                    borderRadius: 0, padding: '20px', cursor: 'pointer',
+                                    borderRadius: '16px', padding: '20px', cursor: 'pointer',
                                     display: 'flex', alignItems: 'center', gap: 16,
                                     background: paymentMethod === pm.key ? '#f8f8f8' : '#fff',
                                     transition: 'all .2s',
@@ -224,7 +225,7 @@ export default function BookingPage() {
                         </div>
 
                         {/* Summary */}
-                        <div style={{ background: '#000', color: '#fff', padding: '24px', marginBottom: 32 }}>
+                        <div style={{ background: '#000', color: '#fff', padding: '24px', marginBottom: 32, borderRadius: '20px' }}>
                             <h4 style={{ color: '#fff', marginBottom: 16, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em' }}>BOOKING SUMMARY</h4>
                             <div style={{ display: 'grid', gap: 10 }}>
                                 {[['SOLUTION', serviceName], ['DATE', selectedDate], ['TIME', selectedTime], ['METHOD', PAYMENT_METHODS.find(p => p.key === paymentMethod)?.label]].map(([k, v]) => (
@@ -241,8 +242,8 @@ export default function BookingPage() {
                         </div>
 
                         <div style={{ display: 'flex', gap: 12 }}>
-                            <button className="btn btn-outline" style={{ borderRadius: 0, flex: 1 }} onClick={() => setStep(2)}>BACK</button>
-                            <button className="btn btn-primary" style={{ borderRadius: 0, flex: 2 }} onClick={handleBook} disabled={loading}>
+                            <button className="btn btn-outline" style={{ flex: 1 }} onClick={() => setStep(2)}>BACK</button>
+                            <button className="btn btn-primary" style={{ flex: 2 }} onClick={handleBook} disabled={loading}>
                                 {loading ? 'PROCESSING...' : 'CONFIRM BOOKING'}
                             </button>
                         </div>
