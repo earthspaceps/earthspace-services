@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Briefcase, Phone, Mail, Lock, Eye, EyeOff, ArrowRight, Loader } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Briefcase, Phone, Mail, Lock, Eye, EyeOff, ArrowRight, Loader, ChevronLeft } from 'lucide-react';
 import { useAuth } from '../../../shared/AuthContext';
 import api from '../../../shared/api';
 
 export default function LoginPage() {
     const { user, login } = useAuth();
     const navigate = useNavigate();
-    const [mode, setMode] = useState('login'); // 'login' or 'register'
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const initialMode = queryParams.get('mode') || 'login';
+
+    const [mode, setMode] = useState(initialMode); // 'login' or 'register'
     const [showPass, setShowPass] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');

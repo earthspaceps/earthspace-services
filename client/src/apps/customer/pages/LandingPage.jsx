@@ -207,8 +207,8 @@ const LandingPage = () => {
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-                    <Link to="/login" style={{ color: '#fff', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>Login</Link>
-                    <Link to="/login" style={{
+                    <Link to="/login" style={{ color: '#fff', textDecoration: 'none', fontSize: '0.9rem', fontWeight: 600 }}>Sign In</Link>
+                    <Link to="/login?mode=register" style={{
                         padding: '10px 24px',
                         backgroundColor: '#fff',
                         color: '#000',
@@ -218,7 +218,7 @@ const LandingPage = () => {
                         fontWeight: 700,
                         transition: 'transform 0.3s'
                     }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-                        Sign Up
+                        Register
                     </Link>
                 </div>
             </nav>
@@ -240,7 +240,7 @@ const LandingPage = () => {
 
                 <div className="reveal active" style={{ maxWidth: '1000px', position: 'relative', zIndex: 2 }}>
                     {/* Pill Badge */}
-                    <div style={{
+                    <a href="#services" style={{
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: 12,
@@ -251,13 +251,14 @@ const LandingPage = () => {
                         marginBottom: '3rem',
                         fontSize: '0.85rem',
                         fontWeight: 500,
-                        color: 'rgba(255,255,255,0.8)'
+                        color: 'rgba(255,255,255,0.8)',
+                        textDecoration: 'none'
                     }}>
-                        Introducing Precision Tech for 2026
+                        Empowered by EarthSpace Project Solutions
                         <div style={{ backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: '50%', padding: '4px' }}>
                             <ArrowRight size={14} />
                         </div>
-                    </div>
+                    </a>
 
                     <h1 style={{
                         fontSize: 'clamp(3rem, 10vw, 5.5rem)',
@@ -296,26 +297,7 @@ const LandingPage = () => {
                         }} onMouseOver={e => e.currentTarget.style.transform = 'translateY(-4px)'} onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
                             Start Maintaining
                         </Link>
-                        <a href="#services" style={{
-                            color: '#fff',
-                            textDecoration: 'none',
-                            fontSize: '1rem',
-                            fontWeight: 600,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: 8
-                        }}>
-                            Request a survey <ArrowRight size={18} />
-                        </a>
                     </div>
-                </div>
-
-                {/* Side Arrows Visual */}
-                <div style={{ position: 'absolute', left: '2rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.3, cursor: 'pointer' }} className="desktop-links">
-                    <ChevronDown size={40} style={{ transform: 'rotate(90deg)' }} strokeWidth={1} />
-                </div>
-                <div style={{ position: 'absolute', right: '2rem', top: '50%', transform: 'translateY(-50%)', opacity: 0.3, cursor: 'pointer' }} className="desktop-links">
-                    <ChevronDown size={40} style={{ transform: 'rotate(-90deg)' }} strokeWidth={1} />
                 </div>
             </section>
 
