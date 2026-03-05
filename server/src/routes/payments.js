@@ -23,8 +23,8 @@ router.post('/initiate', authenticate, authorize('customer'), async (req, res, n
 
         let paymentData = {};
         if (method === 'online') {
-            const order = await paymentService.createOrder(amount, 'INR', bookingId);
-            paymentData = { gatewayOrderId: order.orderId, status: 'pending' };
+            // Online payments are disabled per user request
+            return res.status(400).json({ success: false, message: 'Online payments are currently disabled.' });
         } else if (method === 'wallet') {
             const userRecord = await User.findByPk(req.user.id);
             paymentData = await paymentService.processWalletPayment(userRecord, amount);

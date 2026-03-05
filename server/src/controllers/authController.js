@@ -1,8 +1,39 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
+const { Op } = require('sequelize');
 const User = require('../models/User');
 const Technician = require('../models/Technician');
+
+// In-memory OTP attempt tracker (use Redis in production for distributed systems)
+const otpAttempts = new Map();
+const MAX_OTP_ATTEMPTS = 5;
+const OTP_ATTEMPT_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+const getOtpAttemptKey = (phone) => `otp_attempts:${phone}`;
+
+const checkAndIncrementOtpAttempts = (phone) => {
+    const key = getOtpAttemptKey(phone);
+    const now = Date.now();
+    const record = otpAttempts.get(key);
+    if (record && now - record.firstAttempt < OTP_ATTEMPT_WINDOW_MS) {
+        if (record.count >= MAX_OTP_ATTEMPTS) return false; // locked out
+        record.count++;
+    } else {
+        otpAttempts.set(key, { count: 1, firstAttempt: now });
+    }
+    return true;
+};
+
+const clearOtpAttempts = (phone) => otpAttempts.delete(getOtpAttemptKey(phone));
+
+// Constant-time string comparison to prevent timing attacks
+const safeCompare = (a, b) => {
+    try {
+        return crypto.timingSafeEqual(Buffer.from(String(a)), Buffer.from(String(b)));
+    } catch { return false; }
+};
 
 const generateTokens = (user) => {
     const payload = { id: user.id, role: user.role, name: user.name };
@@ -85,12 +116,17 @@ const login = async (req, res, next) => {
         if (!user.isActive) {
             return res.status(403).json({ success: false, message: 'Account is suspended. Contact support.' });
         }
-        if (password && user.passwordHash) {
+        if (user.passwordHash) {
+            if (!password) {
+                console.log(`[AUTH] Login failed: Password required but missing`);
+                return res.status(401).json({ success: false, message: 'Password is required.' });
+            }
             const valid = await bcrypt.compare(password, user.passwordHash);
             console.log(`[AUTH] Password comparison result: ${valid}`);
             if (!valid) return res.status(401).json({ success: false, message: 'Invalid credentials.' });
-        } else {
-            console.log(`[AUTH] Password check skipped: password provided=${!!password}, passwordHash exists=${!!user.passwordHash}`);
+        } else if (!user.passwordHash && password) {
+            // User registered via OTP only, no password set
+            return res.status(401).json({ success: false, message: 'No password set. Please login using OTP.' });
         }
 
         const { accessToken, refreshToken } = generateTokens(user);
@@ -113,19 +149,33 @@ const sendOTP = async (req, res, next) => {
         const { phone } = req.body;
         if (!phone) return res.status(400).json({ success: false, message: 'Phone number required.' });
 
+        // Throttle OTP sends: max 3 per 15 minutes
+        const sendKey = `otp_send:${phone}`;
+        const sendRecord = otpAttempts.get(sendKey);
+        const now = Date.now();
+        if (sendRecord && now - sendRecord.firstAttempt < OTP_ATTEMPT_WINDOW_MS && sendRecord.count >= 3) {
+            return res.status(429).json({ success: false, message: 'Too many OTP requests. Please wait 15 minutes and try again.' });
+        }
+        if (sendRecord && now - sendRecord.firstAttempt < OTP_ATTEMPT_WINDOW_MS) {
+            sendRecord.count++;
+        } else {
+            otpAttempts.set(sendKey, { count: 1, firstAttempt: now });
+        }
+
         const { otp, expiresAt } = generateOTP();
         let user = await User.findOne({ where: { phone } });
-
         if (!user) {
             user = await User.create({ name: 'New User', phone });
         }
-
         await user.update({ otpCode: otp, otpExpiresAt: expiresAt });
 
-        // In production: send OTP via SMS (Twilio)
-        console.log(`📱 OTP for ${phone}: ${otp}`);
+        // In production: send OTP via SMS (Twilio). OTP is NEVER returned to client in production.
+        if (process.env.NODE_ENV !== 'production') {
+            console.log(`📱 OTP for ${phone}: ${otp}`);
+        }
 
-        res.json({ success: true, message: 'OTP sent successfully.', ...(process.env.NODE_ENV === 'development' && { otp }) });
+        // Anti-enumeration: always return same success message regardless of whether phone exists
+        res.json({ success: true, message: 'If this number is registered, an OTP has been sent.' });
     } catch (err) {
         next(err);
     }
@@ -137,11 +187,23 @@ const verifyOTP = async (req, res, next) => {
         const { phone, otp } = req.body;
         if (!phone || !otp) return res.status(400).json({ success: false, message: 'Phone and OTP required.' });
 
-        const user = await User.findOne({ where: { phone } });
-        if (!user) return res.status(404).json({ success: false, message: 'User not found.' });
-        if (user.otpCode !== otp) return res.status(401).json({ success: false, message: 'Invalid OTP.' });
-        if (new Date() > user.otpExpiresAt) return res.status(401).json({ success: false, message: 'OTP expired.' });
+        // Brute force protection
+        if (!checkAndIncrementOtpAttempts(phone)) {
+            return res.status(429).json({ success: false, message: 'Too many failed attempts. Please request a new OTP.' });
+        }
 
+        const user = await User.findOne({ where: { phone } });
+        // Anti-enumeration: use same error for 'not found' and 'invalid OTP'
+        if (!user || !user.otpCode) return res.status(401).json({ success: false, message: 'Invalid or expired OTP.' });
+        if (new Date() > user.otpExpiresAt) return res.status(401).json({ success: false, message: 'Invalid or expired OTP.' });
+
+        // Constant-time comparison to prevent timing attacks
+        if (!safeCompare(user.otpCode, otp)) {
+            return res.status(401).json({ success: false, message: 'Invalid or expired OTP.' });
+        }
+
+        // OTP is valid — clear it and log in
+        clearOtpAttempts(phone);
         await user.update({ otpCode: null, otpExpiresAt: null });
         const { accessToken, refreshToken } = generateTokens(user);
 

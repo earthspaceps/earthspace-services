@@ -146,6 +146,14 @@ const updateBookingStatus = async (req, res, next) => {
         const booking = await Booking.findByPk(req.params.id);
         if (!booking) return res.status(404).json({ success: false, message: 'Booking not found.' });
 
+        // IDOR Protection: Technician can only update their own assigned jobs
+        if (req.user.role === 'technician') {
+            const tech = await Technician.findOne({ where: { userId: req.user.id } });
+            if (!tech || booking.technicianId !== tech.id) {
+                return res.status(403).json({ success: false, message: 'Unauthorized. You can only update jobs assigned to you.' });
+            }
+        }
+
         const updates = { status };
         if (status === 'started') updates.startedAt = new Date();
         if (status === 'completed') { updates.completedAt = new Date(); if (workProofUrl) updates.workProofUrl = workProofUrl; }
@@ -172,6 +180,11 @@ const cancelBooking = async (req, res, next) => {
         const { reason } = req.body;
         const booking = await Booking.findByPk(req.params.id);
         if (!booking) return res.status(404).json({ success: false, message: 'Booking not found.' });
+
+        // IDOR Protection: Customers can only cancel their own bookings
+        if (req.user.role === 'customer' && booking.customerId !== req.user.id) {
+            return res.status(403).json({ success: false, message: 'Unauthorized. You can only cancel your own bookings.' });
+        }
 
         const cancellableStatuses = ['pending', 'confirmed', 'assigned'];
         if (!cancellableStatuses.includes(booking.status)) {
