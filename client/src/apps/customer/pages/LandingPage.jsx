@@ -200,10 +200,10 @@ const LandingPage = () => {
                 </div>
 
                 <div className="desktop-links" style={{ display: 'flex', gap: '2.5rem', alignItems: 'center' }}>
-                    <a href="#services" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Features</a>
-                    <a href="#process" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Solutions</a>
-                    <a href="#" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Pricing</a>
-                    <a href="#" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>About</a>
+                    <a href="#services" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Services</a>
+                    <a href="#process" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Process</a>
+                    <a href="#why-us" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Why Us</a>
+                    <a href="#contact" className="nav-link" style={{ color: 'rgba(255,255,255,0.7)', textTransform: 'none', fontSize: '0.9rem' }}>Contact</a>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
@@ -363,7 +363,7 @@ const LandingPage = () => {
             </section>
 
             {/* Why Us Section */}
-            <section style={{ padding: '8rem 5%', backgroundColor: '#050505', color: '#fff' }}>
+            <section id="why-us" style={{ padding: '8rem 5%', backgroundColor: '#050505', color: '#fff' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6rem', alignItems: 'center' }}>
                     <div>
                         <h2 style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, lineHeight: 0.9, color: '#fff', marginBottom: '2.5rem' }}>
@@ -392,7 +392,7 @@ const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="texture-overlay" style={{ padding: '8rem 5% 4rem', backgroundColor: '#050505', color: '#fff', textAlign: 'center' }}>
+            <footer id="contact" className="texture-overlay" style={{ padding: '8rem 5% 4rem', backgroundColor: '#050505', color: '#fff', textAlign: 'center' }}>
                 <h2 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', textTransform: 'uppercase', fontWeight: 800, color: '#fff', marginBottom: '2rem' }}>Ready to Maintain?</h2>
                 <div style={{ marginBottom: '4rem' }}>
                     <Link to="/login" className="btn-bw" style={{ borderColor: '#fff', color: '#fff' }}>Start Booking</Link>
