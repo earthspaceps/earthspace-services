@@ -930,6 +930,153 @@ tr:hover td {
   }
 }
 
+/* ---- Mobile Responsive Utilities ---- */
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .show-on-mobile {
+    display: block !important;
+  }
+
+  .flex-on-mobile {
+    display: flex !important;
+  }
+
+  .grid-on-mobile {
+    display: grid !important;
+  }
+}
+
+.mobile-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.mobile-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.mobile-card-row:last-child {
+  margin-bottom: 0;
+}
+
+.mobile-card-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mobile-card-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111;
+}
+
+/* ---- Mobile Booking Cards ---- */
+.booking-mobile-cards {
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.booking-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.booking-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.booking-card-number {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.booking-card-service {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #111;
+  margin-top: 4px;
+}
+
+.booking-card-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.booking-card-item-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
+}
+
+.booking-card-item-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.booking-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.booking-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+  .bookings-table {
+    display: none;
+  }
+
+  .booking-mobile-cards {
+    display: flex;
+  }
+
+  .table-wrapper {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
 /* ---- Floating Action Buttons ---- */
 .whatsapp-fab {
   position: fixed;
