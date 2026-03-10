@@ -33,6 +33,7 @@ export default function LoginPage() {
         try {
             const { data } = await api.post('/auth/login', { email: form.email, password: form.password });
             login(data.data.user, data.data.accessToken, data.data.refreshToken);
+            // Redirect to dashboard, which will route based on role
             navigate('/dashboard');
         } catch (err) { setError(err.response?.data?.message || 'Login failed.'); }
         setLoading(false);
@@ -164,14 +165,19 @@ export default function LoginPage() {
                             <div style={{ flex: 1, height: 1, background: '#fff' }}></div>
                         </div>
 
-                        <div style={{ display: 'flex', gap: 10 }}>
+                        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                             <button type="button" onClick={() => { setForm(f => ({ ...f, email: 'admin@earthspaceservices.com', password: 'admin123' })); setError('Admin credentials filled!'); }} style={{
-                                flex: 1, padding: '12px', borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s'
+                                flex: 1, minWidth: '120px', padding: '12px', borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s'
                             }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}>
                                 Fill Admin
                             </button>
+                            <button type="button" onClick={() => { setForm(f => ({ ...f, email: 'tech@test.com', password: 'admin123' })); setError('Technician credentials filled!'); }} style={{
+                                flex: 1, minWidth: '120px', padding: '12px', borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s'
+                            }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}>
+                                Fill Tech
+                            </button>
                             <button type="button" onClick={() => { setForm(f => ({ ...f, email: 'customer@test.com', password: 'admin123' })); setError('Customer credentials filled!'); }} style={{
-                                flex: 1, padding: '12px', borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s'
+                                flex: 1, minWidth: '120px', padding: '12px', borderRadius: '12px', backgroundColor: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.7)', fontSize: '0.8rem', fontWeight: 500, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s'
                             }} onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.06)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.02)'}>
                                 Fill Customer
                             </button>
