@@ -93,8 +93,26 @@ router.post('/:bookingId/collect-cash', authenticate, authorize('technician'), a
             return res.status(403).json({ success: false, message: 'Unauthorized. This job is not assigned to you.' });
         }
 
-        const payment = await Payment.findOne({ where: { bookingId, method: 'cash' } });
-        if (!payment) return res.status(404).json({ success: false, message: 'Cash payment record not found for this booking.' });
+        let payment = await Payment.findOne({ where: { bookingId, method: 'cash' } });
+        if (!payment) {
+            // Create a missing cash payment record if it doesn't exist
+            const amount = parseFloat(booking.finalPrice || booking.estimatedPrice);
+            const { commissionAmount, technicianPayout } = paymentService.calculateCommission(amount, tech.commissionRate || 20);
+            const invoiceNumber = paymentService.generateInvoiceNumber();
+
+            payment = await Payment.create({
+                bookingId,
+                customerId: booking.customerId,
+                technicianId: booking.technicianId,
+                amount,
+                commissionAmount,
+                technicianPayout,
+                commissionRate: tech.commissionRate || 20,
+                method: 'cash',
+                status: 'pending',
+                invoiceNumber
+            });
+        }
 
         if (payment.status === 'completed') {
             return res.status(400).json({ success: false, message: 'Payment already marked as completed.' });
